@@ -2,155 +2,145 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pixie Kitchen v1.0 📟✨</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Moon Scouter v2.0 🌙🐉</title>
     <style>
         :root {
-            --bubblegum: #ff7ebb;
-            --cyber-pink: #ff2a85;
-            --cosmic-purple: #b57eff;
-            --matrix-glow: #00f0ff;
-            --glass-bg: rgba(255, 255, 255, 0.75);
-            --retro-border: 3px double #ff2a85;
+            --moon-pink: #ff9ecd;
+            --sailor-white: #ffffff;
+            --dbz-orange: #ff8c00;
+            --scouter-green: #39ff14;
+            --cosmic-purple: #4a0e4e;
+            --glass: rgba(255, 255, 255, 0.85);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Courier New', Courier, monospace;
-            font-weight: bold;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Trebuchet MS', sans-serif; }
 
         body {
-            background: linear-gradient(135deg, #ffebf4 0%, #edf0ff 100%);
-            color: #333;
+            background: linear-gradient(180deg, #ffe6f2 0%, #d9b3ff 100%);
+            color: var(--cosmic-purple);
             min-height: 100vh;
-            padding-bottom: 70px;
+            padding-bottom: 80px;
+            background-attachment: fixed;
         }
 
-        /* Y2K Tamagotchi-Style Header */
+        /* Magical Anime Header */
         header {
-            background: linear-gradient(to right, var(--cyber-pink), var(--cosmic-purple));
+            background: linear-gradient(90deg, var(--moon-pink), var(--cosmic-purple));
             color: white;
             text-align: center;
-            padding: 15px;
-            border-bottom: 4px ridge var(--matrix-glow);
-            text-shadow: 2px 2px 0px #000;
-            box-shadow: 0px 4px 10px rgba(255, 42, 133, 0.3);
+            padding: 20px;
+            border-bottom: 4px solid var(--dbz-orange);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
-        header h1 {
-            font-size: 1.4rem;
-            letter-spacing: 1px;
-        }
+        header h1 { font-size: 1.5rem; text-transform: uppercase; letter-spacing: 2px; text-shadow: 2px 2px 0px #ff3385; }
+        .subtitle { font-size: 0.8rem; color: var(--dbz-orange); font-weight: bold; }
 
-        .subtitle {
-            font-size: 0.75rem;
-            color: var(--matrix-glow);
-        }
-
-        /* App Container */
-        .app-container {
-            padding: 15px;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        /* Glassmorphic Retro Cards */
+        /* Container & Cards */
+        .app-container { padding: 15px; max-width: 600px; margin: 0 auto; }
+        
         .card {
-            background: var(--glass-bg);
-            border: var(--retro-border);
-            border-radius: 12px;
+            background: var(--glass);
+            border: 2px solid var(--moon-pink);
+            border-radius: 15px;
             padding: 15px;
             margin-bottom: 20px;
-            box-shadow: 4px 4px 0px rgba(255, 42, 133, 0.15);
-            backdrop-filter: blur(5px);
+            box-shadow: 0 8px 16px rgba(74, 14, 78, 0.15);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
         }
 
         .card-title {
-            color: var(--cyber-pink);
-            font-size: 1.1rem;
-            border-bottom: 2px dashed var(--bubblegum);
-            padding-bottom: 5px;
+            color: var(--dbz-orange);
+            font-size: 1.2rem;
+            font-weight: 900;
+            border-bottom: 2px dashed var(--moon-pink);
+            padding-bottom: 8px;
             margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            text-transform: uppercase;
         }
 
-        /* Magical Interactive Buttons */
-        .pixie-btn {
-            background: linear-gradient(to bottom, #fff, #ffd6e8);
-            border: 2px solid var(--cyber-pink);
-            border-radius: 8px;
-            padding: 8px 15px;
-            color: var(--cyber-pink);
-            cursor: pointer;
-            box-shadow: 2px 2px 0px var(--cyber-pink);
-            transition: all 0.1s ease;
-        }
-
-        .pixie-btn:active {
-            transform: translate(2px, 2px);
-            box-shadow: 0px 0px 0px;
-        }
-
-        .pixie-btn.sm {
-            padding: 4px 8px;
-            font-size: 0.8rem;
-        }
-
-        /* Lists Presentation */
-        .ingredient-list {
-            list-style: none;
-        }
-
-        .ingredient-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px dotted #ccc;
-        }
-
-        .qty-controls {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .badge {
-            padding: 3px 6px;
+        /* Scouter UI Elements */
+        .power-level {
+            font-family: 'Courier New', monospace;
+            color: var(--scouter-green);
+            background: #111;
+            padding: 2px 6px;
             border-radius: 4px;
-            font-size: 0.75rem;
+            border: 1px solid var(--scouter-green);
+            font-weight: bold;
+        }
+
+        /* Shopping List Actions */
+        .shop-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .shop-item.bought {
+            background: #e8ffe8;
+            border-color: var(--scouter-green);
+            opacity: 0.7;
+        }
+
+        .shop-item.bought .item-name {
+            text-decoration: line-through;
+            color: #888;
+        }
+
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--moon-pink);
+            border-radius: 50%;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bought .checkbox { background: var(--scouter-green); border-color: var(--scouter-green); }
+        .bought .checkbox::after { content: '✓'; color: black; font-weight: bold; }
+
+        /* Buttons */
+        .magic-btn {
+            background: linear-gradient(45deg, var(--dbz-orange), #ff4500);
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
             color: white;
+            font-weight: bold;
+            box-shadow: 0 4px 0 #cc3700;
+            cursor: pointer;
+            text-transform: uppercase;
+            width: 100%;
+            margin-top: 10px;
         }
+        .magic-btn:active { transform: translateY(4px); box-shadow: 0 0 0 #cc3700; }
 
-        .badge.have { background-color: #4cd137; }
-        .badge.buy { background-color: var(--cyber-pink); }
-
-        /* Step-by-Step Layout */
-        .step-box {
-            background: rgba(255, 255, 255, 0.5);
-            border-left: 3px solid var(--cosmic-purple);
-            padding: 8px;
-            margin: 8px 0;
-            font-size: 0.9rem;
-        }
-
-        /* Bottom Retro Nav Bar */
+        /* Bottom Nav */
         nav {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
             background: white;
-            border-top: 3px double var(--cyber-pink);
+            border-top: 4px solid var(--cosmic-purple);
             display: flex;
             justify-content: space-around;
-            padding: 10px 0;
-            box-shadow: 0px -4px 10px rgba(0,0,0,0.05);
+            padding: 10px 0 20px 0;
             z-index: 100;
         }
 
@@ -158,248 +148,235 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            font-size: 0.7rem;
-            color: #777;
-            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #aaa;
             cursor: pointer;
         }
-
-        .nav-item.active {
-            color: var(--cyber-pink);
-        }
-
-        .nav-icon {
-            font-size: 1.3rem;
-            margin-bottom: 2px;
-        }
+        .nav-item.active { color: var(--cosmic-purple); }
+        .nav-icon { font-size: 1.6rem; margin-bottom: 4px; filter: grayscale(100%); }
+        .nav-item.active .nav-icon { filter: grayscale(0%); transform: scale(1.1); }
 
         .hidden { display: none !important; }
+
+        /* Mini Animation for Sync */
+        @keyframes syncPulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.1); } 100% { opacity: 1; transform: scale(1); } }
+        .syncing { animation: syncPulse 1s infinite; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>📟 POCKET KITCHEN PIXIE v1.0</h1>
-        <div class="subtitle">Personal Nutritionist Mainframe Enabled 🌸</div>
+        <h1>🌙 Moon Scouter 🐉</h1>
+        <div class="subtitle" id="sync-status">PRISM POWER INVENTORY ONLINE</div>
     </header>
 
     <div class="app-container">
         
-        <!-- VIEW 1: RECIPES (MAIN DASHBOARD) -->
-        <div id="recipe-view" class="view-section">
+        <div id="view-recipes" class="view-section">
             <div class="card">
-                <div class="card-title">
-                    <span>🧙‍♀️ Cosmic Menu Choice</span>
-                    <button class="pixie-btn sm" onclick="generateRecipe(true)">✨ Reroll</button>
-                </div>
-                <h3 id="recipe-name" style="color: var(--cosmic-purple); margin-bottom: 8px;">Loading spells...</h3>
-                <p id="recipe-desc" style="font-size: 0.85rem; italic; margin-bottom: 15px; color:#555;"></p>
+                <div class="card-title">✨ Culinary Transformation</div>
+                <h2 id="r-name" style="color: var(--moon-pink); margin-bottom: 5px;">Loading...</h2>
+                <p id="r-desc" style="font-size: 0.9rem; color: #666; font-style: italic; margin-bottom: 15px;"></p>
                 
-                <div class="card-title" style="font-size: 0.95rem; border-bottom: 1px dashed var(--cosmic-purple);">🎒 In Your Vault</div>
-                <ul id="recipe-have-list" class="ingredient-list" style="margin-bottom: 15px;"></ul>
+                <button class="magic-btn" onclick="generateRecipe()" style="margin-bottom: 20px;">☄️ Reroll Meal</button>
 
-                <div class="card-title" style="font-size: 0.95rem; border-bottom: 1px dashed var(--cyber-pink);">🛒 Market Run Needed</div>
-                <ul id="recipe-buy-list" class="ingredient-list" style="margin-bottom: 15px;"></ul>
+                <h4 style="color: var(--cosmic-purple);">🎒 In The Vault</h4>
+                <ul id="r-have" style="list-style: none; margin-bottom: 15px; font-size: 0.9rem;"></ul>
 
-                <div class="card-title" style="font-size: 0.95rem; border-bottom: 1px dashed var(--cosmic-purple);">📜 Cooking Ritual</div>
-                <div id="recipe-steps"></div>
+                <h4 style="color: var(--dbz-orange);">🛒 Send to Market Scouter</h4>
+                <ul id="r-buy" style="list-style: none; margin-bottom: 15px; font-size: 0.9rem;"></ul>
+                <button class="magic-btn" onclick="sendToMarket()" style="background: var(--moon-pink); box-shadow: 0 4px 0 #d175a3;">➕ Add Need to Market List</button>
             </div>
         </div>
 
-        <!-- VIEW 2: LIVE SHOPPING & INVENTORY -->
-        <div id="inventory-view" class="view-section hidden">
+        <div id="view-market" class="view-section hidden">
             <div class="card">
-                <div class="card-title">
-                    <span>🛒 Live Shop & Sync</span>
-                    <button class="pixie-btn sm" onclick="fetchInventory()">🔄 Refresh</button>
+                <div class="card-title">🛒 Market Scouter</div>
+                <p style="font-size: 0.8rem; margin-bottom: 15px;">Tap an item to cross it off. It will instantly auto-update your Google Sheet! 💥</p>
+                
+                <div id="market-list">
+                    </div>
+            </div>
+        </div>
+
+        <div id="view-vault" class="view-section hidden">
+            <div class="card">
+                <div class="card-title">🐉 The Vault</div>
+                <div style="display:flex; justify-content: space-between; margin-bottom: 15px;">
+                    <span style="font-size: 0.8rem;">Live Data Matrix</span>
+                    <span class="power-level" onclick="fetchInventory()">🔄 SYNC</span>
                 </div>
-                <p style="font-size: 0.75rem; margin-bottom: 10px; color:#666;">Modify quantities in the aisle to automatically write to your Google Sheet:</p>
-                <ul id="full-inventory-list" class="ingredient-list"></ul>
+                <ul id="vault-list" style="list-style: none; font-size: 0.9rem;">
+                    </ul>
             </div>
         </div>
 
     </div>
 
-    <!-- Retro Nav Menu -->
     <nav>
-        <div class="nav-item active" id="nav-recipe" onclick="switchView('recipe')">
-            <span class="nav-icon">🔮</span>
-            <span>Recipes</span>
+        <div class="nav-item active" onclick="switchTab('recipes', this)">
+            <span class="nav-icon">🌙</span><span>Magic</span>
         </div>
-        <div class="nav-item" id="nav-inventory" onclick="switchView('inventory')">
-            <span class="nav-icon">📟</span>
-            <span>Aisle Update</span>
+        <div class="nav-item" onclick="switchTab('market', this)">
+            <span class="nav-icon">🛒</span><span>Market</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('vault', this)">
+            <span class="nav-icon">🐉</span><span>Vault</span>
         </div>
     </nav>
 
     <script>
-        // PASTE YOUR DEPLOYED GOOGLE APPS SCRIPT URL HERE
+        // PASTE YOUR GOOGLE APPS SCRIPT URL HERE
         const SHEET_API_URL = "https://script.google.com/macros/s/AKfycby_EiCidBees9IA-zs7_OSxppAnD0sB2U78Qvd1-kQy7JB5sSs9l-P-FKODmQLv2c-j/exec";
 
-        // Backup static data if API isn't linked yet so the UI stays fully operational
-        let currentInventory = [
-            {"Product Name": "Ground Beef 80/20", "Quantity": 5, "Category": "Proteins"},
-            {"Product Name": "Penne Rigate Pasta", "Quantity": 1, "Category": "Grains"},
-            {"Product Name": "Power Greens", "Quantity": 1, "Category": "Vegetables"},
-            {"Product Name": "Organic Tomato Basil Pasta Sauce", "Quantity": 1, "Category": "CondimentsAndSauces"},
-            {"Product Name": "Sharp Cheddar Cheese", "Quantity": 2, "Category": "Dairy"}
-        ];
+        let inventory = [];
+        let marketList = ["Fresh Zucchini", "Mozzarella Pearls", "Bell Peppers"]; // Sample initial list
+        let currentRecipeNeeds = [];
 
-        // Unique dynamic recipe deck for rotation
-        const magicalRecipeBook = [
+        const recipeDB = [
             {
-                name: "✨ Lothlórien Starlight Penne",
-                desc: "Stovetop elven comfort feast with micro-shredded hidden summer greens.",
+                name: "✨ Cosmic Penne Power-Up",
+                desc: "An elven-inspired stovetop dish hiding high-level veggie nutrients in the sauce.",
                 have: ["Ground Beef 80/20", "Penne Rigate Pasta", "Power Greens", "Organic Tomato Basil Pasta Sauce"],
-                buy: ["Fresh Zucchini", "Fresh Garlic", "Mozzarella Pearls"],
-                steps: ["Finely grate the zucchini so it melts into the base.", "Brown beef with garlic, then pour in the tomato sauce.", "Simmer for 10 minutes, stir in greens, and toss with boiled penne.", "Drop fresh mozzarella pearls on top right before serving."]
+                buy: ["Fresh Zucchini", "Fresh Garlic", "Mozzarella Pearls"]
             },
             {
-                name: "🌮 Mystic Skillet Taco Bowls",
-                desc: "High protein, lightning fast dinner that packs massive flavor without dynamic baking heat.",
+                name: "🐉 Saiyan Energy Tacos",
+                desc: "High protein, fast-recovery skillet bowls. No baking required.",
                 have: ["Ground Beef 80/20", "Sharp Cheddar Cheese"],
-                buy: ["Bell Peppers", "Black Beans", "Avocado", "Lime"],
-                steps: ["Sauté thinly sliced bell peppers until tender.", "Brown ground beef with cumin, chili powder, salt, and pepper.", "Layer bowls with black beans, beef, and plenty of shredded cheddar.", "Finish with fresh avocado slices and a heavy squeeze of lime juice."]
-            },
-            {
-                name: "🥗 Golden Hour Power Salad",
-                desc: "Crisp, energizing, iron-rich salad explicitly tuned for late afternoon recovery.",
-                have: ["Power Greens", "Sharp Cheddar Cheese"],
-                buy: ["Grilled Chicken Strips", "Cucumber", "Strawberries", "Walnuts"],
-                steps: ["Wash and chillingly crisp your Power Greens down.", "Slice fresh strawberries and crisp summer cucumbers thinly.", "Toss greens with chicken, fruit, walnuts, and cubed cheddar.", "Drizzle lightly with oil and vinegar dressing."]
+                buy: ["Bell Peppers", "Black Beans", "Avocado", "Lime"]
             }
         ];
 
-        let lastRecipeIndex = -1;
+        // --- Core Functions ---
 
         async function fetchInventory() {
-            if(SHEET_API_URL.includes("YOUR_DEPLOYED")) {
-                renderInventory();
-                return;
-            }
+            setStatus("SYNCING DATA...", true);
             try {
-                const response = await fetch(SHEET_API_URL);
-                const data = await response.json();
-                if(data && data.length > 0) {
-                    currentInventory = data;
-                    renderInventory();
-                    generateRecipe(false);
+                if(!SHEET_API_URL.includes("YOUR_DEPLOYED")) {
+                    const response = await fetch(SHEET_API_URL);
+                    inventory = await response.json();
+                } else {
+                    // Fallback local data if API isn't set up yet
+                    inventory = [
+                        {"Product Name": "Ground Beef 80/20", "Quantity": 5},
+                        {"Product Name": "Penne Rigate Pasta", "Quantity": 1},
+                        {"Product Name": "Power Greens", "Quantity": 1}
+                    ];
                 }
-            } catch (error) {
-                console.error("Error pulling sheet metrics:", error);
-                renderInventory(); 
+                renderVault();
+                generateRecipe(); // Load a recipe based on live data
+                setStatus("PRISM POWER INVENTORY ONLINE", false);
+            } catch (e) {
+                console.error(e);
+                setStatus("CONNECTION ERROR", false);
             }
         }
 
-        async function updateQuantity(productName, newQuantity) {
-            const item = currentInventory.find(i => i["Product Name"] === productName);
-            if (item) {
-                item.Quantity = newQuantity;
-                renderInventory();
-            }
+        async function updateSheetQuantity(productName, increaseBy) {
+            setStatus("WRITING TO CLOUD...", true);
+            
+            // Optimistic local update
+            let item = inventory.find(i => i["Product Name"] === productName);
+            let newQty = item ? parseInt(item.Quantity) + increaseBy : increaseBy;
+            if (item) item.Quantity = newQty;
+            renderVault();
 
-            if(SHEET_API_URL.includes("YOUR_DEPLOYED")) return;
-
-            try {
-                await fetch(SHEET_API_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ productName, newQuantity })
-                });
-            } catch (error) {
-                console.error("Error writing data matrix back to sheet:", error);
+            if(!SHEET_API_URL.includes("YOUR_DEPLOYED")) {
+                try {
+                    await fetch(SHEET_API_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ productName: productName, newQuantity: newQty })
+                    });
+                } catch(e) { console.error("Update failed", e); }
             }
+            setStatus("PRISM POWER INVENTORY ONLINE", false);
         }
 
-        function renderInventory() {
-            const listContainer = document.getElementById('full-inventory-list');
-            listContainer.innerHTML = '';
-            
-            currentInventory.forEach(item => {
-                if(!item["Product Name"]) return;
-                const li = document.createElement('li');
-                li.className = 'ingredient-item';
-                
-                const q = parseInt(item.Quantity) || 0;
-                
-                li.innerHTML = `
-                    <div>
-                        <span style="font-size:0.9rem;">${item["Product Name"]}</span>
-                        <br><span style="font-size:0.7rem; color:#888;">${item.Category || 'Staple'}</span>
-                    </div>
-                    <div class="qty-controls">
-                        <button class="pixie-btn sm" onclick="updateQuantity('${item["Product Name"]}', ${q - 1})">-</button>
-                        <span style="min-width:20px; text-align:center;">${q}</span>
-                        <button class="pixie-btn sm" onclick="updateQuantity('${item["Product Name"]}', ${q + 1})">+</button>
-                    </div>
-                `;
-                listContainer.appendChild(li);
-            });
+        // --- UI Interactions ---
+
+        function generateRecipe() {
+            const recipe = recipeDB[Math.floor(Math.random() * recipeDB.length)];
+            document.getElementById('r-name').innerText = recipe.name;
+            document.getElementById('r-desc').innerText = recipe.desc;
+            currentRecipeNeeds = recipe.buy;
+
+            document.getElementById('r-have').innerHTML = recipe.have.map(i => `<li style="padding: 5px 0;">✅ ${i}</li>`).join('');
+            document.getElementById('r-buy').innerHTML = recipe.buy.map(i => `<li style="padding: 5px 0;">⚠️ ${i}</li>`).join('');
         }
 
-        function generateRecipe(isReroll) {
-            let index = Math.floor(Math.random() * magicalRecipeBook.length);
-            
-            // Avoid immediate repetitions
-            if (isReroll && index === lastRecipeIndex) {
-                index = (index + 1) % magicalRecipeBook.length;
-            }
-            lastRecipeIndex = index;
-            
-            const recipe = magicalRecipeBook[index];
-            
-            document.getElementById('recipe-name').innerText = recipe.name;
-            document.getElementById('recipe-desc').innerText = recipe.desc;
-            
-            // Build inventory dynamic tracking list
-            const haveCtx = document.getElementById('recipe-have-list');
-            haveCtx.innerHTML = '';
-            recipe.have.forEach(i => {
-                const li = document.createElement('li');
-                li.className = 'ingredient-item';
-                li.innerHTML = `<span>⭐ ${i}</span> <span class="badge have">In Vault</span>`;
-                haveCtx.appendChild(li);
+        function sendToMarket() {
+            currentRecipeNeeds.forEach(item => {
+                if(!marketList.includes(item)) marketList.push(item);
             });
+            renderMarket();
+            switchTab('market', document.querySelectorAll('.nav-item')[1]);
+        }
 
-            // Build shop dynamic matching list
-            const buyCtx = document.getElementById('recipe-buy-list');
-            buyCtx.innerHTML = '';
-            recipe.buy.forEach(i => {
-                const li = document.createElement('li');
-                li.className = 'ingredient-item';
-                li.innerHTML = `<span>🛍️ ${i}</span> <span class="badge buy">Need</span>`;
-                buyCtx.appendChild(li);
-            });
-
-            // Build dynamic text parsing for instruction mapping
-            const stepsCtx = document.getElementById('recipe-steps');
-            stepsCtx.innerHTML = '';
-            recipe.steps.forEach((step, idx) => {
+        function renderMarket() {
+            const list = document.getElementById('market-list');
+            list.innerHTML = '';
+            marketList.forEach(item => {
                 const div = document.createElement('div');
-                div.className = 'step-box';
-                div.innerHTML = `<strong>Phase ${idx + 1}:</strong> ${step}`;
-                stepsCtx.appendChild(div);
+                div.className = 'shop-item';
+                div.innerHTML = `
+                    <div class="checkbox"></div>
+                    <span class="item-name">${item}</span>
+                `;
+                // Cross off logic
+                div.onclick = function() {
+                    if(!this.classList.contains('bought')) {
+                        this.classList.add('bought');
+                        // Instantly push to Google Sheet!
+                        updateSheetQuantity(item, 1);
+                        
+                        // Optional: Remove from list after a delay
+                        setTimeout(() => {
+                            marketList = marketList.filter(i => i !== item);
+                            renderMarket();
+                        }, 2000);
+                    }
+                };
+                list.appendChild(div);
             });
         }
 
-        function switchView(view) {
+        function renderVault() {
+            const list = document.getElementById('vault-list');
+            list.innerHTML = '';
+            inventory.forEach(item => {
+                if(!item["Product Name"]) return;
+                list.innerHTML += `
+                    <li style="display:flex; justify-content:space-between; border-bottom:1px solid #ddd; padding: 10px 0;">
+                        <span>${item["Product Name"]}</span>
+                        <span class="power-level">LVL: ${item.Quantity}</span>
+                    </li>
+                `;
+            });
+        }
+
+        function switchTab(view, element) {
             document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            
-            if(view === 'recipe') {
-                document.getElementById('recipe-view').classList.remove('hidden');
-                document.getElementById('nav-recipe').classList.add('active');
-            } else {
-                document.getElementById('inventory-view').classList.remove('hidden');
-                document.getElementById('nav-inventory').classList.add('active');
-                renderInventory();
-            }
+            document.getElementById('view-' + view).classList.remove('hidden');
+            element.classList.add('active');
+            if(view === 'market') renderMarket();
         }
 
-        // Run Initial Mainframe Check on load
+        function setStatus(text, isSyncing) {
+            const el = document.getElementById('sync-status');
+            el.innerText = text;
+            if(isSyncing) el.classList.add('syncing');
+            else el.classList.remove('syncing');
+        }
+
+        // Boot Sequence
         fetchInventory();
-        generateRecipe(false);
+        renderMarket();
+
     </script>
 </body>
 </html>
