@@ -3,174 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Prism Scouter v7.0 🌙🐉</title>
-    <!-- Add Barcode Scanner Library -->
+    <title>Prism Scouter v8.0 🌙🐉</title>
     <script src="https://unpkg.com/html5-qrcode"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
 
         :root {
-            --moon-pink: #ff3399;
-            --neon-pink: #ff007f;
-            --dbz-orange: #ff8c00;
-            --ssj-gold: #ffd700;
-            --scouter-green: #39ff14;
-            --cosmic-dark: #0a001a;
-            --glass: rgba(15, 5, 30, 0.85);
+            --moon-pink: #ff3399; --neon-pink: #ff007f;
+            --dbz-orange: #ff8c00; --ssj-gold: #ffd700;
+            --scouter-green: #39ff14; --cosmic-dark: #0a001a;
+            --glass: rgba(10, 5, 20, 0.9);
             --text-glow: 0 0 5px var(--moon-pink), 0 0 10px var(--neon-pink);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            background-color: var(--cosmic-dark);
-            color: #fff;
-            font-family: 'Space Mono', monospace;
-            min-height: 100vh;
-            padding-bottom: 90px;
-            overflow-x: hidden;
+            background-color: var(--cosmic-dark); color: #fff;
+            font-family: 'Space Mono', monospace; min-height: 100vh;
+            padding-bottom: 90px; overflow-x: hidden;
         }
 
         /* MATRIX CANVAS */
-        #matrix-canvas {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -1; opacity: 0.6;
-        }
+        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; opacity: 0.5; }
 
         /* HEADER */
         header {
             background: linear-gradient(90deg, rgba(255,51,153,0.85), rgba(74,14,78,0.85));
-            text-align: center; padding: 20px;
-            border-bottom: 3px solid var(--dbz-orange);
-            box-shadow: 0 0 20px var(--dbz-orange);
-            position: sticky; top: 0; z-index: 10;
+            text-align: center; padding: 18px; border-bottom: 3px solid var(--dbz-orange);
+            box-shadow: 0 0 20px var(--dbz-orange); position: sticky; top: 0; z-index: 10;
             backdrop-filter: blur(5px);
         }
-        header h1 { 
-            font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1.6rem; 
-            text-shadow: var(--text-glow); letter-spacing: 2px;
-        }
-        .subtitle { font-size: 0.75rem; color: var(--scouter-green); font-weight: bold; margin-top: 5px; }
-        .syncing { animation: pulse 1s infinite; color: var(--ssj-gold); }
+        header h1 { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1.5rem; text-shadow: var(--text-glow); letter-spacing: 2px; }
+        .subtitle { font-size: 0.7rem; color: var(--scouter-green); font-weight: bold; margin-top: 5px; }
 
         /* FLOATING HUD TIMER */
         #scouter-timer {
-            position: fixed; top: 90px; right: 15px;
-            background: rgba(0, 0, 0, 0.9);
-            border: 2px solid var(--scouter-green);
-            color: var(--scouter-green);
-            padding: 8px 15px; border-radius: 8px;
-            z-index: 1000;
-            box-shadow: 0 0 15px var(--scouter-green);
-            display: flex; align-items: center; gap: 15px;
-            font-family: 'Orbitron', sans-serif;
-            transition: 0.3s;
+            position: fixed; top: 85px; right: 15px; background: rgba(0, 0, 0, 0.95);
+            border: 2px solid var(--scouter-green); color: var(--scouter-green);
+            padding: 8px 15px; border-radius: 8px; z-index: 1000;
+            box-shadow: 0 0 15px var(--scouter-green); display: flex; align-items: center; gap: 15px;
+            font-family: 'Orbitron', sans-serif; transition: 0.3s;
         }
         #scouter-timer.hidden { transform: translateX(150%); opacity: 0; }
         #timer-display { font-size: 1.4rem; font-weight: bold; text-shadow: 0 0 8px var(--scouter-green); }
-        .timer-close-btn {
-            background: none; border: none; color: #fff;
-            font-size: 1.2rem; cursor: pointer; opacity: 0.6;
-        }
+        .timer-close-btn { background: none; border: none; color: #fff; font-size: 1.2rem; cursor: pointer; opacity: 0.6; }
         .timer-alert { animation: alarmFlash 0.5s infinite !important; }
-        @keyframes alarmFlash { 
-            0% { background: rgba(0,0,0,0.9); color: #ff003c; border-color: #ff003c; } 
-            50% { background: #ff003c; color: #fff; border-color: #fff; } 
-            100% { background: rgba(0,0,0,0.9); color: #ff003c; border-color: #ff003c; } 
-        }
+        @keyframes alarmFlash { 0% { background: #000; color: #ff003c; border-color: #ff003c; } 50% { background: #ff003c; color: #fff; border-color: #fff; } 100% { background: #000; color: #ff003c; border-color: #ff003c; } }
         
         .inline-timer-btn {
-            background: var(--scouter-green); color: #000; border: none;
-            padding: 2px 8px; border-radius: 4px; font-size: 0.75rem;
-            font-family: 'Orbitron', sans-serif; font-weight: bold;
-            cursor: pointer; margin-left: 8px; vertical-align: middle;
-            box-shadow: 0 0 5px var(--scouter-green);
+            background: var(--scouter-green); color: #000; border: none; padding: 2px 8px;
+            border-radius: 4px; font-size: 0.75rem; font-family: 'Orbitron', sans-serif; font-weight: bold;
+            cursor: pointer; margin-left: 8px; vertical-align: middle; box-shadow: 0 0 5px var(--scouter-green);
         }
         .inline-timer-btn:active { background: #fff; transform: scale(0.95); }
 
         /* CONTAINERS & CARDS */
-        .app-container { padding: 15px; max-width: 700px; margin: 0 auto; }
+        .app-container { padding: 12px; max-width: 800px; margin: 0 auto; }
         
         .card {
-            background: var(--glass); border: 2px solid var(--moon-pink);
-            border-radius: 12px; padding: 20px; margin-bottom: 25px;
-            box-shadow: 0 0 15px rgba(255, 51, 153, 0.4), inset 0 0 10px rgba(255, 51, 153, 0.2);
-            backdrop-filter: blur(10px);
+            background: var(--glass); border: 2px solid var(--moon-pink); border-radius: 8px;
+            padding: 20px; margin-bottom: 20px; box-shadow: inset 0 0 15px rgba(255, 51, 153, 0.15);
         }
 
         .card-title {
-            font-family: 'Orbitron', sans-serif; color: var(--ssj-gold); font-size: 1.2rem;
-            border-bottom: 1px solid var(--moon-pink); padding-bottom: 10px; margin-bottom: 15px;
-            text-shadow: 0 0 8px var(--ssj-gold); display: flex; justify-content: space-between; align-items: center;
+            font-family: 'Orbitron', sans-serif; color: var(--ssj-gold); font-size: 1.1rem;
+            border-bottom: 1px dashed var(--moon-pink); padding-bottom: 10px; margin-bottom: 15px;
+            display: flex; justify-content: space-between; align-items: center; text-transform: uppercase;
         }
 
-        /* RECIPE OVERVIEW STYLING */
-        .recipe-meta { font-size: 0.85rem; color: #ccc; margin-bottom: 15px; line-height: 1.6; }
-        .recipe-meta b { color: var(--dbz-orange); }
-        .scouter-alert {
-            background: rgba(255, 140, 0, 0.15); border-left: 4px solid var(--dbz-orange);
-            padding: 10px; font-size: 0.8rem; font-style: italic; margin-bottom: 20px;
-        }
-
-        .ingredient-grid { display: grid; grid-template-columns: 1fr; gap: 20px; margin-bottom: 25px; }
-        .ing-section h4 { font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 10px; text-transform: uppercase; }
-        .list-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed rgba(255,255,255,0.2); font-size: 0.85rem; }
+        /* TACTICAL RECIPE DATA */
+        .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; background: rgba(0,0,0,0.6); padding: 12px; border: 1px solid var(--dbz-orange); border-radius: 4px; }
+        .data-item { font-size: 0.8rem; }
+        .data-label { color: var(--dbz-orange); font-weight: bold; display: block; margin-bottom: 3px; font-size: 0.7rem; font-family: 'Orbitron', sans-serif; }
+        .hardware-list { grid-column: 1 / -1; color: #aaa; font-size: 0.8rem; margin-top: 5px; border-top: 1px dashed #444; padding-top: 8px; }
         
-        .combat-phase { margin-bottom: 25px; }
-        .phase-title {
-            font-family: 'Orbitron', sans-serif; color: var(--scouter-green); font-size: 1rem;
-            border-bottom: 2px solid var(--scouter-green); padding-bottom: 5px; margin-bottom: 15px; text-shadow: 0 0 5px var(--scouter-green);
-        }
-        .instruction-step { margin-bottom: 15px; line-height: 1.6; font-size: 0.9rem; padding-left: 15px; position: relative; }
+        .scouter-alert { background: rgba(255, 140, 0, 0.15); border-left: 4px solid var(--dbz-orange); padding: 12px; font-size: 0.85rem; line-height: 1.5; margin-bottom: 20px; }
+
+        /* INGREDIENTS */
+        .ingredient-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 20px; }
+        .ing-section h4 { font-family: 'Orbitron', sans-serif; font-size: 0.85rem; margin-bottom: 8px; }
+        .list-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dotted #444; font-size: 0.85rem; }
+
+        /* EXECUTION INSTRUCTIONS (TYPE-A) */
+        .combat-phase { margin-bottom: 25px; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 6px; border: 1px solid #333; }
+        .phase-title { font-family: 'Orbitron', sans-serif; color: var(--scouter-green); font-size: 1rem; border-bottom: 2px solid var(--scouter-green); padding-bottom: 5px; margin-bottom: 15px; }
+        .instruction-step { margin-bottom: 15px; line-height: 1.6; font-size: 0.9rem; padding-left: 15px; position: relative; color: #eee; }
         .instruction-step::before { content: '⚡'; position: absolute; left: -5px; top: 0; font-size: 0.8rem; }
-        .instruction-step b { color: var(--neon-pink); text-shadow: 0 0 3px var(--neon-pink); }
-        .kid-alert { background: rgba(57, 255, 20, 0.1); border-left: 3px solid var(--scouter-green); padding: 8px 12px; margin-top: 10px; font-size: 0.85rem; color: #fff; }
+        .instruction-step b { color: var(--neon-pink); font-weight: bold; }
+        .kid-alert { background: rgba(57, 255, 20, 0.1); border-left: 3px solid var(--scouter-green); padding: 10px; margin-top: 12px; font-size: 0.85rem; color: #fff; line-height: 1.5; }
 
-        /* MARKET CHECKBOXES */
-        .shop-item {
-            display: flex; align-items: center; padding: 14px;
-            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--moon-pink);
-            border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: 0.3s;
-        }
-        .shop-item.bought { border-color: var(--scouter-green); background: rgba(57, 255, 20, 0.1); opacity: 0.6; }
+        /* CHECKBOXES & BUTTONS */
+        .shop-item { display: flex; align-items: center; padding: 12px; background: #000; border: 1px solid var(--moon-pink); border-radius: 6px; margin-bottom: 8px; cursor: pointer; transition: 0.3s; }
+        .shop-item.bought { border-color: var(--scouter-green); background: rgba(57, 255, 20, 0.1); opacity: 0.5; }
         .shop-item.bought .item-name { text-decoration: line-through; color: var(--scouter-green); }
-
-        .checkbox {
-            width: 22px; height: 22px; border: 2px solid var(--moon-pink); border-radius: 4px;
-            margin-right: 15px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 5px var(--moon-pink);
-        }
-        .bought .checkbox { background: var(--scouter-green); border-color: var(--scouter-green); box-shadow: 0 0 8px var(--scouter-green); }
+        .checkbox { width: 20px; height: 20px; border: 2px solid var(--moon-pink); border-radius: 4px; margin-right: 15px; display: flex; align-items: center; justify-content: center; }
+        .bought .checkbox { background: var(--scouter-green); border-color: var(--scouter-green); }
         .bought .checkbox::after { content: '✓'; color: #000; font-weight: bold; }
 
-        /* BUTTONS */
         .magic-btn {
-            background: transparent; border: 2px solid var(--dbz-orange); color: var(--dbz-orange);
+            background: rgba(0,0,0,0.8); border: 2px solid var(--dbz-orange); color: var(--dbz-orange);
             padding: 12px; width: 100%; font-family: 'Orbitron', sans-serif; font-weight: bold;
-            font-size: 1rem; text-transform: uppercase; cursor: pointer; border-radius: 8px;
-            box-shadow: inset 0 0 10px rgba(255, 140, 0, 0.2), 0 0 10px rgba(255, 140, 0, 0.4); transition: 0.2s; margin-top: 10px;
+            font-size: 0.9rem; text-transform: uppercase; cursor: pointer; border-radius: 6px;
+            box-shadow: inset 0 0 10px rgba(255, 140, 0, 0.3); transition: 0.2s; margin-top: 10px;
         }
-        .magic-btn:active { background: var(--dbz-orange); color: #000; box-shadow: 0 0 20px var(--dbz-orange); }
-        .magic-btn.pink { border-color: var(--neon-pink); color: var(--neon-pink); box-shadow: inset 0 0 10px rgba(255, 0, 127, 0.2), 0 0 10px rgba(255, 0, 127, 0.4); }
+        .magic-btn:active { background: var(--dbz-orange); color: #000; }
+        .magic-btn.pink { border-color: var(--neon-pink); color: var(--neon-pink); }
         .magic-btn.pink:active { background: var(--neon-pink); color: #fff; }
 
         /* SCANNER CUSTOMIZATION */
-        #reader { border: 2px solid var(--dbz-orange); border-radius: 10px; overflow: hidden; background: #000; }
-        #reader button { background: var(--neon-pink); color: white; border: none; padding: 10px; border-radius: 5px; font-family: 'Space Mono', monospace; font-weight: bold; cursor: pointer; margin: 5px; }
+        #reader { border: 2px solid var(--dbz-orange); border-radius: 8px; overflow: hidden; background: #000; }
+        #reader button { background: var(--neon-pink); color: white; border: none; padding: 8px; border-radius: 4px; font-family: 'Space Mono', monospace; font-weight: bold; cursor: pointer; margin: 5px; }
 
         /* NAV */
         nav {
             position: fixed; bottom: 0; left: 0; width: 100%;
-            background: rgba(10, 0, 26, 0.95); border-top: 2px solid var(--moon-pink);
-            display: flex; justify-content: space-around; padding: 12px 0 25px 0;
-            z-index: 100; backdrop-filter: blur(10px); box-shadow: 0 -5px 15px rgba(255, 51, 153, 0.3);
+            background: #000; border-top: 2px solid var(--moon-pink);
+            display: flex; justify-content: space-around; padding: 10px 0 20px 0; z-index: 100;
         }
-        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: #666; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 0.7rem; color: #666; cursor: pointer; text-transform: uppercase; font-family: 'Orbitron', sans-serif; }
         .nav-item.active { color: var(--neon-pink); text-shadow: 0 0 5px var(--neon-pink); }
-        .nav-icon { font-size: 1.5rem; margin-bottom: 5px; opacity: 0.5; }
-        .nav-item.active .nav-icon { opacity: 1; filter: drop-shadow(0 0 5px var(--neon-pink)); }
+        .nav-icon { font-size: 1.4rem; margin-bottom: 4px; filter: grayscale(100%); }
+        .nav-item.active .nav-icon { filter: grayscale(0%); }
 
         .hidden { display: none !important; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
     </style>
 </head>
 <body>
@@ -188,16 +144,19 @@
     </div>
 
     <div class="app-container">
-        <!-- TACTICAL MENU -->
         <div id="view-recipes" class="view-section">
-            <button class="magic-btn" onclick="generateRecipe()" style="margin-bottom: 20px;">☄️ REROLL MISSION MODULE</button>
+            <button class="magic-btn" onclick="generateRecipe()" style="margin-bottom: 15px;">☄️ REROLL MISSION MODULE ☄️</button>
             <div class="card">
-                <div class="card-title"><span id="r-name">Loading Module...</span></div>
-                <div class="recipe-meta">
-                    <div><b>YIELD:</b> <span id="r-yield"></span></div>
-                    <div><b>TIME:</b> <span id="r-time"></span></div>
+                <div class="card-title"><span id="r-name" style="color:var(--ssj-gold); font-size: 1.3rem;">Loading Module...</span></div>
+                
+                <div class="data-grid">
+                    <div class="data-item"><span class="data-label">🍽️ YIELD</span><span id="r-yield"></span></div>
+                    <div class="data-item"><span class="data-label">⏳ TIME</span><span id="r-time"></span></div>
+                    <div class="hardware-list"><span class="data-label">🛠️ HARDWARE REQUIRED</span><span id="r-hardware"></span></div>
                 </div>
+
                 <div id="r-scouter-alert" class="scouter-alert hidden"></div>
+
                 <div class="ingredient-grid">
                     <div class="ing-section">
                         <h4 style="color: var(--scouter-green);">🎒 VERIFIED IN VAULT</h4>
@@ -206,17 +165,17 @@
                     <div class="ing-section">
                         <h4 style="color: var(--dbz-orange);">🛒 TARGET ACQUISITION</h4>
                         <ul id="r-buy" style="list-style: none;"></ul>
-                        <button class="magic-btn pink" style="padding: 8px; font-size: 0.8rem; margin-top: 15px;" onclick="sendToMarket()">➕ PUSH TO SCOUTER</button>
+                        <button class="magic-btn pink" style="padding: 10px; font-size: 0.8rem; margin-top: 10px;" onclick="sendToMarket()">➕ PUSH TO SCOUTER LIST</button>
                     </div>
                 </div>
             </div>
+
             <div class="card" id="recipe-instructions-card">
                 <div class="card-title">📜 COMBAT LOG (EXECUTION)</div>
                 <div id="r-combat-phases"></div>
             </div>
         </div>
 
-        <!-- MARKET SCOUTER -->
         <div id="view-market" class="view-section hidden">
             <div class="card">
                 <div class="card-title">🛒 TARGET LIST</div>
@@ -225,58 +184,49 @@
             </div>
         </div>
 
-        <!-- OPTICAL SCANNER (NEW!) -->
         <div id="view-scanner" class="view-section hidden">
             <div class="card">
                 <div class="card-title">👁️ OPTICAL LENS</div>
                 <p style="font-size: 0.75rem; color:#aaa; margin-bottom: 15px;">Scan physical barcodes to automatically ping the Global Food Database and beam items to the Vault.</p>
                 <div id="reader"></div>
-                <div id="scan-result" style="margin-top: 20px; font-family: 'Orbitron'; font-size: 1rem; color: var(--scouter-green); text-align: center; text-shadow: 0 0 5px var(--scouter-green);">
-                    AWAITING TARGET...
-                </div>
+                <div id="scan-result" style="margin-top: 20px; font-family: 'Orbitron'; font-size: 1rem; color: var(--scouter-green); text-align: center;">AWAITING TARGET...</div>
             </div>
         </div>
 
-        <!-- DATA VAULT -->
         <div id="view-vault" class="view-section hidden">
             <div class="card">
                 <div class="card-title">
                     <span>🐉 DATA VAULT</span>
-                    <span style="font-size: 0.9rem; cursor:pointer; color:var(--scouter-green);" onclick="fetchInventory()">🔄 MANUAL SYNC</span>
+                    <span style="font-size: 0.9rem; cursor:pointer; color:var(--scouter-green);" onclick="fetchInventory()">🔄 SYNC</span>
                 </div>
                 <ul id="vault-list" style="list-style: none;"></ul>
             </div>
         </div>
     </div>
 
-    <!-- NAVIGATION (NOW 4 TABS) -->
     <nav>
         <div class="nav-item active" onclick="switchTab('recipes', this)">
-            <span class="nav-icon">🔮</span><span>Tactics</span>
+            <span class="nav-icon">⚔️</span><span>TACTICS</span>
         </div>
         <div class="nav-item" onclick="switchTab('market', this)">
-            <span class="nav-icon">🎯</span><span>List</span>
+            <span class="nav-icon">🎯</span><span>SCOUTER</span>
         </div>
         <div class="nav-item" onclick="switchTab('scanner', this)">
-            <span class="nav-icon">👁️</span><span>Lens</span>
+            <span class="nav-icon">👁️</span><span>LENS</span>
         </div>
         <div class="nav-item" onclick="switchTab('vault', this)">
-            <span class="nav-icon">📊</span><span>Vault</span>
+            <span class="nav-icon">💾</span><span>VAULT</span>
         </div>
     </nav>
 
     <script>
         // --- MATRIX RAIN ---
-        const canvas = document.getElementById('matrix-canvas');
-        const ctx = canvas.getContext('2d');
+        const canvas = document.getElementById('matrix-canvas'); const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        const chars = '🌙✨🌸⚡️🐉💖⭐🪐☄️'.split('');
-        const fontSize = 16; const columns = canvas.width / fontSize;
+        const chars = '🌙✨🌸⚡️🐉💖⭐🪐☄️'.split(''); const fontSize = 16; const columns = canvas.width / fontSize;
         const drops = Array(Math.floor(columns)).fill(1);
-        
         function drawMatrix() {
-            ctx.fillStyle = 'rgba(10, 0, 26, 0.05)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.font = fontSize + 'px monospace';
+            ctx.fillStyle = 'rgba(10, 0, 26, 0.08)'; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.font = fontSize + 'px monospace';
             for(let i = 0; i < drops.length; i++) {
                 const text = chars[Math.floor(Math.random() * chars.length)];
                 ctx.fillStyle = ['#ff007f', '#ff8c00', '#39ff14'][Math.floor(Math.random() * 3)];
@@ -311,42 +261,75 @@
         function playRetroBeep() {
             try {
                 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                for(let i=0; i<3; i++) {
+                for(let i=0; i<4; i++) {
                     const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
-                    osc.type = 'square'; osc.frequency.setValueAtTime(800, audioCtx.currentTime + (i * 0.3));
-                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime + (i * 0.3));
+                    osc.type = 'square'; osc.frequency.setValueAtTime(880, audioCtx.currentTime + (i * 0.2));
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime + (i * 0.2));
                     osc.connect(gain); gain.connect(audioCtx.destination);
-                    osc.start(audioCtx.currentTime + (i * 0.3)); osc.stop(audioCtx.currentTime + (i * 0.3) + 0.15);
+                    osc.start(audioCtx.currentTime + (i * 0.2)); osc.stop(audioCtx.currentTime + (i * 0.2) + 0.1);
                 }
             } catch(e) {}
         }
 
-        // --- CORE LOGIC ---
+        // --- CORE LOGIC & MASTER RECIPE DATABASE ---
         const SHEET_API_URL = "https://script.google.com/macros/s/AKfycby_EiCidBees9IA-zs7_OSxppAnD0sB2U78Qvd1-kQy7JB5sSs9l-P-FKODmQLv2c-j/exec"; 
         let inventory = []; let marketList = []; let currentRecipeNeeds = [];
 
-        // HYPER-DETAILED RECIPE DATABASE
+        // TYPE-A HYPER-DETAILED DATABASE
         const recipeDB = [
             {
                 name: "NY STRIP TACO BOWLS",
-                yield: "2 adults and 2 kids", time: "About 35 mins",
-                alert: "You only need ONE taco-seasoning packet.",
-                have: [ { item: "White Rice", qty: "1.5 cups" }, { item: "Black Beans (Canned)", qty: "15 oz" } ],
-                buy: [ "NY Strip Steak (1.25 lbs)", "Taco Seasoning (1 Pkt)", "Limes (2)", "Steamable Corn (1 bag)", "Cucumber", "Avocado", "Taco Cheese" ],
+                yield: "2 adults and 2 kids", time: "35 mins",
+                hardware: "Pressure Cooker, Small Saucepan, Large Skillet, Cutting Board, Knife",
+                alert: "You only need ONE taco-seasoning packet. Keep the second packet in reserve rather than seasoning everything into oblivion.",
+                have: [ { item: "White Rice", qty: "1.5 cups" }, { item: "Black Beans", qty: "1 (15oz) Can" }, { item: "Olive Oil / Butter", qty: "Staples" } ],
+                buy: [ "NY Strip Steak (1.25 - 1.5 lbs)", "Taco Seasoning (1 Pkt)", "Limes (2)", "Steamable Corn (1 bag)", "Cucumber (1)", "Avocado (1)", "Taco Cheese" ],
                 phases: [
-                    { title: "1. PRESSURE-COOKER RICE", steps: ["Rinse <b>1.5 cups rice</b> under cold water. <button class='inline-timer-btn' onclick='startTimer(1)'>⏱ 1 MIN</button>", "Cook on <b>High Pressure for 4 mins</b>. <button class='inline-timer-btn' onclick='startTimer(4)'>⏱ 4 MIN</button>"] },
-                    { title: "2. STEAK COMBAT", steps: ["Sear steak in <b>1 tbsp olive oil</b>. <button class='inline-timer-btn' onclick='startTimer(2)'>⏱ 2 MIN</button>", "Flip and cook. <button class='inline-timer-btn' onclick='startTimer(1.5)'>⏱ 1.5 MIN</button>"] }
+                    { title: "1. RICE CALIBRATION", steps: ["Put <b>1.5 cups rice</b> in strainer and rinse under cold water until mostly clear.", "Add to pressure-cooker: rinsed rice, <b>1.5 cups water</b>, <b>1 tbsp butter</b>, and <b>1/2 tsp salt</b>.", "Set valve to Sealing. Cook on <b>High Pressure for 4 mins</b>. <button class='inline-timer-btn' onclick='startTimer(4)'>⏱ 4 MIN</button>", "When finished, allow 10 minutes natural release. <button class='inline-timer-btn' onclick='startTimer(10)'>⏱ 10 MIN</button>"], kidAlert: "Do not use the stovetop 2-cup water ratio in the pressure cooker. It will yield rice pudding." },
+                    { title: "2. PREP PHASE", steps: ["Trim thick hard exterior fat from steak. Cut against grain into 1/2-inch cubes.", "Pat steak cubes COMPLETELY DRY with paper towels.", "<b>TOPPING:</b> In a small bowl combine: <b>1 diced cucumber</b>, <b>2 tbsp diced onion</b>, <b>Juice of 1/2 lime</b>, and a small pinch of salt. Refrigerate."], kidAlert: "Dry steak browns. Wet steak sits in its own sadness and steams. For milder kid portions, do not heavily season the raw steak yet." },
+                    { title: "3. BEAN INTEGRATION", steps: ["Heat <b>1 tsp olive oil</b> in small saucepan over med heat. Add <b>1/4 cup diced onion</b>; cook. <button class='inline-timer-btn' onclick='startTimer(3)'>⏱ 3 MIN</button>", "Add drained/rinsed beans, <b>1/3 cup water</b>, <b>1/2 tsp cumin</b>, and <b>1/2 tsp taco seasoning</b>.", "Simmer uncovered. Mash a few spoonfuls against the pot to thicken naturally. <button class='inline-timer-btn' onclick='startTimer(8)'>⏱ 8 MIN</button>", "Turn off heat and stir in <b>Juice of 1/2 lime</b>."] },
+                    { title: "4. CORN & STEAK COMBAT", steps: ["<b>CORN:</b> Steam corn per package. Transfer to bowl and stir in <b>1 tbsp butter</b>, <b>1/4 tsp taco seasoning</b>, and <b>Juice of 1/2 lime</b>.", "<b>STEAK:</b> Heat skillet over med-high for 2 mins. Add <b>1 tbsp olive oil</b>. Place steak in single layer.", "Leave untouched for 2 mins. <button class='inline-timer-btn' onclick='startTimer(2)'>⏱ 2 MIN</button> Flip/stir and cook 1-2 mins more. <button class='inline-timer-btn' onclick='startTimer(1.5)'>⏱ 1.5 MIN</button>"], kidAlert: "FOR THE KIDS: Remove their desired amount of plain corn and plain cooked steak NOW before adding the adult seasoning!" },
+                    { title: "5. FINAL FUSION", steps: ["<b>ADULT STEAK:</b> Reduce heat. Add <b>1.5 tbsp taco seasoning</b>, <b>3 tbsp water</b>, and <b>Juice of 1/2 lime</b>. Toss until liquid evaporates. <button class='inline-timer-btn' onclick='startTimer(1)'>⏱ 1 MIN</button>", "<b>KID PLATING:</b> Keep separated: rice, beans, plain steak, plain corn, cucumber, avocado, cheese so Foods Do Not Touch.", "<b>ADULT PLATING:</b> Layer rice, beans, lime-butter corn, seasoned steak, cheese, cucumber topping, avocado. Squeeze extra lime."] }
                 ]
             },
             {
                 name: "COSMIC PENNE POWER-UP",
-                yield: "4-6 Servings", time: "Prep: 10m | Cook: 15m",
-                alert: "Micro-grate the zucchini for the invisible toddler payload.",
-                have: [ { item: "Ground Beef 80/20", qty: "1 lb" }, { item: "Penne Rigate", qty: "16 oz" }, { item: "Tomato Basil Sauce", qty: "1 Jar" } ],
+                yield: "4-6 Servings", time: "25 mins",
+                hardware: "Large Pasta Pot, Large Skillet (12-inch), Box Grater, Colander",
+                alert: "Micro-grating the zucchini completely dissolves it into the tomato sauce, creating an invisible nutritional payload for the toddlers.",
+                have: [ { item: "Ground Beef 80/20", qty: "1 lb" }, { item: "Penne Rigate", qty: "16 oz box" }, { item: "Tomato Basil Sauce", qty: "1 Jar (23oz)" }, { item: "Garlic / Onion Pwdr", qty: "Spices" } ],
                 buy: [ "Fresh Zucchini (1)", "Garlic Bulb", "Mozzarella Pearls (8oz)" ],
                 phases: [
-                    { title: "1. PREP & BOIL", steps: ["Bring water to boil. Add <b>16oz Penne</b>. <button class='inline-timer-btn' onclick='startTimer(11)'>⏱ 11 MIN</button>"] },
-                    { title: "2. SAUCE INTEGRATION", steps: ["Simmer meat sauce gently. <button class='inline-timer-btn' onclick='startTimer(10)'>⏱ 10 MIN</button>"] }
+                    { title: "1. COLD PREP (MISE EN PLACE)", steps: ["Gather all ingredients. Finely grate <b>1 medium zucchini</b> using the SMALLEST holes on the box grater (this ensures toddlers won't detect texture).", "Peel and mince <b>2 cloves of fresh garlic</b>."] },
+                    { title: "2. BOIL & SEAR", steps: ["Bring large pot of heavily salted water to boil. Add <b>16oz Penne</b>. <button class='inline-timer-btn' onclick='startTimer(11)'>⏱ 11 MIN</button>", "In skillet over med-high heat, add <b>1 lb Beef</b>, minced garlic, <b>1 tsp salt</b>, <b>1 tsp onion powder</b>.", "Break apart and brown beef until no pink remains. <button class='inline-timer-btn' onclick='startTimer(6)'>⏱ 6 MIN</button> Drain excess grease."] },
+                    { title: "3. SAUCE INTEGRATION", steps: ["Reduce skillet heat to med-low. Pour in <b>1 jar Tomato Basil Sauce</b> and the grated zucchini.", "Stir to combine and let the meat sauce simmer gently while pasta finishes. <button class='inline-timer-btn' onclick='startTimer(5)'>⏱ 5 MIN</button>"] },
+                    { title: "4. ASSEMBLY & PLATING", steps: ["Drain pasta and fold directly into the bubbling meat sauce.", "Turn off heat. Scatter <b>8oz Mozzarella Pearls</b> across top. Cover with lid until gooey. <button class='inline-timer-btn' onclick='startTimer(2)'>⏱ 2 MIN</button>"], kidAlert: "Optional: Sprinkle hemp hearts ('Fairy Dust') onto the toddler plates for undetectable Omega-3s and protein!" }
+                ]
+            },
+            {
+                name: "CAPSULE CORP CHICKEN BOWL",
+                yield: "4 Servings", time: "30 mins",
+                hardware: "Rice Cooker, Large Skillet, Small Mixing Bowl, Cutting Board, Knife",
+                alert: "Do not put the teriyaki sauce in the pan while the chicken is raw. It contains sugar and will burn before the chicken cooks.",
+                have: [ { item: "White Rice", qty: "1.5 cups" }, { item: "Soy Sauce", qty: "1/4 cup" }, { item: "Olive Oil & Spices", qty: "Staples" } ],
+                buy: [ "Chicken Breast (1.25 lbs)", "Broccoli Florets (1 bag frozen)", "Brown Sugar", "Sesame Oil" ],
+                phases: [
+                    { title: "1. RICE & SAUCE PREP", steps: ["Rinse <b>1.5 cups rice</b>. Cook in rice cooker with 1.5 cups water.", "<b>TERIYAKI KI-BLAST:</b> In small bowl, whisk: <b>1/4 cup soy sauce</b>, <b>3 tbsp brown sugar</b>, <b>1 tbsp sesame oil</b>, <b>1/2 tsp garlic powder</b>.", "<b>PROTEIN:</b> Cut <b>1.25 lbs chicken</b> into bite-sized 1-inch cubes. Pat dry with paper towels."] },
+                    { title: "2. COMBAT (COOKING)", steps: ["Steam <b>1 bag frozen broccoli</b> in microwave per package instructions.", "Heat skillet over med-high with <b>1 tbsp olive oil</b>. Add chicken cubes in a single layer. Do not crowd.", "Let sear untouched. <button class='inline-timer-btn' onclick='startTimer(3)'>⏱ 3 MIN</button> Flip and cook until internal temp hits 165F. <button class='inline-timer-btn' onclick='startTimer(4)'>⏱ 4 MIN</button>"] },
+                    { title: "3. GLAZE & SERVE", steps: ["Reduce heat to low. Pour the Teriyaki mixture over the cooked chicken.", "Let the sauce bubble and thicken around the chicken. <button class='inline-timer-btn' onclick='startTimer(2)'>⏱ 2 MIN</button>", "Layer bowls with rice, broccoli, and glazed chicken. Spoon extra pan sauce over top."] }
+                ]
+            },
+            {
+                name: "SAILOR GUARDIAN SALMON",
+                yield: "2 Adults, 2 Kids", time: "20 mins",
+                hardware: "Large Non-Stick Skillet, Baking Sheet (for Asparagus), Fish Spatula",
+                alert: "Fish cooks incredibly fast. Do not walk away from the stove during Phase 2.",
+                have: [ { item: "Olive Oil & Butter", qty: "Staples" }, { item: "Garlic Powder / Salt", qty: "Staples" } ],
+                buy: [ "Salmon Fillets (4 portions)", "Fresh Asparagus (1 bunch)", "Fresh Lemons (2)" ],
+                phases: [
+                    { title: "1. PREP & ROAST", steps: ["Preheat oven to 400F.", "Snap woody ends off <b>1 bunch Asparagus</b>. Toss on baking sheet with <b>1 tbsp olive oil</b>, salt, and pepper.", "Roast asparagus in oven until tender. <button class='inline-timer-btn' onclick='startTimer(12)'>⏱ 12 MIN</button>", "Pat <b>4 Salmon Fillets</b> completely dry. Season flesh side with salt and garlic powder."] },
+                    { title: "2. PAN SEAR", steps: ["Heat skillet over med-high. Add <b>1 tbsp olive oil</b>. When oil shimmers, place salmon SKIN SIDE UP (flesh side down).", "Press gently with spatula so it lays flat. Let sear undisturbed. <button class='inline-timer-btn' onclick='startTimer(4)'>⏱ 4 MIN</button>", "Carefully flip salmon (skin side down now). Cook until opaque and flaky. <button class='inline-timer-btn' onclick='startTimer(3)'>⏱ 3 MIN</button>"] },
+                    { title: "3. BUTTER BASTE", steps: ["In the last minute of cooking, drop <b>2 tbsp butter</b> and a squeeze of <b>1/2 lemon</b> into the pan.", "Spoon the melting lemon-butter continuously over the top of the salmon fillets.", "Remove from heat immediately to prevent drying out. Serve alongside roasted asparagus."], kidAlert: "Kids often prefer their salmon flaked apart and mixed with rice or plain pasta rather than eating a whole fillet." }
                 ]
             }
         ];
@@ -354,9 +337,8 @@
         async function fetchInventory() {
             setStatus("SCANNING DATABANKS...", true);
             try {
-                if(!SHEET_API_URL.includes("https://script.google.com/macros/s/AKfycby_EiCidBees9IA-zs7_OSxppAnD0sB2U78Qvd1-kQy7JB5sSs9l-P-FKODmQLv2c-j/exec")) {
-                    const res = await fetch(SHEET_API_URL); inventory = await res.json();
-                } else inventory = [ {"Product Name": "Ground Beef 80/20", "Quantity": 5}, {"Product Name": "Penne Rigate", "Quantity": 1} ];
+                if(!SHEET_API_URL.includes("https://script.google.com/macros/s/AKfycby_EiCidBees9IA-zs7_OSxppAnD0sB2U78Qvd1-kQy7JB5sSs9l-P-FKODmQLv2c-j/exec")) { const res = await fetch(SHEET_API_URL); inventory = await res.json(); } 
+                else { inventory = [ {"Product Name": "Ground Beef 80/20", "Quantity": 5}, {"Product Name": "White Rice", "Quantity": 1}, {"Product Name": "Penne Rigate", "Quantity": 1} ]; }
                 renderVault();
                 if(document.getElementById('r-name').innerText === "Loading Module...") generateRecipe(); 
                 setStatus("SYSTEM ONLINE • KI STABLE", false);
@@ -380,6 +362,7 @@
             document.getElementById('r-name').innerText = "✨ " + recipe.name;
             document.getElementById('r-yield').innerText = recipe.yield;
             document.getElementById('r-time').innerText = recipe.time;
+            document.getElementById('r-hardware').innerText = recipe.hardware;
             
             const alertBox = document.getElementById('r-scouter-alert');
             if(recipe.alert) { alertBox.classList.remove('hidden'); alertBox.innerHTML = `⚠️ <b>SCOUTER INTEL:</b> ${recipe.alert}`; } else alertBox.classList.add('hidden');
@@ -389,7 +372,8 @@
             document.getElementById('r-buy').innerHTML = recipe.buy.map(i => `<li class="list-item"><span style="color:var(--neon-pink);">⚠️ ${i}</span></li>`).join('');
 
             document.getElementById('r-combat-phases').innerHTML = recipe.phases.map(phase => {
-                return `<div class="combat-phase"><div class="phase-title">${phase.title}</div>${phase.steps.map(step => `<div class="instruction-step">${step}</div>`).join('')}</div>`;
+                let kidHtml = phase.kidAlert ? `<div class="kid-alert">🛡️ <b>TACTICAL OVERRIDE:</b> ${phase.kidAlert}</div>` : '';
+                return `<div class="combat-phase"><div class="phase-title">${phase.title}</div>${phase.steps.map(step => `<div class="instruction-step">${step}</div>`).join('')}${kidHtml}</div>`;
             }).join('');
         }
 
@@ -418,69 +402,38 @@
             });
         }
 
-        // --- OPTICAL SCANNER LOGIC ---
+        // --- OPTICAL SCANNER ---
         let html5QrcodeScanner = null;
-        
         function initScanner() {
             if(!html5QrcodeScanner) {
                 html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: {width: 250, height: 200} }, false);
-                html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+                html5QrcodeScanner.render(onScanSuccess, () => {});
             }
         }
-
         async function onScanSuccess(decodedText) {
-            html5QrcodeScanner.pause();
-            playRetroBeep();
-            const resEl = document.getElementById('scan-result');
-            resEl.innerHTML = "PINGING GLOBAL DB... ⏳";
-            resEl.style.color = "var(--dbz-orange)";
-            
+            html5QrcodeScanner.pause(); playRetroBeep();
+            const resEl = document.getElementById('scan-result'); resEl.innerHTML = "PINGING GLOBAL DB... ⏳"; resEl.style.color = "var(--dbz-orange)";
             try {
-                // Ping Open Food Facts API
                 let response = await fetch(`https://world.openfoodfacts.org/api/v0/product/${decodedText}.json`);
                 let data = await response.json();
-                
-                let productName = "";
-                if(data.status === 1 && data.product.product_name) {
-                    productName = data.product.product_name;
-                } else {
-                    productName = prompt("TARGET UNKNOWN TO MAINFRAME! Enter item name manually:");
-                }
-                
-                if(productName) {
-                    resEl.innerHTML = `TARGET ACQUIRED:<br><span style="color:var(--scouter-green); font-size:1.2rem;">${productName}</span>`;
-                    resEl.style.color = "var(--scouter-green)";
-                    updateSheetQuantity(productName, 1);
-                    alert(`⚡ ${productName} beamed to the Vault!`);
-                } else {
-                    resEl.innerHTML = "SCAN ABORTED.";
-                    resEl.style.color = "var(--neon-pink)";
-                }
+                let productName = (data.status === 1 && data.product.product_name) ? data.product.product_name : prompt("TARGET UNKNOWN. Enter item name manually:");
+                if(productName) { resEl.innerHTML = `TARGET ACQUIRED:<br><span style="color:var(--scouter-green); font-size:1.2rem;">${productName}</span>`; resEl.style.color = "var(--scouter-green)"; updateSheetQuantity(productName, 1); alert(`⚡ ${productName} beamed to the Vault!`); }
+                else { resEl.innerHTML = "SCAN ABORTED."; resEl.style.color = "var(--neon-pink)"; }
             } catch(e) {
                 let pName = prompt("OFFLINE MODE. Enter item name manually:");
                 if(pName) { updateSheetQuantity(pName, 1); resEl.innerHTML = `TARGET ACQUIRED: ${pName}`; }
             }
-            
             setTimeout(() => { resEl.innerHTML = "AWAITING TARGET..."; html5QrcodeScanner.resume(); }, 3000);
         }
 
-        function onScanFailure(error) { /* Handle silently to avoid console spam */ }
-
-        // --- TABS & NAVIGATION ---
+        // --- NAVIGATION ---
         function switchTab(view, el) {
             document.querySelectorAll('.view-section').forEach(e => e.classList.add('hidden'));
             document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active'));
             document.getElementById('view-' + view).classList.remove('hidden'); el.classList.add('active');
-            
             if(view === 'market') renderMarket();
-            
-            // Scanner Management
-            if(view === 'scanner') {
-                initScanner();
-            } else {
-                // Optional: Clear/pause scanner to save battery when not on tab
-                if(html5QrcodeScanner && html5QrcodeScanner.getState() === 2) html5QrcodeScanner.pause();
-            }
+            if(view === 'scanner') initScanner();
+            else if(html5QrcodeScanner && html5QrcodeScanner.getState() === 2) html5QrcodeScanner.pause();
         }
 
         fetchInventory(); renderMarket();
