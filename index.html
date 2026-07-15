@@ -8,14 +8,14 @@
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
 
         :root {
-            --moon-pink: #ff3399;
+            --moon-pink: #ff66b3;
             --neon-pink: #ff007f;
             --dbz-orange: #ff8c00;
             --ssj-gold: #ffd700;
             --scouter-green: #39ff14;
             --cosmic-dark: #070012;
             --rpg-blue: #000080;
-            --glass: rgba(15, 5, 30, 0.85);
+            --glass: rgba(10, 10, 35, 0.85);
             --retro-border: 4px solid #fff;
             --text-glow: 0 0 5px var(--moon-pink), 0 0 10px var(--neon-pink);
         }
@@ -34,9 +34,9 @@
         /* SAILOR MOON MATRIX CANVAS */
         #matrix-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; opacity: 0.5; }
 
-        /* HEADER */
+        /* HEADER - 90s Anime Scouter Style */
         header {
-            background: linear-gradient(90deg, rgba(255,51,153,0.8), rgba(74,14,78,0.8));
+            background: linear-gradient(90deg, var(--neon-pink), var(--rpg-blue));
             text-align: center; padding: 20px; border-bottom: 3px solid var(--dbz-orange);
             box-shadow: 0 0 20px var(--dbz-orange); position: sticky; top: 0; z-index: 10;
             backdrop-filter: blur(5px);
@@ -83,15 +83,17 @@
         .instruction-step b { color: var(--ssj-gold); text-shadow: 0 0 2px var(--ssj-gold); }
         .kid-alert { background: rgba(255, 51, 153, 0.15); border-left: 3px solid var(--moon-pink); padding: 10px; margin-top: 10px; font-size: 0.85rem; color: #fff; line-height: 1.5; }
 
-        /* LISTS */
+        /* LISTS & WARNINGS */
         .list-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; border-bottom: 1px dashed rgba(255,255,255,0.2); font-size: 0.85rem; }
         .power-level { font-family: 'Orbitron', sans-serif; color: var(--scouter-green); text-shadow: 0 0 5px var(--scouter-green); font-weight: bold; }
-        .critical-warning { color: #ff003c; text-shadow: 0 0 8px #ff003c; font-size: 0.75rem; animation: pulse 1.5s infinite; display: block; margin-top: 4px; }
-        .soon-warning { color: var(--dbz-orange); text-shadow: 0 0 8px var(--dbz-orange); font-size: 0.75rem; display: block; margin-top: 4px; }
+        
+        /* Adjusted Red Warning to Glowing Pink for Readability */
+        .critical-warning { color: var(--moon-pink); text-shadow: 0 0 8px var(--neon-pink); font-size: 0.75rem; animation: pulse 1.5s infinite; display: block; margin-top: 4px; font-weight: bold; }
+        .soon-warning { color: var(--dbz-orange); text-shadow: 0 0 8px var(--dbz-orange); font-size: 0.75rem; display: block; margin-top: 4px; font-weight: bold;}
 
         /* MARKET CHECKBOXES */
         .shop-item { display: flex; align-items: center; padding: 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--moon-pink); border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: 0.3s; }
-        .shop-item.bought { border-color: var(--scouter-green); background: rgba(57, 255, 20, 0.1); opacity: 0.6; }
+        .shop-item.bought { border-color: var(--scouter-green); background: rgba(57, 255, 20, 0.1); opacity: 0.5; }
         .shop-item.bought .item-name { text-decoration: line-through; color: var(--scouter-green); }
         .checkbox { width: 20px; height: 20px; border: 2px solid var(--moon-pink); border-radius: 4px; margin-right: 15px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 5px var(--moon-pink); }
         .bought .checkbox { background: var(--scouter-green); border-color: var(--scouter-green); box-shadow: 0 0 8px var(--scouter-green); }
@@ -260,7 +262,7 @@
                 ],
                 prep: [
                     "<b>MISE EN PLACE:</b> Open, drain, and rigorously rinse <b>1 can Black Beans</b>. Slice <b>1 cucumber</b> and dice <b>2 tbsp onion</b>. Mix in a small bowl with <b>Juice of 1/2 lime</b> and <b>1/4 tsp salt</b>. Refrigerate.",
-                    "<b>PROTEIN:</b> Trim hard fat from <b>1.25 lbs NY Strip Steak</b>. Cut against the grain into 1/2-inch cubes. Pat completely dry with paper towels (wet steak will steam, not sear)."
+                    "<b>PROTEIN PREP:</b> Trim hard fat from <b>1.25 lbs NY Strip Steak</b>. Cut against the grain into 1/2-inch cubes. Pat completely dry with paper towels (wet steak will steam, not sear)."
                 ],
                 cook: [
                     "<b>RICE:</b> Rinse <b>1.5 cups rice</b> in strainer. Add to pressure cooker with <b>1.5 cups water</b>, <b>1 tbsp butter</b>, and <b>1/2 tsp salt</b>. Cook on High Pressure for 4 mins. 10 min natural release.",
@@ -270,8 +272,8 @@
                 ],
                 serve: [
                     "<div class='kid-alert'><b>KID OVERRIDE:</b> Remove plain corn and plain steak for Klaus and Sophia BEFORE adding adult seasoning. Plate their components separately so Foods Do Not Touch.</div>",
-                    "<b>ADULT FUSION:</b> Reduce skillet heat to low. Add <b>1.5 tbsp taco seasoning</b>, <b>3 tbsp water</b>, and <b>Juice of 1/2 lime</b> to remaining steak. Toss 60 seconds until coated.",
-                    "<b>PLATING:</b> Layer bowls with rice, beans, lime-butter corn, seasoned steak, cheese, cucumber topping, and diced avocado."
+                    "<b>SAUCE BUILDING:</b> Reduce skillet heat to low. Add <b>1.5 tbsp taco seasoning</b>, <b>3 tbsp water</b>, and <b>Juice of 1/2 lime</b> to remaining adult steak. Toss 60 seconds until coated.",
+                    "<b>ASSEMBLY:</b> Layer bowls with rice, beans, lime-butter corn, seasoned steak, cheese, cucumber topping, and diced avocado."
                 ]
             },
             {
@@ -283,19 +285,19 @@
                     { name: "Onion Powder", qty: "1 tsp" }, { name: "Kosher Salt", qty: "1 tsp" }, { name: "Black Pepper", qty: "1/2 tsp" }
                 ],
                 prep: [
-                    "<b>STEALTH VEG:</b> Finely grate <b>1 medium zucchini</b> using the smallest holes on the box grater (this ensures toddlers won't detect texture). Squeeze out excess water.",
+                    "<b>STEALTH VEG:</b> Finely grate <b>1 medium zucchini</b> using the small holes on the box grater (this ensures toddlers won't detect texture). Squeeze out excess water.",
                     "<b>AROMATICS:</b> Peel and mince <b>2 cloves garlic</b>."
                 ],
                 cook: [
-                    "<b>PASTA:</b> Bring large pot of heavily salted water to boil. Add <b>16oz Penne</b>. Boil for exactly 11 mins.",
+                    "<b>BOIL:</b> Bring large pot of heavily salted water to boil. Add <b>16oz Penne</b>. Boil for exactly 11 mins.",
                     "<b>SEAR:</b> In skillet over medium-high heat, add <b>1 lb Ground Beef</b>, minced garlic, <b>1 tsp kosher salt</b>, <b>1 tsp onion powder</b>, and <b>1/2 tsp black pepper</b>. Break apart and brown until no pink remains (approx 6 mins). Drain excess grease.",
                     "<b>SAUCE:</b> Reduce heat to medium-low. Pour in <b>1 jar Tomato Basil Sauce</b> and grated zucchini. Stir to combine.",
                     "<b>SIMMER:</b> Let meat sauce simmer gently while pasta finishes boiling. Drain pasta well."
                 ],
                 serve: [
                     "<b>FUSION:</b> Fold drained pasta directly into the meat sauce skillet. Stir until fully coated.",
-                    "<b>MAGIC:</b> Turn off heat. Scatter <b>8oz Mozzarella Pearls</b> across the top. Cover with lid for 2 mins until gooey.",
-                    "<div class='kid-alert'><b>KID OVERRIDE:</b> Sprinkle hemp hearts ('Fairy Dust') onto toddler plates for hidden omega-3s!</div>"
+                    "<b>MELT:</b> Turn off heat. Scatter <b>8oz Mozzarella Pearls</b> across the top. Cover with lid for 2 mins until gooey.",
+                    "<div class='kid-alert'><b>KID OVERRIDE:</b> Serve immediately. Sprinkle hemp hearts ('Fairy Dust') onto toddler plates for hidden omega-3s!</div>"
                 ]
             },
             {
@@ -308,7 +310,7 @@
                 ],
                 prep: [
                     "<b>GRAIN:</b> Rinse <b>1.5 cups Rice</b> until water runs clear. Start rice cooker with 1.5 cups water.",
-                    "<b>TERIYAKI:</b> Whisk aggressively in a bowl: <b>1/4 cup soy sauce</b>, <b>3 tbsp brown sugar</b>, <b>1 tbsp sesame oil</b>, <b>1/2 tsp garlic powder</b>.",
+                    "<b>GLAZE MIX:</b> Whisk aggressively in a bowl: <b>1/4 cup soy sauce</b>, <b>3 tbsp brown sugar</b>, <b>1 tbsp sesame oil</b>, <b>1/2 tsp garlic powder</b>.",
                     "<b>PROTEIN:</b> Cut <b>1.25 lbs Chicken</b> into bite-sized 1-inch cubes. Pat dry with paper towels."
                 ],
                 cook: [
@@ -316,8 +318,8 @@
                     "<b>SEAR:</b> Heat skillet with <b>1 tbsp Olive Oil</b> over med-high. Sear chicken cubes in a single layer for 7 mins until cooked through to 165F. Do not crowd the pan."
                 ],
                 serve: [
-                    "<b>GLAZE:</b> Reduce heat to low. Pour Teriyaki mixture over chicken. Let bubble for 2 mins until thick and sticky.",
-                    "<b>BUILD:</b> Layer bowls with a bed of rice, broccoli, and the glazed chicken. Pour extra pan sauce over the top."
+                    "<b>THICKEN:</b> Reduce heat to low. Pour Teriyaki mixture over chicken. Let bubble for 2 mins until thick and sticky.",
+                    "<b>ASSEMBLY:</b> Layer bowls with a bed of rice, broccoli, and the glazed chicken. Pour extra pan sauce over the top."
                 ]
             },
             {
@@ -334,8 +336,8 @@
                     "<b>BEANS:</b> Drain and thoroughly rinse both cans of beans."
                 ],
                 cook: [
-                    "<b>SAUTÉ:</b> Heat <b>1 tbsp olive oil</b> in Dutch Oven over med heat. Add onion, carrot, celery. Cook 6 mins until soft.",
-                    "<b>SEAR:</b> Add <b>1 lb Ground Turkey</b>. Break apart and brown for 5 mins.",
+                    "<b>SWEAT VEG:</b> Heat <b>1 tbsp olive oil</b> in Dutch Oven over med heat. Add onion, carrot, celery. Cook 6 mins until soft.",
+                    "<b>BROWN:</b> Add <b>1 lb Ground Turkey</b>. Break apart and brown for 5 mins.",
                     "<b>SPICE BLOOM:</b> Stir in <b>2 tbsp Chili Powder</b>, <b>1 tbsp Cumin</b>, <b>1 tsp Garlic Powder</b>, and <b>1 tsp kosher salt</b>. Toast spices for 60 seconds until fragrant.",
                     "<b>SIMMER:</b> Pour in <b>28oz Crushed Tomatoes</b> and beans. Bring to boil, reduce to low, cover and simmer for 20 mins."
                 ],
@@ -352,14 +354,14 @@
                     { name: "Kosher Salt", qty: "1/2 tsp" }, { name: "Black Pepper", qty: "1/4 tsp" }
                 ],
                 prep: [
-                    "<b>OVEN:</b> Preheat oven to 400F. Line sheet pan entirely with aluminum foil (baked honey ruins bare metal).",
+                    "<b>OVEN CALIBRATION:</b> Preheat oven to 400F. Line sheet pan entirely with aluminum foil (baked honey ruins bare metal).",
                     "<b>VEG:</b> Cut <b>2 heads of broccoli</b> into florets. Toss on one side of pan with <b>1 tbsp olive oil</b>, <b>1/2 tsp salt</b>, and pepper.",
                     "<b>GLAZE:</b> In a bowl, mix: <b>3 tbsp Honey</b>, <b>2 tbsp Soy Sauce</b>, <b>1 tbsp Olive Oil</b>, and <b>3 minced garlic cloves</b>."
                 ],
                 cook: [
                     "<b>ROAST:</b> Place <b>Pork Tenderloin</b> on the empty side of the sheet pan. Brush heavily with the honey glaze, saving a little for basting.",
                     "<b>BAKE:</b> Roast entire pan in oven for 20 mins. Baste pork once halfway through.",
-                    "<b>TEMP:</b> Check pork internal temp (must hit 145F). Remove from oven."
+                    "<b>TEMP CHECK:</b> Check pork internal temp (must hit 145F). Remove from oven."
                 ],
                 serve: [
                     "<b>REST:</b> Let pork rest 5-7 mins on a cutting board before slicing.",
@@ -377,12 +379,12 @@
                     "<b>MISE EN PLACE:</b> Gather ingredients. (No chopping required)."
                 ],
                 cook: [
-                    "<b>LIQUIDS:</b> Add to blender first: <b>1 cup Milk</b> and <b>1 cup Greek Yogurt</b> (liquids first protects the blade).",
+                    "<b>LIQUIDS FIRST:</b> Add to blender first: <b>1 cup Milk</b> and <b>1 cup Greek Yogurt</b> (liquids first protects the blade).",
                     "<b>GREENS:</b> Add <b>2 big handfuls Baby Spinach</b>. Blend on high until completely bright green and smooth.",
                     "<b>THICKEN:</b> Add <b>2 Cups Frozen Mango</b> and <b>2 Bananas</b>. Blend until thick like soft-serve. Add a splash of milk if stuck."
                 ],
                 serve: [
-                    "<b>PLATE:</b> Pour into bowls immediately.",
+                    "<b>PLATE:</b> Pour into bowls immediately to preserve temperature.",
                     "<div class='kid-alert'><b>KID OVERRIDE:</b> Top Klaus and Sophia's bowls with a handful of dry Cheerios or granola for crunch!</div>"
                 ]
             },
@@ -421,11 +423,11 @@
                 ],
                 cook: [
                     "<b>BLENDER:</b> Combine steamed squash, <b>1 cup Whole Milk</b>, <b>1/2 tsp salt</b>, <b>1/4 tsp mustard powder</b>, and <b>1/2 tsp garlic powder</b>. Blend on high until completely smooth.",
-                    "<b>PASTA:</b> Boil large pot of salted water. Add <b>16oz Pasta</b>. Cook until al dente (approx 8 mins).",
-                    "<b>FUSION:</b> Drain pasta. In empty warm pot over low heat, melt <b>2 tbsp butter</b>. Pour in blended squash mixture."
+                    "<b>BOIL:</b> Boil large pot of salted water. Add <b>16oz Pasta</b>. Cook until al dente (approx 8 mins).",
+                    "<b>WARM BASE:</b> Drain pasta. In empty warm pot over low heat, melt <b>2 tbsp butter</b>. Pour in blended squash mixture."
                 ],
                 serve: [
-                    "<b>CHEESE:</b> Whisk grated Cheddar and <b>1/4 cup Parmesan</b> into squash mixture until melted and glossy.",
+                    "<b>CHEESE INTEGRATION:</b> Whisk grated Cheddar and <b>1/4 cup Parmesan</b> into squash mixture until melted and glossy.",
                     "<div class='kid-alert'><b>KID OVERRIDE:</b> Fold in cooked pasta until coated. Do not reveal the squash secret to the kids until they ask for seconds!</div>"
                 ]
             },
@@ -440,7 +442,7 @@
                     "<b>MISE EN PLACE:</b> Gather all ingredients. (No chopping required)."
                 ],
                 cook: [
-                    "<b>CAULDRON:</b> Boil <b>16oz Pasta</b> in salted water. Drain when done.",
+                    "<b>BOIL:</b> Boil <b>16oz Pasta</b> in salted water. Drain when done.",
                     "<b>SEAR:</b> Brown <b>1 lb Ground Turkey</b> in skillet with <b>1 tbsp olive oil</b> and <b>1 tsp salt</b>.",
                     "<b>POTION:</b> In blender, combine <b>1 Jar Marinara</b>, <b>15oz Ricotta</b>, and <b>1 handful Spinach</b>. Blend until smooth and pink.",
                     "<b>FUSION:</b> Pour pink sauce into turkey skillet. Simmer 3 mins."
@@ -459,9 +461,9 @@
                     { name: "Eggs", qty: "2 whole" }, { name: "Vanilla Extract", qty: "1 tsp" }, { name: "Fresh Blueberries", qty: "1 Pint" }
                 ],
                 prep: [
-                    "<b>DRY:</b> Whisk <b>1.5 cups Flour</b>, <b>2 tsp Baking Powder</b>, <b>2 tbsp Sugar</b>, <b>1/2 tsp salt</b>.",
-                    "<b>WET:</b> Whisk <b>1 cup Greek Yogurt</b>, <b>1/2 cup Milk</b>, <b>2 Eggs</b>, <b>1 tsp Vanilla</b>.",
-                    "<b>COMBINE:</b> Fold wet into dry until *just* combined. DO NOT OVERMIX. Gently fold in <b>1 cup Blueberries</b>."
+                    "<b>DRY BOWL:</b> Whisk <b>1.5 cups Flour</b>, <b>2 tsp Baking Powder</b>, <b>2 tbsp Sugar</b>, <b>1/2 tsp salt</b>.",
+                    "<b>WET BOWL:</b> Whisk <b>1 cup Greek Yogurt</b>, <b>1/2 cup Milk</b>, <b>2 Eggs</b>, <b>1 tsp Vanilla</b>.",
+                    "<b>BATTER:</b> Fold wet into dry until *just* combined. DO NOT OVERMIX. Gently fold in <b>1 cup Blueberries</b>."
                 ],
                 cook: [
                     "<b>GRIDDLE:</b> Heat over med-low. Melt a small dab of butter.",
@@ -483,7 +485,7 @@
                 ],
                 prep: [
                     "<b>OVEN:</b> Preheat oven to 400F.",
-                    "<b>STEALTH:</b> Grate <b>1 small zucchini</b>. Place in a towel and SQUEEZE out as much water as possible over sink.",
+                    "<b>STEALTH VEG:</b> Grate <b>1 small zucchini</b>. Place in a towel and SQUEEZE out as much water as possible over sink.",
                     "<b>CRAFTING:</b> Mix <b>1 lb Meat</b>, squeezed zucchini, <b>1/2 cup Breadcrumbs</b>, <b>1/2 cup Parmesan</b>, <b>1 Egg</b>, <b>1 tsp Garlic Pwdr</b>, <b>1 tsp Kosher Salt</b>. Roll into 1.5-inch 'Dragon Orbs'."
                 ],
                 cook: [
@@ -504,7 +506,7 @@
                     { name: "Olive Oil", qty: "1 tbsp" }, { name: "Fresh Lemon", qty: "1 whole" }
                 ],
                 prep: [
-                    "<b>VEG:</b> Dice <b>1 onion</b>, <b>3 carrots</b>, <b>3 celery stalks</b>."
+                    "<b>VEG PREP:</b> Dice <b>1 onion</b>, <b>3 carrots</b>, <b>3 celery stalks</b>."
                 ],
                 cook: [
                     "<b>SAUTÉ:</b> Use Pressure Cooker 'Sauté' mode. Cook veg in <b>1 tbsp oil</b> for 5 mins.",
@@ -513,7 +515,7 @@
                     "<b>SHRED:</b> Remove chicken, discard bones/skin. Shred meat and return to pot."
                 ],
                 serve: [
-                    "<b>FINISH:</b> Stir in cooked pasta and squeeze of <b>1/2 Lemon</b>.",
+                    "<b>BRIGHTEN:</b> Stir in cooked pasta and squeeze of <b>1/2 Lemon</b>.",
                     "<div class='kid-alert'><b>KID OVERRIDE:</b> Use 'Pastina' (star-shaped pasta) to fit the magical theme!</div>"
                 ]
             },
@@ -534,7 +536,7 @@
                     "<b>FLIP:</b> Flip and cook 2 mins until golden."
                 ],
                 serve: [
-                    "<b>PLATE:</b> Naturally sweet!",
+                    "<b>PLATE:</b> Serve warm.",
                     "<div class='kid-alert'><b>KID OVERRIDE:</b> Serve with peanut butter smeared on top instead of syrup for less sugar.</div>"
                 ]
             },
@@ -547,10 +549,10 @@
                     { name: "Hard Boiled Eggs", qty: "3 whole" }, { name: "Mustard", qty: "1 tbsp" }, { name: "Kosher Salt", qty: "1 tsp" }
                 ],
                 prep: [
-                    "<b>VEG:</b> Finely dice <b>3 stalks celery</b> and <b>1/4 red onion</b>. Chop <b>3 Hard Boiled Eggs</b>."
+                    "<b>VEG PREP:</b> Finely dice <b>3 stalks celery</b> and <b>1/4 red onion</b>. Chop <b>3 Hard Boiled Eggs</b>."
                 ],
                 cook: [
-                    "<b>CAULDRON:</b> Boil <b>16oz Macaroni</b> slightly past al dente (extra soft).",
+                    "<b>BOIL:</b> Boil <b>16oz Macaroni</b> slightly past al dente (extra soft).",
                     "<b>VINEGAR SHOCK:</b> Drain well. Transfer HOT pasta to bowl. Instantly toss with <b>2 tbsp White Vinegar</b>. Let cool."
                 ],
                 serve: [
@@ -568,12 +570,12 @@
                     { name: "Green Onions", qty: "1 bunch" }, { name: "Kosher Salt", qty: "1/2 tsp" }
                 ],
                 prep: [
-                    "<b>POTION:</b> Whisk <b>1/4 Cup Soy Sauce</b>, <b>3 tbsp Peanut Butter</b>, and <b>1/2 cup hot pasta water</b> (grab this while boiling) until smooth."
+                    "<b>SAUCE PREP:</b> Whisk <b>1/4 Cup Soy Sauce</b>, <b>3 tbsp Peanut Butter</b>, and <b>1/2 cup hot pasta water</b> (grab this while boiling) until smooth."
                 ],
                 cook: [
-                    "<b>CAULDRON:</b> Boil <b>16oz Noodles</b>. Drain.",
-                    "<b>BATTLE:</b> Brown <b>1 lb Ground Meat</b> with <b>3 cloves minced garlic</b> and <b>1/2 tsp salt</b> in skillet until crispy.",
-                    "<b>FUSION:</b> Toss noodles into skillet with meat. Pour peanut sauce over everything."
+                    "<b>BOIL:</b> Boil <b>16oz Noodles</b>. Drain.",
+                    "<b>SEAR:</b> Brown <b>1 lb Ground Meat</b> with <b>3 cloves minced garlic</b> and <b>1/2 tsp salt</b> in skillet until crispy.",
+                    "<b>COMBINE:</b> Toss noodles into skillet with meat. Pour peanut sauce over everything."
                 ],
                 serve: [
                     "<div class='kid-alert'><b>KID OVERRIDE:</b> PULL THE KID PORTIONS OUT NOW! Serve their non-spicy bowls.</div>",
@@ -640,6 +642,17 @@
             } catch (e) {
                 console.error(e);
                 setStatus("UPLINK FAILED", false);
+                
+                // Keep the app working even if sheet is blocked!
+                if(inventory.length === 0) {
+                    inventory = [
+                        {"Product Name": "Ground Beef 80/20", "Quantity": 5, "Days Remaining": 30},
+                        {"Product Name": "White Rice", "Quantity": 2, "Days Remaining": 300},
+                        {"Product Name": "Penne Rigate", "Quantity": 1, "Days Remaining": 631}
+                    ];
+                    renderVault();
+                    if(document.getElementById('r-name').innerText === "Loading Module...") generateRecipe();
+                }
             }
         }
 
@@ -675,34 +688,35 @@
             document.getElementById('r-equipment').innerText = "🛠️ HARDWARE: " + recipe.equipment;
             
             document.getElementById('r-macros').innerHTML = `
-                <span class="macro-pill">🔥 ${recipe.macros.cal}</span>
-                <span class="macro-pill">🥩 ${recipe.macros.p}</span>
-                <span class="macro-pill">🌾 ${recipe.macros.c}</span>
-                <span class="macro-pill">🥑 ${recipe.macros.f}</span>
+                <span class="macro-pill">🔥 ${recipe.macros ? recipe.macros.cal : "N/A"}</span>
+                <span class="macro-pill">🥩 ${recipe.macros ? recipe.macros.p : "N/A"}</span>
+                <span class="macro-pill">🌾 ${recipe.macros ? recipe.macros.c : "N/A"}</span>
+                <span class="macro-pill">🥑 ${recipe.macros ? recipe.macros.f : "N/A"}</span>
             `;
 
-            document.getElementById('r-tags').innerHTML = recipe.tags.map(t => `<span class="tag">${t}</span>`).join('');
+            document.getElementById('r-tags').innerHTML = recipe.tags ? recipe.tags.map(t => `<span class="tag">${t}</span>`).join('') : '';
             
             // INTELLIGENT INGREDIENT SORTING (FULL MANIFEST)
             let haveHTML = '';
             let buyHTML = '';
-            currentRecipeNeeds = []; // Reset global tracker
+            currentRecipeNeeds = []; 
 
-            recipe.ingredients.forEach(ing => {
-                // Check if item is in vault and Qty > 0
-                const inVault = inventory.some(v => 
-                    v["Product Name"] && 
-                    (v["Product Name"].toLowerCase().includes(ing.name.toLowerCase()) || ing.name.toLowerCase().includes(v["Product Name"].toLowerCase())) &&
-                    parseInt(v.Quantity) > 0
-                );
+            if(recipe.ingredients) {
+                recipe.ingredients.forEach(ing => {
+                    const inVault = inventory.some(v => 
+                        v["Product Name"] && 
+                        (v["Product Name"].toLowerCase().includes(ing.name.toLowerCase()) || ing.name.toLowerCase().includes(v["Product Name"].toLowerCase())) &&
+                        parseInt(v.Quantity) > 0
+                    );
 
-                if(inVault) {
-                    haveHTML += `<li class="list-item"><span>✅ ${ing.name}</span> <span style="color:#aaa;">${ing.qty}</span></li>`;
-                } else {
-                    buyHTML += `<li class="list-item"><span style="color:var(--neon-pink);">⚠️ ${ing.name}</span> <span style="color:#aaa;">${ing.qty}</span></li>`;
-                    currentRecipeNeeds.push(ing.name);
-                }
-            });
+                    if(inVault) {
+                        haveHTML += `<li class="list-item"><span>✅ ${ing.name}</span> <span style="color:#aaa;">${ing.qty}</span></li>`;
+                    } else {
+                        buyHTML += `<li class="list-item"><span style="color:var(--neon-pink);">⚠️ ${ing.name}</span> <span style="color:#aaa;">${ing.qty}</span></li>`;
+                        currentRecipeNeeds.push(ing.name);
+                    }
+                });
+            }
 
             document.getElementById('r-have').innerHTML = haveHTML;
             document.getElementById('r-buy').innerHTML = buyHTML;
@@ -719,29 +733,30 @@
 
             // PHASES
             const buildSteps = (arr, title) => `
-                <div class="phase-header">🗡️ ${title} PHASE</div>
-                ${arr.map(step => `<div class="instruction-step">${step}</div>`).join('')}
+                <div class="phase-header">🗡️ ${title}</div>
+                ${arr ? arr.map(step => `<div class="instruction-step">${step}</div>`).join('') : ''}
             `;
             
-            document.getElementById('r-steps-prep').innerHTML = buildSteps(recipe.prep, "PREP");
-            document.getElementById('r-steps-cook').innerHTML = buildSteps(recipe.cook, "COMBAT (COOK)");
-            document.getElementById('r-steps-serve').innerHTML = buildSteps(recipe.serve, "VICTORY (SERVE)");
+            document.getElementById('r-steps-prep').innerHTML = buildSteps(recipe.prep, "PREP PHASE");
+            document.getElementById('r-steps-cook').innerHTML = buildSteps(recipe.cook, "COOK PHASE");
+            document.getElementById('r-steps-serve').innerHTML = buildSteps(recipe.serve, "PLATING");
         }
 
         function generateRecipe() {
             const recipe = recipeDB[Math.floor(Math.random() * recipeDB.length)];
-            // Reset dropdown to "Select Recipe" when randomly rolling
             document.getElementById('recipe-dropdown').value = "-1";
             displayRecipe(recipe, false);
         }
 
         // INTELLIGENT SYNTHESIS ALGORITHM
         function recommendFromVault() {
-            if(inventory.length === 0) { alert("Your Vault is empty! Sync your data first."); return; }
+            if(inventory.length === 0) { alert("Your Vault is empty! Wait for sync."); return; }
             let bestRecipe = null; 
             let highestMatchPercentage = 0;
 
             recipeDB.forEach(recipe => {
+                if(!recipe.ingredients) return;
+                
                 let matchCount = 0;
                 const totalIngredients = recipe.ingredients.length;
 
@@ -761,7 +776,6 @@
                 }
             });
 
-            // If we have less than a 30% match for ANY recipe, throw an alert instead of a yucky combo
             if(highestMatchPercentage < 0.3) {
                 alert("Synthesis Failed! Your Vault energy is too low (Under 30% match). Time to visit the Market!");
             } else if(bestRecipe) {
@@ -783,8 +797,7 @@
             marketList.forEach(item => {
                 const div = document.createElement('div');
                 div.className = 'shop-item';
-                div.innerHTML = `<div class="checkbox"></div><span class="item-name" style="font-weight:bold;">${item}</span>`;
-                
+                div.innerHTML = `<div class="checkbox"></div><span class="item-name" style="font-size:0.8rem; font-weight:bold;">${item}</span>`;
                 div.onclick = function() {
                     if(!this.classList.contains('bought')) {
                         this.classList.add('bought');
@@ -796,7 +809,6 @@
             });
         }
 
-        // VAULT LOGIC
         function renderVault() {
             const list = document.getElementById('vault-list');
             list.innerHTML = '';
@@ -804,7 +816,7 @@
                 if(!item["Product Name"]) return;
                 let warn = ""; let days = parseInt(item["Days Remaining"]);
                 if(!isNaN(days)) {
-                    if(days < 0) warn = `<span class="critical-warning">⚠️ EXPIRED (${Math.abs(days)}d)</span>`;
+                    if(days < 0) warn = `<span class="critical-warning">⚠️ EXPIRED (${Math.abs(days)}d ago)</span>`;
                     else if (days <= 14) warn = `<span class="soon-warning">⚠️ EXPIRES IN ${days}d</span>`;
                 }
                 list.innerHTML += `
@@ -819,7 +831,6 @@
             });
         }
 
-        // NAVIGATION LOGIC
         function switchTab(view, el) {
             document.querySelectorAll('.view-section').forEach(e => e.classList.add('hidden'));
             document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active'));
