@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Prism Scouter v11.0 🌙🐉</title>
-    <!-- Updated Barcode Scanner Library -->
+    <title>Prism Scouter v12.0 🌙🐉</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Nunito:wght@700;800;900&family=VT323&display=swap');
@@ -12,58 +11,49 @@
         :root {
             --moon-pink: #ff66b3; --neon-pink: #ff1493;
             --dbz-orange: #ff9933; --ssj-gold: #ffcc00;
-            --scouter-green: #39ff14; --cosmic-dark: #120320;
-            --glass: rgba(25, 8, 35, 0.95);
-            --text-glow: 0 0 8px var(--moon-pink), 0 0 15px var(--neon-pink);
+            --scouter-green: #39ff14; --cosmic-dark: #090112;
+            --glass: rgba(12, 3, 20, 0.98); /* Almost completely solid for readability */
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            background-color: var(--cosmic-dark); color: #fff;
-            /* UPGRADED TO SOLID FONT */
+            background-color: var(--cosmic-dark); color: #ffffff;
             font-family: 'Nunito', sans-serif; font-weight: 700; 
             min-height: 100vh; padding-bottom: 90px; overflow-x: hidden;
         }
 
-        /* CRT SCANLINE OVERLAY */
-        body::after {
-            content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 999; background-size: 100% 4px, 6px 100%; pointer-events: none;
-        }
-
         /* SAILOR MATRIX CANVAS */
-        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; opacity: 0.65; }
+        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; opacity: 0.3; } /* Dimmed for contrast */
 
         /* HEADER */
         header {
-            background: linear-gradient(90deg, rgba(255,102,179,0.95), rgba(100,20,150,0.95));
-            text-align: center; padding: 20px; border-bottom: 4px solid var(--dbz-orange);
+            background: linear-gradient(90deg, rgba(255,102,179,1), rgba(100,20,150,1));
+            text-align: center; padding: 20px; border-bottom: 5px solid var(--dbz-orange);
             box-shadow: 0 0 25px var(--dbz-orange); position: sticky; top: 0; z-index: 10;
-            backdrop-filter: blur(8px); border-radius: 0 0 20px 20px;
+            border-radius: 0 0 20px 20px;
         }
-        header h1 { font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 1.8rem; text-shadow: var(--text-glow); letter-spacing: 1px; }
-        .subtitle { font-size: 0.85rem; color: var(--scouter-green); font-weight: 800; margin-top: 5px; font-family: 'VT323', monospace; letter-spacing: 2px; text-shadow: 0 0 5px #000; }
+        header h1 { font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 1.8rem; letter-spacing: 1px; color: #fff; text-shadow: 0 0 10px #000; }
+        .subtitle { font-size: 0.95rem; color: var(--scouter-green); font-weight: 900; margin-top: 5px; font-family: 'VT323', monospace; letter-spacing: 2px; text-shadow: 0 0 5px #000; }
 
         /* FLOATING HUD TIMER */
         #scouter-timer {
-            position: fixed; top: 95px; right: 15px; background: rgba(20, 5, 35, 0.98);
+            position: fixed; top: 95px; right: 15px; background: rgba(0, 0, 0, 0.98);
             border: 3px solid var(--scouter-green); color: var(--scouter-green);
-            padding: 8px 18px; border-radius: 15px; z-index: 1000;
+            padding: 8px 18px; border-radius: 12px; z-index: 1000;
             box-shadow: 0 0 15px var(--scouter-green); display: flex; align-items: center; gap: 15px;
             transition: 0.3s;
         }
         #scouter-timer.hidden { transform: translateX(150%); opacity: 0; }
-        #timer-display { font-size: 2rem; font-family: 'VT323', monospace; text-shadow: 0 0 8px var(--scouter-green); margin-top: 4px; }
-        .timer-close-btn { background: none; border: none; color: #fff; font-size: 1.2rem; cursor: pointer; opacity: 0.6; }
+        #timer-display { font-size: 2rem; font-family: 'VT323', monospace; margin-top: 4px; }
+        .timer-close-btn { background: none; border: none; color: #fff; font-size: 1.2rem; cursor: pointer; }
         .timer-alert { animation: alarmFlash 0.5s infinite !important; }
-        @keyframes alarmFlash { 0% { background: #140523; color: #ff003c; border-color: #ff003c; } 50% { background: #ff003c; color: #fff; border-color: #fff; } 100% { background: #140523; color: #ff003c; border-color: #ff003c; } }
+        @keyframes alarmFlash { 0% { background: #000; color: #ff003c; border-color: #ff003c; } 50% { background: #ff003c; color: #fff; border-color: #fff; } 100% { background: #000; color: #ff003c; border-color: #ff003c; } }
         
         .inline-timer-btn {
             background: var(--scouter-green); color: #000; border: none; padding: 4px 10px;
-            border-radius: 10px; font-size: 1.1rem; font-family: 'VT323', monospace; font-weight: bold;
-            cursor: pointer; margin-left: 8px; vertical-align: middle; box-shadow: 0 0 8px var(--scouter-green);
+            border-radius: 8px; font-size: 1.1rem; font-family: 'VT323', monospace; font-weight: bold;
+            cursor: pointer; margin-left: 8px; vertical-align: middle; box-shadow: 0 0 5px var(--scouter-green);
         }
         .inline-timer-btn:active { background: #fff; transform: scale(0.95); }
 
@@ -72,81 +62,79 @@
         
         .card {
             background: var(--glass); border: 4px solid var(--moon-pink); border-radius: 20px;
-            padding: 22px; margin-bottom: 20px; box-shadow: inset 0 0 20px rgba(255, 102, 179, 0.2), 0 8px 16px rgba(0,0,0,0.5);
+            padding: 22px; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.8);
         }
 
         .card-title {
-            font-family: 'Fredoka', sans-serif; color: var(--ssj-gold); font-size: 1.3rem; font-weight: 700;
+            font-family: 'Fredoka', sans-serif; color: var(--ssj-gold); font-size: 1.4rem; font-weight: 700;
             border-bottom: 3px dashed var(--moon-pink); padding-bottom: 12px; margin-bottom: 18px;
             display: flex; justify-content: space-between; align-items: center; text-transform: uppercase;
         }
 
         /* TACTICAL RECIPE DATA */
-        .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; background: rgba(0,0,0,0.6); padding: 15px; border: 3px solid var(--dbz-orange); border-radius: 15px; }
-        .data-item { font-size: 0.95rem; }
-        .data-label { color: var(--dbz-orange); font-weight: 800; display: block; margin-bottom: 4px; font-size: 0.85rem; font-family: 'Fredoka', sans-serif; text-transform: uppercase; }
-        .hardware-list { grid-column: 1 / -1; color: #fff; font-size: 0.95rem; margin-top: 5px; border-top: 2px dashed #666; padding-top: 10px; }
+        .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; background: rgba(0,0,0,0.8); padding: 15px; border: 3px solid var(--dbz-orange); border-radius: 12px; }
+        .data-item { font-size: 1.05rem; color: #fff; }
+        .data-label { color: var(--dbz-orange); font-weight: 900; display: block; margin-bottom: 4px; font-size: 0.9rem; font-family: 'Fredoka', sans-serif; text-transform: uppercase; }
+        .hardware-list { grid-column: 1 / -1; color: #fff; font-size: 1rem; margin-top: 5px; border-top: 2px dashed #555; padding-top: 10px; }
         
-        /* WARNING/ALERT BOXES */
-        .scouter-alert { background: rgba(255, 153, 51, 0.2); border-left: 6px solid var(--dbz-orange); border-radius: 0 10px 10px 0; padding: 15px; font-size: 0.95rem; font-weight: 700; line-height: 1.5; margin-bottom: 20px; }
-        .kris-alert { background: rgba(57, 255, 20, 0.2); border-left: 6px solid var(--scouter-green); border-radius: 0 10px 10px 0; padding: 15px; font-size: 0.95rem; font-weight: 700; line-height: 1.5; margin-bottom: 20px; }
+        /* WARNING BOXES */
+        .scouter-alert { background: rgba(255, 153, 51, 0.2); border-left: 6px solid var(--dbz-orange); border-radius: 0 10px 10px 0; padding: 15px; font-size: 1.05rem; font-weight: 800; line-height: 1.5; margin-bottom: 20px; color: #fff; }
+        .kris-alert { background: rgba(57, 255, 20, 0.2); border-left: 6px solid var(--scouter-green); border-radius: 0 10px 10px 0; padding: 15px; font-size: 1.05rem; font-weight: 800; line-height: 1.5; margin-bottom: 20px; color: #fff; }
 
         /* INGREDIENTS */
         .ingredient-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 20px; }
-        .ing-section h4 { font-family: 'Fredoka', sans-serif; font-size: 1.1rem; margin-bottom: 10px; letter-spacing: 1px; text-shadow: 0 0 5px rgba(0,0,0,0.8); }
-        .list-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 2px dotted #666; font-size: 0.95rem; font-weight: 700; }
+        .ing-section h4 { font-family: 'Fredoka', sans-serif; font-size: 1.2rem; margin-bottom: 10px; color: #fff; }
+        .list-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 2px solid #333; font-size: 1.05rem; font-weight: 700; color: #fff; }
 
-        /* VAULT & EXPIRATION WARNINGS */
-        .vault-item { display: flex; flex-direction: column; padding: 14px 0; border-bottom: 2px solid rgba(255,255,255,0.15); }
-        .vault-item-header { display: flex; justify-content: space-between; width: 100%; font-size: 1.05rem; font-weight: 800; }
-        .crit-warning { color: #ff3366; font-size: 0.9rem; font-weight: 800; margin-top: 5px; font-family: 'Fredoka', sans-serif; text-shadow: 0 0 5px #ff3366; animation: pulse 1.5s infinite; }
-        .soon-warning { color: var(--dbz-orange); font-size: 0.9rem; font-weight: 800; margin-top: 5px; font-family: 'Fredoka', sans-serif; }
-        .item-qty { font-family: 'VT323', monospace; color: var(--scouter-green); font-size: 1.4rem; text-shadow: 0 0 5px #000; }
+        /* VAULT */
+        .vault-item { display: flex; flex-direction: column; padding: 16px 0; border-bottom: 2px solid #444; }
+        .vault-item-header { display: flex; justify-content: space-between; width: 100%; font-size: 1.15rem; font-weight: 800; color: #fff; }
+        .crit-warning { color: #ff3366; font-size: 0.95rem; font-weight: 900; margin-top: 5px; font-family: 'Fredoka', sans-serif; animation: pulse 1.5s infinite; }
+        .soon-warning { color: var(--dbz-orange); font-size: 0.95rem; font-weight: 900; margin-top: 5px; font-family: 'Fredoka', sans-serif; }
+        .item-qty { font-family: 'VT323', monospace; color: var(--scouter-green); font-size: 1.5rem; text-shadow: 0 0 5px #000; }
 
-        /* ALCHEMY INSTRUCTIONS */
-        .combat-phase { margin-bottom: 25px; background: rgba(0,0,0,0.5); padding: 18px; border-radius: 15px; border: 3px solid rgba(255, 102, 179, 0.4); }
-        .phase-title { font-family: 'Fredoka', sans-serif; color: var(--scouter-green); font-size: 1.2rem; font-weight: 700; border-bottom: 3px solid var(--scouter-green); padding-bottom: 6px; margin-bottom: 15px; text-shadow: 0 0 5px rgba(57, 255, 20, 0.5); }
-        .instruction-step { margin-bottom: 15px; line-height: 1.6; font-size: 1rem; padding-left: 25px; position: relative; color: #fff; font-weight: 700; }
-        .instruction-step::before { content: '✨'; position: absolute; left: -5px; top: 0; font-size: 1rem; }
-        .instruction-step b { color: var(--moon-pink); font-weight: 800; font-family: 'Fredoka', sans-serif; letter-spacing: 0.5px; }
-        .kid-alert { background: rgba(57, 255, 20, 0.15); border-left: 5px solid var(--scouter-green); border-radius: 0 10px 10px 0; padding: 15px; margin-top: 15px; font-size: 0.95rem; font-weight: 700; color: #fff; line-height: 1.5; }
+        /* ALCHEMY INSTRUCTIONS - OPTIMIZED FOR READABILITY */
+        .combat-phase { margin-bottom: 25px; background: rgba(0,0,0,0.7); padding: 20px; border-radius: 12px; border: 3px solid rgba(255, 102, 179, 0.5); }
+        .phase-title { font-family: 'Fredoka', sans-serif; color: var(--scouter-green); font-size: 1.3rem; font-weight: 800; border-bottom: 3px solid var(--scouter-green); padding-bottom: 8px; margin-bottom: 15px; }
+        .instruction-step { margin-bottom: 18px; line-height: 1.6; font-size: 1.1rem; padding-left: 25px; position: relative; color: #ffffff; font-weight: 800; text-shadow: none; } /* NO TEXT SHADOW FOR EASY READING */
+        .instruction-step::before { content: '✨'; position: absolute; left: -5px; top: 0; font-size: 1.1rem; }
+        .instruction-step b { color: var(--moon-pink); font-weight: 900; font-family: 'Fredoka', sans-serif; font-size: 1.15rem; }
+        .kid-alert { background: rgba(57, 255, 20, 0.2); border-left: 5px solid var(--scouter-green); border-radius: 0 10px 10px 0; padding: 15px; margin-top: 15px; font-size: 1.05rem; font-weight: 800; color: #fff; line-height: 1.5; }
 
         /* CHECKBOXES & BUTTONS */
-        .shop-item { display: flex; align-items: center; padding: 15px; background: rgba(0,0,0,0.7); border: 3px solid var(--moon-pink); border-radius: 12px; margin-bottom: 10px; cursor: pointer; transition: 0.3s; }
-        .shop-item.bought { border-color: var(--scouter-green); background: rgba(57, 255, 20, 0.2); opacity: 0.6; }
+        .shop-item { display: flex; align-items: center; padding: 18px; background: rgba(0,0,0,0.8); border: 3px solid var(--moon-pink); border-radius: 12px; margin-bottom: 10px; cursor: pointer; transition: 0.3s; }
+        .shop-item.bought { border-color: var(--scouter-green); background: rgba(57, 255, 20, 0.2); opacity: 0.5; }
         .shop-item.bought .item-name { text-decoration: line-through; color: var(--scouter-green); }
-        .checkbox { width: 28px; height: 28px; border: 4px solid var(--moon-pink); border-radius: 50%; margin-right: 15px; display: flex; align-items: center; justify-content: center; transition: 0.2s; background: #000; }
+        .checkbox { width: 30px; height: 30px; border: 4px solid var(--moon-pink); border-radius: 50%; margin-right: 15px; display: flex; align-items: center; justify-content: center; transition: 0.2s; background: #000; }
         .bought .checkbox { background: var(--scouter-green); border-color: var(--scouter-green); }
-        .bought .checkbox::after { content: '💖'; font-size: 0.9rem; }
+        .bought .checkbox::after { content: '💖'; font-size: 1.1rem; }
 
         .magic-btn {
-            background: linear-gradient(180deg, rgba(0,0,0,0.6), rgba(20,5,35,0.9));
+            background: linear-gradient(180deg, #111, #333);
             border: 4px solid var(--dbz-orange); color: var(--dbz-orange);
-            padding: 15px; width: 100%; font-family: 'Fredoka', sans-serif; font-weight: 700;
-            font-size: 1.1rem; text-transform: uppercase; cursor: pointer; border-radius: 15px;
-            box-shadow: inset 0 0 10px rgba(255, 153, 51, 0.3), 0 5px 0 var(--dbz-orange); transition: 0.1s; margin-top: 10px; text-shadow: 0 0 5px #000;
+            padding: 16px; width: 100%; font-family: 'Fredoka', sans-serif; font-weight: 800;
+            font-size: 1.2rem; text-transform: uppercase; cursor: pointer; border-radius: 15px;
+            box-shadow: 0 5px 0 var(--dbz-orange); transition: 0.1s; margin-top: 10px; color: #fff; text-shadow: 0 0 5px #000;
         }
-        .magic-btn:active { transform: translateY(5px); box-shadow: inset 0 0 10px rgba(255, 153, 51, 0.3), 0 0px 0 var(--dbz-orange); }
-        .magic-btn.pink { border-color: var(--moon-pink); color: var(--moon-pink); box-shadow: inset 0 0 10px rgba(255, 102, 179, 0.3), 0 5px 0 var(--moon-pink); }
-        .magic-btn.pink:active { transform: translateY(5px); box-shadow: inset 0 0 10px rgba(255, 102, 179, 0.3), 0 0px 0 var(--moon-pink); }
-        .magic-btn.green { border-color: var(--scouter-green); color: var(--scouter-green); box-shadow: inset 0 0 10px rgba(57, 255, 20, 0.3), 0 5px 0 var(--scouter-green); }
-        .magic-btn.green:active { transform: translateY(5px); box-shadow: inset 0 0 10px rgba(57, 255, 20, 0.3), 0 0px 0 var(--scouter-green); }
+        .magic-btn:active { transform: translateY(5px); box-shadow: 0 0px 0 var(--dbz-orange); }
+        .magic-btn.pink { border-color: var(--moon-pink); background: linear-gradient(180deg, #111, #333); box-shadow: 0 5px 0 var(--moon-pink); }
+        .magic-btn.pink:active { transform: translateY(5px); box-shadow: 0 0px 0 var(--moon-pink); }
+        .magic-btn.green { border-color: var(--scouter-green); background: linear-gradient(180deg, #111, #333); box-shadow: 0 5px 0 var(--scouter-green); }
+        .magic-btn.green:active { transform: translateY(5px); box-shadow: 0 0px 0 var(--scouter-green); }
 
-        /* LENS SCANNER ISOLATION */
-        #reader { border: 4px solid var(--dbz-orange); border-radius: 15px; overflow: hidden; background: #fff; color: #000; font-family: 'Nunito', sans-serif; font-weight: bold; }
-        #reader a { color: var(--neon-pink); }
-        #reader button { background: var(--moon-pink); color: white; border: none; padding: 12px; border-radius: 8px; font-family: 'Fredoka', sans-serif; font-weight: 700; cursor: pointer; margin: 10px; font-size: 1rem; }
+        /* LENS SCANNER */
+        #reader { border: 4px solid var(--dbz-orange); border-radius: 12px; overflow: hidden; background: #fff; color: #000; font-family: 'Nunito', sans-serif; font-weight: bold; }
+        #reader button { background: var(--moon-pink); color: white; border: none; padding: 12px; border-radius: 8px; font-family: 'Fredoka', sans-serif; font-weight: 700; cursor: pointer; margin: 10px; font-size: 1.1rem; }
 
         /* NAV */
         nav {
             position: fixed; bottom: 0; left: 0; width: 100%;
-            background: rgba(15, 5, 25, 0.98); border-top: 4px solid var(--moon-pink);
-            display: flex; justify-content: space-around; padding: 12px 0 25px 0; z-index: 100;
-            border-radius: 20px 20px 0 0; box-shadow: 0 -5px 25px rgba(255, 102, 179, 0.4);
+            background: rgba(10, 2, 15, 1); border-top: 5px solid var(--moon-pink);
+            display: flex; justify-content: space-around; padding: 15px 0 25px 0; z-index: 100;
         }
-        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 0.85rem; color: #888; cursor: pointer; text-transform: uppercase; font-family: 'Fredoka', sans-serif; font-weight: 700; z-index: 10; letter-spacing: 1px; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 0.9rem; color: #aaa; cursor: pointer; text-transform: uppercase; font-family: 'Fredoka', sans-serif; font-weight: 800; z-index: 10; letter-spacing: 1px; }
         .nav-item.active { color: var(--neon-pink); text-shadow: 0 0 8px var(--neon-pink); }
-        .nav-icon { font-size: 1.7rem; margin-bottom: 5px; filter: grayscale(100%); transition: 0.3s; }
+        .nav-icon { font-size: 1.8rem; margin-bottom: 5px; filter: grayscale(100%); transition: 0.3s; }
         .nav-item.active .nav-icon { filter: grayscale(0%); transform: scale(1.15); }
 
         .hidden { display: none !important; }
@@ -168,20 +156,20 @@
     </div>
 
     <div class="app-container">
-        <!-- SPELLBOOK MENU (RECIPES) -->
+        <!-- SPELLBOOK MENU -->
         <div id="view-recipes" class="view-section">
             <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                <button class="magic-btn" onclick="generateRecipe()" style="flex: 1; font-size: 1rem;">🪄 DRAW NEW SPELL</button>
-                <button class="magic-btn green" onclick="recommendFromVault()" style="flex: 1; font-size: 1rem;">🔮 VAULT SYNTHESIS</button>
+                <button class="magic-btn" onclick="generateRecipe()" style="flex: 1;">🪄 NEW SPELL</button>
+                <button class="magic-btn green" onclick="recommendFromVault()" style="flex: 1;">🔮 SYNTHESIS</button>
             </div>
             
             <div class="card">
-                <div class="card-title"><span id="r-name" style="color:var(--ssj-gold); font-size: 1.5rem; text-shadow: 0 0 10px var(--dbz-orange);">Opening Grimoire...</span></div>
+                <div class="card-title"><span id="r-name" style="color:var(--ssj-gold); font-size: 1.6rem; text-shadow: 0 0 10px #000;">Opening Grimoire...</span></div>
                 
                 <div class="data-grid">
                     <div class="data-item"><span class="data-label">🍽️ POTION YIELD</span><span id="r-yield"></span></div>
                     <div class="data-item"><span class="data-label">⏳ BREW TIME</span><span id="r-time"></span></div>
-                    <div class="hardware-list"><span class="data-label">🔮 CAULDRONS & WANDS</span><span id="r-hardware"></span></div>
+                    <div class="hardware-list"><span class="data-label">🔮 CAULDRONS REQUIRED</span><span id="r-hardware"></span></div>
                 </div>
                 
                 <div id="r-scouter-alert" class="scouter-alert hidden"></div>
@@ -194,7 +182,7 @@
                     <div class="ing-section">
                         <h4 style="color: var(--dbz-orange);">🛒 MISSING INGREDIENTS</h4>
                         <ul id="r-buy" style="list-style: none;"></ul>
-                        <button class="magic-btn pink" style="padding: 14px; font-size: 0.95rem; margin-top: 10px;" onclick="sendToMarket()">➕ SEND TO MARKET</button>
+                        <button class="magic-btn pink" style="padding: 14px; margin-top: 15px;" onclick="sendToMarket()">➕ PUSH TO MARKET</button>
                     </div>
                 </div>
             </div>
@@ -208,7 +196,7 @@
         <div id="view-market" class="view-section hidden">
             <div class="card">
                 <div class="card-title">🛒 INGREDIENT ACQUISITION</div>
-                <p style="font-size: 0.95rem; color:#ddd; margin-bottom: 15px;">Tap acquired ingredients to instantly beam them to your Cloud Vault!</p>
+                <p style="font-size: 1.05rem; color:#fff; margin-bottom: 15px;">Tap acquired ingredients to instantly beam them to your Cloud Vault!</p>
                 <div id="market-list"></div>
             </div>
         </div>
@@ -217,14 +205,14 @@
         <div id="view-scanner" class="view-section hidden">
             <div class="card">
                 <div class="card-title">👁️ SCOUTER LENS</div>
-                <p style="font-size: 0.95rem; color:#ddd; margin-bottom: 15px;">Scan physical barcodes to ping the Global Food Database and conjure items into your Vault.</p>
+                <p style="font-size: 1.05rem; color:#fff; margin-bottom: 15px;">Scan physical barcodes to ping the Global Food Database and conjure items into your Vault.</p>
                 
                 <div id="scanner-error" class="hidden scouter-alert" style="border-left-color: #ff3366; background: rgba(255, 51, 102, 0.2);">
-                    ⚠️ Camera Access Blocked! Make sure your browser has permission and you are using HTTPS.
+                    ⚠️ CAMERA BLOCKED! Make sure your browser has permission and you are accessing this page securely via HTTPS.
                 </div>
 
                 <div id="reader"></div>
-                <div id="scan-result" style="margin-top: 20px; font-family: 'VT323'; font-size: 1.8rem; color: var(--scouter-green); text-align: center;">AWAITING TARGET...</div>
+                <div id="scan-result" style="margin-top: 20px; font-family: 'VT323'; font-size: 2rem; color: var(--scouter-green); text-align: center;">AWAITING TARGET...</div>
             </div>
         </div>
 
@@ -252,10 +240,10 @@
         // --- MATRIX RAIN ---
         const canvas = document.getElementById('matrix-canvas'); const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        const chars = '🌙✨🌸⚡️🐉💖⭐🪐☄️🔮🪄'.split(''); const fontSize = 20; const columns = canvas.width / fontSize;
+        const chars = '🌙✨🌸⚡️🐉💖⭐🪐☄️🔮🪄'.split(''); const fontSize = 24; const columns = canvas.width / fontSize;
         const drops = Array(Math.floor(columns)).fill(1);
         function drawMatrix() {
-            ctx.fillStyle = 'rgba(18, 3, 32, 0.1)'; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.font = `bold ${fontSize}px sans-serif`;
+            ctx.fillStyle = 'rgba(10, 2, 20, 0.15)'; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.font = `bold ${fontSize}px sans-serif`;
             for(let i = 0; i < drops.length; i++) {
                 const text = chars[Math.floor(Math.random() * chars.length)];
                 ctx.fillStyle = ['#ff66b3', '#ff9933', '#39ff14', '#cc99ff'][Math.floor(Math.random() * 4)];
@@ -296,7 +284,9 @@
         }
 
         // --- CORE LOGIC & 16 MAGICAL RECIPES ---
+        // MAKE SURE THIS IS YOUR BRAND NEW, "ANYONE" DEPLOYED URL
         const SHEET_API_URL = "https://script.google.com/macros/s/AKfycby_EiCidBees9IA-zs7_OSxppAnD0sB2U78Qvd1-kQy7JB5sSs9l-P-FKODmQLv2c-j/exec"; 
+        
         let inventory = []; let marketList = []; let currentRecipeNeeds = [];
 
         const recipeDB = [
@@ -305,16 +295,15 @@
             { name: "COSMIC PENNE POWER-UP", yield: "4-6 Servings", time: "25 mins", hardware: "Large Pasta Pot, Large Skillet, Box Grater", alert: "Micro-grating the zucchini dissolves it into the sauce, creating an invisible payload for the toddlers.", have: [ { item: "Ground Beef 80/20", qty: "1 lb" }, { item: "Penne Rigate", qty: "16 oz" }, { item: "Tomato Basil Sauce", qty: "1 Jar (23oz)" } ], buy: [ "Fresh Zucchini (1)", "Garlic Bulb", "Mozzarella Pearls (8oz)" ], phases: [ { title: "1. COLD PREP", steps: ["Finely grate <b>1 medium zucchini</b> using SMALLEST holes on the box grater.", "Mince <b>2 cloves of fresh garlic</b>."] }, { title: "2. BOILING CAULDRON", steps: ["Bring salted water to boil. Add <b>16oz Penne</b>. <button class='inline-timer-btn' onclick='startTimer(11)'>⏱ 11 MIN</button>", "In skillet med-high, add <b>1 lb Beef</b>, minced garlic, <b>1 tsp salt</b>, <b>1 tsp onion powder</b>.", "Brown beef until no pink remains. <button class='inline-timer-btn' onclick='startTimer(6)'>⏱ 6 MIN</button> Drain excess grease."] }, { title: "3. SAUCE INTEGRATION", steps: ["Reduce heat to med-low. Pour in <b>1 jar Tomato Basil Sauce</b> and grated zucchini.", "Simmer gently while pasta finishes. <button class='inline-timer-btn' onclick='startTimer(5)'>⏱ 5 MIN</button>"] }, { title: "4. THE FINAL SPELL", steps: ["Drain pasta, fold directly into meat sauce.", "Turn off heat. Scatter <b>8oz Mozzarella Pearls</b> across top. Cover until gooey. <button class='inline-timer-btn' onclick='startTimer(2)'>⏱ 2 MIN</button>"], kidAlert: "Sprinkle hemp hearts ('Fairy Dust') onto Klaus and Sophia's plates for hidden Omegas!" } ] },
             { name: "CAPSULE CORP CHICKEN BOWL", yield: "4 Servings", time: "30 mins", hardware: "Rice Cooker, Large Skillet, Small Bowl", alert: "Do not put the teriyaki sauce in the pan while chicken is raw. Sugar burns fast.", have: [ { item: "White Rice", qty: "1.5 cups" }, { item: "Soy Sauce", qty: "1/4 cup" } ], buy: [ "Chicken Breast (1.25 lbs)", "Broccoli Florets (1 bag frozen)", "Brown Sugar", "Sesame Oil" ], phases: [ { title: "1. BASE POTIONS", steps: ["Rinse <b>1.5 cups rice</b>. Cook in rice cooker.", "<b>TERIYAKI:</b> Whisk: <b>1/4 cup soy sauce</b>, <b>3 tbsp brown sugar</b>, <b>1 tbsp sesame oil</b>, <b>1/2 tsp garlic powder</b>.", "Cut <b>1.25 lbs chicken</b> into 1-inch cubes. Pat dry."] }, { title: "2. THE SEAR", steps: ["Steam <b>1 bag broccoli</b> in microwave.", "Heat skillet med-high with <b>1 tbsp olive oil</b>. Add chicken in single layer.", "Sear untouched. <button class='inline-timer-btn' onclick='startTimer(3)'>⏱ 3 MIN</button> Flip, cook until 165F. <button class='inline-timer-btn' onclick='startTimer(4)'>⏱ 4 MIN</button>"] }, { title: "3. GLAZE & SERVE", steps: ["Reduce heat to low. Pour Teriyaki mixture over chicken.", "Let bubble and thicken. <button class='inline-timer-btn' onclick='startTimer(2)'>⏱ 2 MIN</button>", "Layer bowls with rice, broccoli, glazed chicken."] } ] },
             { name: "SAILOR GUARDIAN SALMON", yield: "2 Adults, 2 Kids", time: "20 mins", hardware: "Large Non-Stick Skillet, Baking Sheet, Spatula", alert: "Fish cooks incredibly fast. Do not walk away from the stove during Phase 2.", have: [ { item: "Olive Oil & Butter", qty: "Staples" }, { item: "Garlic Powder", qty: "Staples" } ], buy: [ "Salmon Fillets (4)", "Fresh Asparagus (1 bunch)", "Fresh Lemons (2)" ], phases: [ { title: "1. OVEN ALCHEMY", steps: ["Preheat oven to 400F.", "Snap ends off <b>1 bunch Asparagus</b>. Toss on baking sheet with <b>1 tbsp olive oil</b>, salt, pepper.", "Roast asparagus. <button class='inline-timer-btn' onclick='startTimer(12)'>⏱ 12 MIN</button>", "Pat <b>4 Salmon Fillets</b> completely dry. Season flesh side with salt and garlic powder."] }, { title: "2. PAN SEAR", steps: ["Heat skillet med-high. Add <b>1 tbsp olive oil</b>. Place salmon SKIN SIDE UP.", "Press gently. Sear undisturbed. <button class='inline-timer-btn' onclick='startTimer(4)'>⏱ 4 MIN</button>", "Carefully flip (skin down). Cook until opaque. <button class='inline-timer-btn' onclick='startTimer(3)'>⏱ 3 MIN</button>"] }, { title: "3. BUTTER BASTE", steps: ["In last minute, drop <b>2 tbsp butter</b> and squeeze of <b>1/2 lemon</b> into pan.", "Spoon melting lemon-butter over fillets.", "Remove immediately. Serve with asparagus."], kidAlert: "Flake the kids' salmon apart and ensure there are absolutely zero bones before serving!" } ] },
-            { name: "SENZU BEAN TURKEY CHILI", yield: "6 Servings", time: "40 mins", hardware: "Large Dutch Oven, Cutting Board, Knife, Can Opener", alert: "Finely mincing the celery and carrots creates a natural thickening base while hiding the texture from picky eaters.", have: [ { item: "Kidney Beans", qty: "1 Can" }, { item: "Black Beans", qty: "1 Can" }, { item: "Spices", qty: "Chili Pwdr/Cumin/Garlic" } ], buy: [ "Ground Turkey (1 lb)", "Crushed Tomatoes (28oz)", "Carrots (2)", "Celery (2 stalks)", "Yellow Onion (1)" ], phases: [ { title: "1. STEALTH VEG PREP", steps: ["Finely dice <b>1 onion</b>.", "Mince <b>2 carrots</b> and <b>2 celery stalks</b> as small as humanly possible (the stealth phase)."] }, { title: "2. THE SEAR", steps: ["Heat <b>1 tbsp oil</b> in Dutch Oven over med heat. Add onion, carrot, celery. Sauté until soft. <button class='inline-timer-btn' onclick='startTimer(6)'>⏱ 6 MIN</button>", "Add <b>1 lb Ground Turkey</b>. Break apart and brown. <button class='inline-timer-btn' onclick='startTimer(5)'>⏱ 5 MIN</button>", "Stir in <b>2 tbsp Chili Powder</b>, <b>1 tbsp Cumin</b>, <b>1 tsp Garlic Pwdr</b>. Toast spices. <button class='inline-timer-btn' onclick='startTimer(1)'>⏱ 1 MIN</button>"] }, { title: "3. SIMMER & BUILD", steps: ["Pour in <b>28oz Crushed Tomatoes</b>.", "Drain and rinse both cans of beans. Stir them into the pot.", "Bring to gentle boil, reduce heat to low. Cover and simmer. <button class='inline-timer-btn' onclick='startTimer(20)'>⏱ 20 MIN</button>"], kidAlert: "Serve Klaus and Sophia's bowls slightly cooled with a heavy handful of shredded cheese and tortilla chips for scooping." } ] },
+            { name: "SENZU BEAN TURKEY CHILI", yield: "6 Servings", time: "40 mins", hardware: "Large Dutch Oven, Cutting Board, Knife", alert: "Finely mincing the celery and carrots creates a natural thickening base while hiding the texture from picky eaters.", have: [ { item: "Kidney Beans", qty: "1 Can" }, { item: "Black Beans", qty: "1 Can" }, { item: "Spices", qty: "Chili Pwdr/Cumin/Garlic" } ], buy: [ "Ground Turkey (1 lb)", "Crushed Tomatoes (28oz)", "Carrots (2)", "Celery (2 stalks)", "Yellow Onion (1)" ], phases: [ { title: "1. STEALTH VEG PREP", steps: ["Finely dice <b>1 onion</b>.", "Mince <b>2 carrots</b> and <b>2 celery stalks</b> as small as humanly possible (the stealth phase)."] }, { title: "2. THE SEAR", steps: ["Heat <b>1 tbsp oil</b> in Dutch Oven over med heat. Add onion, carrot, celery. Sauté until soft. <button class='inline-timer-btn' onclick='startTimer(6)'>⏱ 6 MIN</button>", "Add <b>1 lb Ground Turkey</b>. Break apart and brown. <button class='inline-timer-btn' onclick='startTimer(5)'>⏱ 5 MIN</button>", "Stir in <b>2 tbsp Chili Powder</b>, <b>1 tbsp Cumin</b>, <b>1 tsp Garlic Pwdr</b>. Toast spices. <button class='inline-timer-btn' onclick='startTimer(1)'>⏱ 1 MIN</button>"] }, { title: "3. SIMMER & BUILD", steps: ["Pour in <b>28oz Crushed Tomatoes</b>.", "Drain and rinse both cans of beans. Stir them into the pot.", "Bring to gentle boil, reduce heat to low. Cover and simmer. <button class='inline-timer-btn' onclick='startTimer(20)'>⏱ 20 MIN</button>"], kidAlert: "Serve Klaus and Sophia's bowls slightly cooled with a heavy handful of shredded cheese and tortilla chips for scooping." } ] },
             { name: "KAMEHAMEHA MAC & CHEESE", yield: "4-6 Servings", time: "25 mins", hardware: "Blender, Large Pot, Whisk", alert: "The butternut squash blends seamlessly with cheddar to create a vibrant orange sauce that looks exactly like boxed mac, but is packed with vitamins.", have: [ { item: "Pasta (Elbows/Rotini)", qty: "16 oz" }, { item: "Whole Milk", qty: "1 Cup" }, { item: "Butter", qty: "2 tbsp" } ], buy: [ "Frozen Butternut Squash (10oz)", "Sharp Cheddar Block (8oz)", "Parmesan (1/4 cup)" ], phases: [ { title: "1. THE BASE POTION", steps: ["Steam <b>10oz frozen butternut squash</b> in microwave per package.", "Grate <b>8oz Sharp Cheddar</b> from a block (pre-shredded won't melt smoothly).", "In a blender, combine: steamed squash, <b>1 cup Whole Milk</b>, <b>1/2 tsp salt</b>, <b>1/2 tsp garlic powder</b>. Blend until completely smooth. <button class='inline-timer-btn' onclick='startTimer(1)'>⏱ 1 MIN</button>"] }, { title: "2. THE BOIL", steps: ["Boil large pot of salted water. Add <b>16oz Pasta</b>. Cook until al dente. <button class='inline-timer-btn' onclick='startTimer(8)'>⏱ 8 MIN</button>", "Drain pasta, return empty pot to the stove over low heat."] }, { title: "3. MAGICAL FUSION", steps: ["Melt <b>2 tbsp butter</b> in the empty warm pot. Pour in the blended squash mixture.", "Whisk in the grated Cheddar and <b>1/4 cup Parmesan</b> until perfectly melted and glossy.", "Remove from heat, fold in the cooked pasta until heavily coated."], kidAlert: "Do not reveal the squash secret to Klaus or Sophia until they have asked for seconds!" } ] },
-            { name: "LUNAR PRISM HONEY PORK", yield: "4 Servings", time: "30 mins", hardware: "Large Sheet Pan, Foil, Meat Thermometer, Small Bowl", alert: "Lining the sheet pan with foil is mandatory. Baked honey creates a structural matrix on bare metal that requires a chisel to clean.", have: [ { item: "Soy Sauce", qty: "2 tbsp" }, { item: "Olive Oil", qty: "2 tbsp" } ], buy: [ "Pork Tenderloin (1-1.2 lbs)", "Honey (3 tbsp)", "Fresh Broccoli (2 heads)", "Garlic Bulb" ], phases: [ { title: "1. OVEN CALIBRATION", steps: ["Preheat oven to 400F. Line sheet pan entirely with aluminum foil.", "Cut <b>2 heads of broccoli</b> into florets. Toss on one side of the pan with <b>1 tbsp olive oil</b>, salt, pepper."] }, { title: "2. GLAZE CRAFTING", steps: ["In a bowl, mix: <b>3 tbsp Honey</b>, <b>2 tbsp Soy Sauce</b>, <b>1 tbsp Olive Oil</b>, <b>2 minced garlic cloves</b>.", "Place <b>Pork Tenderloin</b> on the empty side of the sheet pan. Brush heavily with the honey glaze."] }, { title: "3. ROAST RITUAL", steps: ["Roast the entire pan in the oven. <button class='inline-timer-btn' onclick='startTimer(20)'>⏱ 20 MIN</button>", "Check pork internal temp (must hit 145F). If reached, remove from oven. Let rest before slicing. <button class='inline-timer-btn' onclick='startTimer(5)'>⏱ 5 MIN</button>"], kidAlert: "Slice the pork tenderloin extremely thin (against the grain) for the kids to easily chew." } ] },
+            { name: "LUNAR PRISM HONEY PORK", yield: "4 Servings", time: "30 mins", hardware: "Large Sheet Pan, Foil, Meat Thermometer", alert: "Lining the sheet pan with foil is mandatory. Baked honey creates a structural matrix on bare metal that requires a chisel to clean.", have: [ { item: "Soy Sauce", qty: "2 tbsp" }, { item: "Olive Oil", qty: "2 tbsp" } ], buy: [ "Pork Tenderloin (1-1.2 lbs)", "Honey (3 tbsp)", "Fresh Broccoli (2 heads)", "Garlic Bulb" ], phases: [ { title: "1. OVEN CALIBRATION", steps: ["Preheat oven to 400F. Line sheet pan entirely with aluminum foil.", "Cut <b>2 heads of broccoli</b> into florets. Toss on one side of the pan with <b>1 tbsp olive oil</b>, salt, pepper."] }, { title: "2. GLAZE CRAFTING", steps: ["In a bowl, mix: <b>3 tbsp Honey</b>, <b>2 tbsp Soy Sauce</b>, <b>1 tbsp Olive Oil</b>, <b>2 minced garlic cloves</b>.", "Place <b>Pork Tenderloin</b> on the empty side of the sheet pan. Brush heavily with the honey glaze."] }, { title: "3. ROAST RITUAL", steps: ["Roast the entire pan in the oven. <button class='inline-timer-btn' onclick='startTimer(20)'>⏱ 20 MIN</button>", "Check pork internal temp (must hit 145F). If reached, remove from oven. Let rest before slicing. <button class='inline-timer-btn' onclick='startTimer(5)'>⏱ 5 MIN</button>"], kidAlert: "Slice the pork tenderloin extremely thin (against the grain) for the kids to easily chew." } ] },
             { name: "PICCOLO'S GREEN POWER BOWL", yield: "2 Adult, 2 Kid", time: "10 mins", hardware: "High-Speed Blender, 4 Bowls", alert: "A lightning-fast, high-nutrient breakfast or recovery meal. The frozen mango completely masks the spinach flavor.", have: [ { item: "Milk (Any type)", qty: "1 Cup" } ], buy: [ "Frozen Mango Chunks (2 Cups)", "Fresh Baby Spinach (2 big handfuls)", "Plain Greek Yogurt (1 Cup)", "Bananas (2)" ], phases: [ { title: "1. LIQUID BASE", steps: ["Add to blender first: <b>1 cup Milk</b> and <b>1 cup Greek Yogurt</b> (liquids first protects the blade)."] }, { title: "2. THE GREEN CHARGE", steps: ["Add <b>2 big handfuls Baby Spinach</b>.", "Blend on high until the liquid is completely bright green and no leaf chunks remain. <button class='inline-timer-btn' onclick='startTimer(1)'>⏱ 1 MIN</button>"] }, { title: "3. THICKENING SPELL", steps: ["Add <b>2 Cups Frozen Mango</b> and <b>2 Bananas</b>.", "Blend until thick and smooth like soft-serve ice cream. Add a splash more milk if it gets stuck.", "Pour into bowls."], kidAlert: "Top Klaus and Sophia's bowls with a handful of dry Cheerios or granola. The crunch makes it feel like a treat!" } ] },
-            // PREVIOUS 4 MAGICAL RECIPES
+            // RECIPES 9-16
             { name: "MAJIN BUU'S PINK PROTEIN PASTA", yield: "4-6 Servings", time: "25 mins", hardware: "Large Pasta Pot, Skillet, Blender", alert: "Blending ricotta into the marinara with a touch of spinach creates a creamy, magical pink sauce packed with hidden protein.", have: [ { item: "Pasta (Any shape)", qty: "16 oz" }, { item: "Olive Oil / Salt", qty: "Staples" } ], buy: [ "Ground Turkey (1 lb)", "Ricotta Cheese (15oz)", "Marinara Sauce (1 Jar)", "Fresh Baby Spinach (1 handful)" ], phases: [ { title: "1. BOILING CAULDRON", steps: ["Bring salted water to boil. Add <b>16oz Pasta</b>. <button class='inline-timer-btn' onclick='startTimer(10)'>⏱ 10 MIN</button>", "While boiling, heat skillet with <b>1 tbsp olive oil</b>. Add <b>1 lb Ground Turkey</b>. Season with salt/pepper.", "Brown turkey until cooked. <button class='inline-timer-btn' onclick='startTimer(6)'>⏱ 6 MIN</button>"] }, { title: "2. BUU'S PINK POTION", steps: ["In a blender, combine: <b>1 Jar Marinara</b>, <b>1 cup Ricotta Cheese</b>, and <b>1 handful Spinach</b>.", "Blend on high until completely smooth and pink. <button class='inline-timer-btn' onclick='startTimer(1)'>⏱ 1 MIN</button>"] }, { title: "3. THE PINK FUSION", steps: ["Pour the pink sauce into the skillet with the cooked turkey. Simmer gently. <button class='inline-timer-btn' onclick='startTimer(3)'>⏱ 3 MIN</button>", "Drain pasta, toss directly into the skillet to coat in the creamy pink spell."], kidAlert: "Call it 'Princess Peach Pasta' or 'Majin Buu Noodles' depending on their favorite vibe!" } ] },
             { name: "NIMBUS CLOUD FLAPJACK FIESTA", yield: "4 Servings (Breakfast for Dinner)", time: "20 mins", hardware: "Large Griddle or Skillet, 2 Mixing Bowls, Whisk", alert: "Using Greek yogurt in the batter makes these pancakes incredibly fluffy and packed with protein for sustained energy.", have: [ { item: "Flour (All-purpose)", qty: "1.5 cups" }, { item: "Baking Powder", qty: "2 tsp" }, { item: "Milk & Eggs", qty: "Staples" } ], buy: [ "Plain or Vanilla Greek Yogurt (1 Cup)", "Fresh Blueberries (1 Pint)", "Real Maple Syrup" ], phases: [ { title: "1. DRY INGREDIENT ALCHEMY", steps: ["In a large bowl, whisk together: <b>1.5 cups Flour</b>, <b>2 tsp Baking Powder</b>, <b>2 tbsp Sugar</b>, and <b>1/2 tsp salt</b>."] }, { title: "2. THE WET POTION", steps: ["In a separate bowl, whisk: <b>1 cup Greek Yogurt</b>, <b>1/2 cup Milk</b>, <b>2 Eggs</b>, and <b>1 tsp Vanilla Extract</b>.", "Pour wet ingredients into dry. Fold gently until *just* combined. DO NOT OVERMIX (lumps are fine).", "Gently fold in <b>1 cup Blueberries</b>."] }, { title: "3. GRIDDLE LEVITATION", steps: ["Heat griddle/skillet over med-low. Melt a small dab of butter.", "Pour 1/4 cup of batter per pancake. Cook until bubbles form on the edges. <button class='inline-timer-btn' onclick='startTimer(3)'>⏱ 3 MIN</button>", "Flip carefully and cook until golden brown. <button class='inline-timer-btn' onclick='startTimer(2)'>⏱ 2 MIN</button>"], kidAlert: "Use a cookie cutter to cut Klaus and Sophia's pancakes into stars or moons before pouring syrup!" } ] },
             { name: "DRAGON RADAR MEATBALLS", yield: "4-6 Servings", time: "35 mins", hardware: "Box Grater, Large Mixing Bowl, Baking Sheet, Skillet", alert: "These 'Dragon Orbs' contain stealth zucchini for moisture and nutrients. Do not skip squeezing the water out of the zucchini!", have: [ { item: "Breadcrumbs", qty: "1/2 Cup" }, { item: "Egg", qty: "1" }, { item: "Garlic Powder/Salt", qty: "Staples" } ], buy: [ "Ground Beef or Turkey (1 lb)", "Zucchini (1 small)", "Grated Parmesan (1/2 Cup)", "Marinara Sauce (1 Jar)" ], phases: [ { title: "1. STEALTH ZUCCHINI", steps: ["Preheat oven to 400F.", "Grate <b>1 small zucchini</b>. Place in a paper towel or clean dish towel and SQUEEZE out as much water as possible over the sink."] }, { title: "2. ORB CRAFTING", steps: ["In a large bowl, mix gently with hands: <b>1 lb Ground Meat</b>, squeezed zucchini, <b>1/2 cup Breadcrumbs</b>, <b>1/2 cup Parmesan</b>, <b>1 Egg</b>, <b>1 tsp Garlic Pwdr</b>, <b>1 tsp Salt</b>.", "Roll into 1.5-inch 'Dragon Orbs' (meatballs) and place on a greased baking sheet."] }, { title: "3. THE BAKE & SAUCE", steps: ["Bake meatballs in the oven until cooked through and slightly browned. <button class='inline-timer-btn' onclick='startTimer(20)'>⏱ 20 MIN</button>", "While baking, warm <b>1 Jar Marinara</b> in a skillet over low heat.", "When meatballs finish, transfer them into the skillet sauce to coat."], kidAlert: "Serve with toothpicks instead of forks! Eating Dragon Radars off a stick is 100% more magical." } ] },
             { name: "MOON HEALING CHICKEN SOUP", yield: "6 Servings", time: "35 mins", hardware: "Pressure Cooker / Instant Pot, Cutting Board, Knife", alert: "Using bone-in chicken thighs creates a deep, healing, collagen-rich broth in a fraction of the time.", have: [ { item: "Chicken Bouillon / Stock", qty: "4 Cups" }, { item: "Small Pasta (Orzo/Stars)", qty: "1 Cup" } ], buy: [ "Bone-In Chicken Thighs (1.5 lbs)", "Carrots (3)", "Celery (3 stalks)", "Yellow Onion (1)", "Fresh Lemon (1)" ], phases: [ { title: "1. MIREPOIX MAGIC", steps: ["Turn pressure cooker to 'Sauté' mode. Add <b>1 tbsp olive oil</b>.", "Dice <b>1 onion</b>, <b>3 carrots</b>, and <b>3 celery stalks</b>. Sauté until soft. <button class='inline-timer-btn' onclick='startTimer(5)'>⏱ 5 MIN</button>"] }, { title: "2. PRESSURE CAULDRON", steps: ["Turn off Sauté. Add <b>1.5 lbs Chicken Thighs</b> and <b>4 Cups Chicken Stock/Bouillon</b> to the pot.", "Secure lid, set to Sealing. Cook on <b>High Pressure for 15 mins</b>. <button class='inline-timer-btn' onclick='startTimer(15)'>⏱ 15 MIN</button>", "While cooking, boil <b>1 cup small pasta</b> in a separate small pot on the stove. Drain and set aside."] }, { title: "3. HEALING ESCALATION", steps: ["Quick-release the pressure cooker carefully. Use tongs to remove the chicken thighs to a cutting board.", "Discard the bones/skin. Shred the meat with two forks and return it to the soup.", "Stir in the cooked pasta and a squeeze of <b>Fresh Lemon Juice</b> to brighten the broth."], kidAlert: "Klaus and Sophia will love this if you use 'Pastina' (tiny star-shaped pasta) to fit the magical theme!" } ] },
-            // BRAND NEW 4 RECIPES (TOTAL 16)
             { name: "OOZARU BANANA OAT PANCAKES", yield: "4 Servings", time: "15 mins", hardware: "Blender, Griddle/Skillet, Spatula", alert: "A completely flourless pancake! Let the batter sit in the blender for 5 minutes before pouring so the oats can absorb the liquid.", have: [ { item: "Old Fashioned Oats", qty: "2 Cups" }, { item: "Eggs", qty: "2" }, { item: "Milk", qty: "1/2 Cup" } ], buy: [ "Overripe Bananas (2)", "Baking Powder (1 tsp)", "Cinnamon (1/2 tsp)" ], phases: [ { title: "1. BLENDER ALCHEMY", steps: ["Add all ingredients to a blender: <b>2 Cups Oats</b>, <b>2 Bananas</b>, <b>2 Eggs</b>, <b>1/2 Cup Milk</b>, <b>1 tsp Baking Powder</b>, and <b>1/2 tsp Cinnamon</b>.", "Blend on high until completely smooth. <button class='inline-timer-btn' onclick='startTimer(1)'>⏱ 1 MIN</button>", "CRITICAL: Let the batter rest undisturbed in the blender pitcher. <button class='inline-timer-btn' onclick='startTimer(5)'>⏱ 5 MIN</button>"] }, { title: "2. THE GREAT APE GRIDDLE", steps: ["Heat skillet over med-low. Melt a dab of butter or coconut oil.", "Pour 1/4 cup of batter per pancake. Cook until edges look set and bubbles pop. <button class='inline-timer-btn' onclick='startTimer(3)'>⏱ 3 MIN</button>", "Flip and cook the other side until golden. <button class='inline-timer-btn' onclick='startTimer(2)'>⏱ 2 MIN</button>"], kidAlert: "These are naturally sweet from the bananas! Try serving them to the kids with peanut butter smeared on top instead of syrup." } ] },
             { name: "CAPSULE CORP MACARONI SALAD", yield: "8 Servings (Prep for days!)", time: "20 mins", hardware: "Large Pot, Large Mixing Bowl, Colander", alert: "The secret to perfect macaroni salad is tossing the hot, freshly boiled pasta with a splash of vinegar BEFORE adding the mayo. It absorbs the flavor instead of getting greasy.", have: [ { item: "Elbow Macaroni", qty: "16 oz" }, { item: "Mayonnaise", qty: "1 Cup" }, { item: "White Vinegar", qty: "2 tbsp" } ], buy: [ "Celery (3 stalks)", "Red Onion (1/4 small)", "Sweet Relish (1/4 cup)", "Hard Boiled Eggs (3)" ], phases: [ { title: "1. BOILING & VINEGAR SHOCK", steps: ["Boil large pot of salted water. Add <b>16oz Macaroni</b>. Cook slightly past al dente (extra soft). <button class='inline-timer-btn' onclick='startTimer(9)'>⏱ 9 MIN</button>", "Drain well. Transfer HOT pasta to large bowl. Instantly toss with <b>2 tbsp White Vinegar</b>. Let cool."] }, { title: "2. CHOPPING MATRIX", steps: ["While pasta boils, finely dice <b>3 stalks celery</b> and <b>1/4 red onion</b>.", "Peel and chop <b>3 Hard Boiled Eggs</b>."] }, { title: "3. BINDING SPELL", steps: ["Once pasta is mostly cool, fold in the celery, onion, eggs, and <b>1/4 cup Sweet Relish</b>.", "Add <b>1 Cup Mayo</b>, <b>1 tbsp Mustard</b>, salt and pepper. Stir until perfectly coated.", "Cover and refrigerate for at least 1 hour before serving. <button class='inline-timer-btn' onclick='startTimer(60)'>⏱ 60 MIN</button>"], kidAlert: "If the kids hate the crunch of onions, grate the onion on a cheese grater so it melts into the dressing invisibly." } ] },
             { name: "SAILOR MARS SPICY NOODLES", yield: "2 Adult, 2 Kid", time: "20 mins", hardware: "Large Pot, Skillet, Whisk", alert: "This uses a split-pot technique. You pull the kid's noodles out BEFORE activating the spicy Mars fire spell.", have: [ { item: "Spaghetti or Ramen", qty: "16 oz" }, { item: "Soy Sauce", qty: "1/4 Cup" }, { item: "Peanut Butter", qty: "3 tbsp" } ], buy: [ "Ground Pork or Beef (1 lb)", "Chili Crisp / Sriracha", "Green Onions", "Garlic (3 cloves)" ], phases: [ { title: "1. NOODLE FOUNDATION", steps: ["Boil a large pot of water. Add <b>16oz Noodles</b>. Cook per package instructions.", "Before draining, scoop out <b>1/2 cup of pasta water</b> and save it in a mug."] }, { title: "2. PORK BATTLE", steps: ["In a skillet over med-high, brown <b>1 lb Ground Meat</b> with <b>3 cloves minced garlic</b> and <b>1/2 tsp salt</b> until crispy. <button class='inline-timer-btn' onclick='startTimer(7)'>⏱ 7 MIN</button>"] }, { title: "3. THE SPLIT POTION", steps: ["In a bowl, whisk: <b>1/4 Cup Soy Sauce</b>, <b>3 tbsp Peanut Butter</b>, and the saved hot pasta water until smooth.", "Drain noodles. Toss them into the skillet with the meat and pour the peanut sauce over everything. Stir to coat."], kidAlert: "PULL THE KID PORTIONS NOW! Once their bowls are safe, stir 2-3 tbsp of Chili Crisp or Sriracha into the adult skillet to activate the Sailor Mars Fire!" } ] },
@@ -324,18 +313,24 @@
         async function fetchInventory() {
             setStatus("SCANNING DATABANKS...", true);
             try {
-                if(!SHEET_API_URL.includes("https://script.google.com/macros/s/AKfycby_EiCidBees9IA-zs7_OSxppAnD0sB2U78Qvd1-kQy7JB5sSs9l-P-FKODmQLv2c-j/exec")) { const res = await fetch(SHEET_API_URL); inventory = await res.json(); } 
-                else {
-                    inventory = [ 
-                        {"Product Name": "Ground Beef 80/20", "Quantity": 5, "Days Remaining": "30"}, 
-                        {"Product Name": "Penne Rigate", "Quantity": 2, "Days Remaining": "200"}, 
-                        {"Product Name": "White Rice", "Quantity": 1, "Days Remaining": "300"}
-                    ];
+                // FALLBACK: If URL is not set, throw error to show the alert message
+                if(SHEET_API_URL.includes("https://script.google.com/macros/s/AKfycby_EiCidBees9IA-zs7_OSxppAnD0sB2U78Qvd1-kQy7JB5sSs9l-P-FKODmQLv2c-j/exec")) {
+                    throw new Error("URL NOT SET");
                 }
+                
+                const res = await fetch(SHEET_API_URL); 
+                if(!res.ok) throw new Error("CORS or Server Error");
+                
+                inventory = await res.json(); 
+                
                 renderVault();
                 if(document.getElementById('r-name').innerText === "Opening Grimoire...") generateRecipe(); 
                 setStatus("SYSTEM ONLINE • KI STABLE", false);
-            } catch (e) { setStatus("UPLINK FAILED", false); }
+            } catch (e) { 
+                console.error("Scouter Error:", e);
+                setStatus("UPLINK FAILED (Check Permissions)", false);
+                alert("⚠️ SYNC FAILED!\n\nPlease check two things:\n1. Did you paste your URL into the code?\n2. Is your Google Apps Script deployed with 'Who has access: ANYONE'?");
+            }
         }
 
         async function updateSheetQuantity(productName, increaseBy) {
@@ -358,15 +353,12 @@
             
             const alertBox = document.getElementById('r-scouter-alert');
             if(isVaultMatch) {
-                // Kris's Vault Match warning
                 alertBox.classList.remove('hidden'); alertBox.className = 'kris-alert';
                 alertBox.innerHTML = `⚠️ <b>VAULT SYNTHESIS COMPLETE:</b> Kris's logic found this spell requires the least amount of shopping based on your current Vault! (Hopefully it's not a yucky combo!)`;
             } else if(recipe.alert) { 
                 alertBox.classList.remove('hidden'); alertBox.className = 'scouter-alert';
                 alertBox.innerHTML = `⚠️ <b>SCOUTER VISION:</b> ${recipe.alert}`; 
-            } else { 
-                alertBox.classList.add('hidden'); 
-            }
+            } else { alertBox.classList.add('hidden'); }
             
             currentRecipeNeeds = recipe.buy;
             document.getElementById('r-have').innerHTML = recipe.have.map(i => `<li class="list-item"><span>✅ ${i.item}</span> <span style="color:#aaa;">${i.qty}</span></li>`).join('');
@@ -384,7 +376,7 @@
         }
 
         function recommendFromVault() {
-            if(inventory.length === 0) { alert("Your Vault is empty! Sync your data first."); return; }
+            if(inventory.length === 0) { alert("Your Vault is empty or disconnected! Ensure your Apps Script URL is updated and 'Anyone' has access."); return; }
             let bestRecipe = null; let highestMatch = -1;
 
             recipeDB.forEach(recipe => {
@@ -406,7 +398,7 @@
             const list = document.getElementById('market-list'); list.innerHTML = '';
             marketList.forEach(item => {
                 const div = document.createElement('div'); div.className = 'shop-item';
-                div.innerHTML = `<div class="checkbox"></div><span class="item-name" style="font-size:1.05rem; font-weight:700; font-family:'Fredoka'; letter-spacing:0.5px;">${item}</span>`;
+                div.innerHTML = `<div class="checkbox"></div><span class="item-name" style="font-size:1.1rem; font-weight:800; font-family:'Nunito'; letter-spacing:0.5px;">${item}</span>`;
                 div.onclick = function() {
                     if(!this.classList.contains('bought')) {
                         this.classList.add('bought'); updateSheetQuantity(item, 1);
@@ -432,7 +424,7 @@
                 list.innerHTML += `
                     <li class="vault-item">
                         <div class="vault-item-header">
-                            <span style="font-family:'Fredoka'; letter-spacing:0.5px; font-weight:700;">${item["Product Name"]}</span>
+                            <span style="font-family:'Nunito'; letter-spacing:0.5px; font-weight:900;">${item["Product Name"]}</span>
                             <span class="item-qty">LVL: ${item.Quantity}</span>
                         </div>
                         ${warningHtml}
@@ -441,17 +433,13 @@
             });
         }
 
-        // --- OPTICAL SCANNER (LENS FIX) ---
+        // --- OPTICAL SCANNER ---
         let html5QrcodeScanner = null;
         function initScanner() {
             if(!html5QrcodeScanner) {
-                // Use the newer Html5QrcodeScanner implementation
                 html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: {width: 250, height: 200} }, false);
-                try {
-                    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-                } catch(e) {
-                    document.getElementById('scanner-error').classList.remove('hidden');
-                }
+                try { html5QrcodeScanner.render(onScanSuccess, onScanFailure); } 
+                catch(e) { document.getElementById('scanner-error').classList.remove('hidden'); }
             }
         }
         
@@ -462,18 +450,16 @@
                 let response = await fetch(`https://world.openfoodfacts.org/api/v0/product/${decodedText}.json`);
                 let data = await response.json();
                 let productName = (data.status === 1 && data.product.product_name) ? data.product.product_name : prompt("TARGET UNKNOWN. Enter item name manually:");
-                if(productName) { resEl.innerHTML = `TARGET ACQUIRED:<br><span style="color:var(--scouter-green); font-size:1.8rem; text-shadow:0 0 8px var(--scouter-green);">${productName}</span>`; resEl.style.color = "var(--scouter-green)"; updateSheetQuantity(productName, 1); alert(`⚡ ${productName} beamed to the Vault!`); }
+                if(productName) { resEl.innerHTML = `TARGET ACQUIRED:<br><span style="color:var(--scouter-green); font-size:2rem; text-shadow:0 0 8px var(--scouter-green);">${productName}</span>`; resEl.style.color = "var(--scouter-green)"; updateSheetQuantity(productName, 1); alert(`⚡ ${productName} beamed to the Vault!`); }
                 else { resEl.innerHTML = "SCAN ABORTED."; resEl.style.color = "var(--neon-pink)"; }
             } catch(e) {
                 let pName = prompt("OFFLINE MODE. Enter item name manually:");
-                if(pName) { updateSheetQuantity(pName, 1); resEl.innerHTML = `TARGET ACQUIRED:<br><span style="color:var(--scouter-green); font-size:1.8rem;">${pName}</span>`; }
+                if(pName) { updateSheetQuantity(pName, 1); resEl.innerHTML = `TARGET ACQUIRED:<br><span style="color:var(--scouter-green); font-size:2rem;">${pName}</span>`; }
             }
             setTimeout(() => { resEl.innerHTML = "AWAITING TARGET..."; if(html5QrcodeScanner) html5QrcodeScanner.resume(); }, 3000);
         }
 
-        function onScanFailure(error) { 
-            // html5-qrcode triggers this constantly while seeking. Ignore to prevent console spam.
-        }
+        function onScanFailure(error) { /* Ignore to prevent console spam */ }
 
         // --- NAVIGATION ---
         function switchTab(view, el) {
@@ -482,15 +468,8 @@
             document.getElementById('view-' + view).classList.remove('hidden'); el.classList.add('active');
             
             if(view === 'market') renderMarket();
-            if(view === 'scanner') {
-                document.getElementById('scanner-error').classList.add('hidden');
-                initScanner();
-            } else {
-                // If leaving scanner tab, clear it to free up camera
-                if(html5QrcodeScanner) {
-                    html5QrcodeScanner.clear().then(() => { html5QrcodeScanner = null; }).catch(e => console.log(e));
-                }
-            }
+            if(view === 'scanner') { document.getElementById('scanner-error').classList.add('hidden'); initScanner(); } 
+            else { if(html5QrcodeScanner) { html5QrcodeScanner.clear().then(() => { html5QrcodeScanner = null; }).catch(e => console.log(e)); } }
         }
 
         fetchInventory(); renderMarket();
