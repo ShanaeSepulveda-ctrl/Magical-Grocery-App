@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Prism Scouter v8.0 🌙🐉</title>
+    <title>Prism Scouter v9.0 🌙🐉</title>
     <script src="https://unpkg.com/html5-qrcode"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
@@ -11,9 +11,10 @@
         :root {
             --moon-pink: #ff3399; --neon-pink: #ff007f;
             --dbz-orange: #ff8c00; --ssj-gold: #ffd700;
-            --scouter-green: #39ff14; --cosmic-dark: #0a001a;
-            --glass: rgba(10, 5, 20, 0.9);
+            --scouter-green: #39ff14; --cosmic-dark: #05000a;
+            --glass: rgba(10, 5, 20, 0.92);
             --text-glow: 0 0 5px var(--moon-pink), 0 0 10px var(--neon-pink);
+            --crt-line: rgba(255, 255, 255, 0.03);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -24,15 +25,22 @@
             padding-bottom: 90px; overflow-x: hidden;
         }
 
+        /* CRT SCANLINE OVERLAY (90s Vibe) */
+        body::after {
+            content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 999; background-size: 100% 4px, 6px 100%; pointer-events: none;
+        }
+
         /* MATRIX CANVAS */
-        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; opacity: 0.5; }
+        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; opacity: 0.6; }
 
         /* HEADER */
         header {
             background: linear-gradient(90deg, rgba(255,51,153,0.85), rgba(74,14,78,0.85));
             text-align: center; padding: 18px; border-bottom: 3px solid var(--dbz-orange);
             box-shadow: 0 0 20px var(--dbz-orange); position: sticky; top: 0; z-index: 10;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
         }
         header h1 { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1.5rem; text-shadow: var(--text-glow); letter-spacing: 2px; }
         .subtitle { font-size: 0.7rem; color: var(--scouter-green); font-weight: bold; margin-top: 5px; }
@@ -59,7 +67,7 @@
         .inline-timer-btn:active { background: #fff; transform: scale(0.95); }
 
         /* CONTAINERS & CARDS */
-        .app-container { padding: 12px; max-width: 800px; margin: 0 auto; }
+        .app-container { padding: 12px; max-width: 800px; margin: 0 auto; position: relative; z-index: 5; }
         
         .card {
             background: var(--glass); border: 2px solid var(--moon-pink); border-radius: 8px;
@@ -77,7 +85,6 @@
         .data-item { font-size: 0.8rem; }
         .data-label { color: var(--dbz-orange); font-weight: bold; display: block; margin-bottom: 3px; font-size: 0.7rem; font-family: 'Orbitron', sans-serif; }
         .hardware-list { grid-column: 1 / -1; color: #aaa; font-size: 0.8rem; margin-top: 5px; border-top: 1px dashed #444; padding-top: 8px; }
-        
         .scouter-alert { background: rgba(255, 140, 0, 0.15); border-left: 4px solid var(--dbz-orange); padding: 12px; font-size: 0.85rem; line-height: 1.5; margin-bottom: 20px; }
 
         /* INGREDIENTS */
@@ -85,7 +92,13 @@
         .ing-section h4 { font-family: 'Orbitron', sans-serif; font-size: 0.85rem; margin-bottom: 8px; }
         .list-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dotted #444; font-size: 0.85rem; }
 
-        /* EXECUTION INSTRUCTIONS (TYPE-A) */
+        /* VAULT & EXPIRATION WARNINGS */
+        .vault-item { display: flex; flex-direction: column; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .vault-item-header { display: flex; justify-content: space-between; width: 100%; font-size: 0.9rem; }
+        .crit-warning { color: #ff003c; font-size: 0.7rem; font-weight: bold; margin-top: 4px; font-family: 'Orbitron', sans-serif; text-shadow: 0 0 5px #ff003c; animation: pulse 1.5s infinite; }
+        .soon-warning { color: var(--dbz-orange); font-size: 0.7rem; font-weight: bold; margin-top: 4px; font-family: 'Orbitron', sans-serif; }
+
+        /* EXECUTION INSTRUCTIONS */
         .combat-phase { margin-bottom: 25px; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 6px; border: 1px solid #333; }
         .phase-title { font-family: 'Orbitron', sans-serif; color: var(--scouter-green); font-size: 1rem; border-bottom: 2px solid var(--scouter-green); padding-bottom: 5px; margin-bottom: 15px; }
         .instruction-step { margin-bottom: 15px; line-height: 1.6; font-size: 0.9rem; padding-left: 15px; position: relative; color: #eee; }
@@ -111,7 +124,7 @@
         .magic-btn.pink { border-color: var(--neon-pink); color: var(--neon-pink); }
         .magic-btn.pink:active { background: var(--neon-pink); color: #fff; }
 
-        /* SCANNER CUSTOMIZATION */
+        /* SCANNER */
         #reader { border: 2px solid var(--dbz-orange); border-radius: 8px; overflow: hidden; background: #000; }
         #reader button { background: var(--neon-pink); color: white; border: none; padding: 8px; border-radius: 4px; font-family: 'Space Mono', monospace; font-weight: bold; cursor: pointer; margin: 5px; }
 
@@ -121,12 +134,13 @@
             background: #000; border-top: 2px solid var(--moon-pink);
             display: flex; justify-content: space-around; padding: 10px 0 20px 0; z-index: 100;
         }
-        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 0.7rem; color: #666; cursor: pointer; text-transform: uppercase; font-family: 'Orbitron', sans-serif; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 0.7rem; color: #666; cursor: pointer; text-transform: uppercase; font-family: 'Orbitron', sans-serif; z-index: 10; }
         .nav-item.active { color: var(--neon-pink); text-shadow: 0 0 5px var(--neon-pink); }
         .nav-icon { font-size: 1.4rem; margin-bottom: 4px; filter: grayscale(100%); }
         .nav-item.active .nav-icon { filter: grayscale(0%); }
 
         .hidden { display: none !important; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
     </style>
 </head>
 <body>
@@ -148,15 +162,12 @@
             <button class="magic-btn" onclick="generateRecipe()" style="margin-bottom: 15px;">☄️ REROLL MISSION MODULE ☄️</button>
             <div class="card">
                 <div class="card-title"><span id="r-name" style="color:var(--ssj-gold); font-size: 1.3rem;">Loading Module...</span></div>
-                
                 <div class="data-grid">
                     <div class="data-item"><span class="data-label">🍽️ YIELD</span><span id="r-yield"></span></div>
                     <div class="data-item"><span class="data-label">⏳ TIME</span><span id="r-time"></span></div>
                     <div class="hardware-list"><span class="data-label">🛠️ HARDWARE REQUIRED</span><span id="r-hardware"></span></div>
                 </div>
-
                 <div id="r-scouter-alert" class="scouter-alert hidden"></div>
-
                 <div class="ingredient-grid">
                     <div class="ing-section">
                         <h4 style="color: var(--scouter-green);">🎒 VERIFIED IN VAULT</h4>
@@ -169,7 +180,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="card" id="recipe-instructions-card">
                 <div class="card-title">📜 COMBAT LOG (EXECUTION)</div>
                 <div id="r-combat-phases"></div>
@@ -187,7 +197,7 @@
         <div id="view-scanner" class="view-section hidden">
             <div class="card">
                 <div class="card-title">👁️ OPTICAL LENS</div>
-                <p style="font-size: 0.75rem; color:#aaa; margin-bottom: 15px;">Scan physical barcodes to automatically ping the Global Food Database and beam items to the Vault.</p>
+                <p style="font-size: 0.75rem; color:#aaa; margin-bottom: 15px;">Scan physical barcodes to ping the Global Food Database and sync to the Vault.</p>
                 <div id="reader"></div>
                 <div id="scan-result" style="margin-top: 20px; font-family: 'Orbitron'; font-size: 1rem; color: var(--scouter-green); text-align: center;">AWAITING TARGET...</div>
             </div>
@@ -205,18 +215,10 @@
     </div>
 
     <nav>
-        <div class="nav-item active" onclick="switchTab('recipes', this)">
-            <span class="nav-icon">⚔️</span><span>TACTICS</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('market', this)">
-            <span class="nav-icon">🎯</span><span>SCOUTER</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('scanner', this)">
-            <span class="nav-icon">👁️</span><span>LENS</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('vault', this)">
-            <span class="nav-icon">💾</span><span>VAULT</span>
-        </div>
+        <div class="nav-item active" onclick="switchTab('recipes', this)"><span class="nav-icon">⚔️</span><span>TACTICS</span></div>
+        <div class="nav-item" onclick="switchTab('market', this)"><span class="nav-icon">🎯</span><span>SCOUTER</span></div>
+        <div class="nav-item" onclick="switchTab('scanner', this)"><span class="nav-icon">👁️</span><span>LENS</span></div>
+        <div class="nav-item" onclick="switchTab('vault', this)"><span class="nav-icon">💾</span><span>VAULT</span></div>
     </nav>
 
     <script>
@@ -226,7 +228,7 @@
         const chars = '🌙✨🌸⚡️🐉💖⭐🪐☄️'.split(''); const fontSize = 16; const columns = canvas.width / fontSize;
         const drops = Array(Math.floor(columns)).fill(1);
         function drawMatrix() {
-            ctx.fillStyle = 'rgba(10, 0, 26, 0.08)'; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.font = fontSize + 'px monospace';
+            ctx.fillStyle = 'rgba(5, 0, 10, 0.08)'; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.font = fontSize + 'px monospace';
             for(let i = 0; i < drops.length; i++) {
                 const text = chars[Math.floor(Math.random() * chars.length)];
                 ctx.fillStyle = ['#ff007f', '#ff8c00', '#39ff14'][Math.floor(Math.random() * 3)];
@@ -241,20 +243,15 @@
         let timerInterval; let timeRemaining = 0;
         function startTimer(minutes) {
             clearInterval(timerInterval); timeRemaining = Math.floor(minutes * 60);
-            const timerEl = document.getElementById('scouter-timer');
-            timerEl.classList.remove('hidden'); timerEl.classList.remove('timer-alert');
-            updateTimerDisplay();
+            const timerEl = document.getElementById('scouter-timer'); timerEl.classList.remove('hidden'); timerEl.classList.remove('timer-alert'); updateTimerDisplay();
             timerInterval = setInterval(() => {
                 timeRemaining--;
-                if(timeRemaining <= 0) {
-                    clearInterval(timerInterval); document.getElementById('timer-display').innerText = "00:00";
-                    timerEl.classList.add('timer-alert'); playRetroBeep();
-                } else updateTimerDisplay();
+                if(timeRemaining <= 0) { clearInterval(timerInterval); document.getElementById('timer-display').innerText = "00:00"; timerEl.classList.add('timer-alert'); playRetroBeep(); }
+                else updateTimerDisplay();
             }, 1000);
         }
         function updateTimerDisplay() {
-            let m = Math.floor(timeRemaining / 60).toString().padStart(2, '0');
-            let s = (timeRemaining % 60).toString().padStart(2, '0');
+            let m = Math.floor(timeRemaining / 60).toString().padStart(2, '0'); let s = (timeRemaining % 60).toString().padStart(2, '0');
             document.getElementById('timer-display').innerText = `${m}:${s}`;
         }
         function stopTimer() { clearInterval(timerInterval); document.getElementById('scouter-timer').classList.add('hidden'); document.getElementById('scouter-timer').classList.remove('timer-alert'); }
@@ -271,65 +268,100 @@
             } catch(e) {}
         }
 
-        // --- CORE LOGIC & MASTER RECIPE DATABASE ---
+        // --- CORE LOGIC & 8 MASTER RECIPES ---
         const SHEET_API_URL = "https://script.google.com/macros/s/AKfycby_EiCidBees9IA-zs7_OSxppAnD0sB2U78Qvd1-kQy7JB5sSs9l-P-FKODmQLv2c-j/exec"; 
         let inventory = []; let marketList = []; let currentRecipeNeeds = [];
 
-        // TYPE-A HYPER-DETAILED DATABASE
         const recipeDB = [
             {
-                name: "NY STRIP TACO BOWLS",
-                yield: "2 adults and 2 kids", time: "35 mins",
-                hardware: "Pressure Cooker, Small Saucepan, Large Skillet, Cutting Board, Knife",
+                name: "NY STRIP TACO BOWLS", yield: "2 adults, 2 kids", time: "35 mins", hardware: "Pressure Cooker, Saucepan, Skillet, Cutting Board, Knife",
                 alert: "You only need ONE taco-seasoning packet. Keep the second packet in reserve rather than seasoning everything into oblivion.",
-                have: [ { item: "White Rice", qty: "1.5 cups" }, { item: "Black Beans", qty: "1 (15oz) Can" }, { item: "Olive Oil / Butter", qty: "Staples" } ],
-                buy: [ "NY Strip Steak (1.25 - 1.5 lbs)", "Taco Seasoning (1 Pkt)", "Limes (2)", "Steamable Corn (1 bag)", "Cucumber (1)", "Avocado (1)", "Taco Cheese" ],
+                have: [ { item: "White Rice", qty: "1.5 cups" }, { item: "Black Beans", qty: "1 (15oz) Can" } ],
+                buy: [ "NY Strip Steak (1.25 lbs)", "Taco Seasoning (1 Pkt)", "Limes (2)", "Steamable Corn (1 bag)", "Cucumber (1)", "Avocado (1)", "Taco Cheese" ],
                 phases: [
-                    { title: "1. RICE CALIBRATION", steps: ["Put <b>1.5 cups rice</b> in strainer and rinse under cold water until mostly clear.", "Add to pressure-cooker: rinsed rice, <b>1.5 cups water</b>, <b>1 tbsp butter</b>, and <b>1/2 tsp salt</b>.", "Set valve to Sealing. Cook on <b>High Pressure for 4 mins</b>. <button class='inline-timer-btn' onclick='startTimer(4)'>⏱ 4 MIN</button>", "When finished, allow 10 minutes natural release. <button class='inline-timer-btn' onclick='startTimer(10)'>⏱ 10 MIN</button>"], kidAlert: "Do not use the stovetop 2-cup water ratio in the pressure cooker. It will yield rice pudding." },
-                    { title: "2. PREP PHASE", steps: ["Trim thick hard exterior fat from steak. Cut against grain into 1/2-inch cubes.", "Pat steak cubes COMPLETELY DRY with paper towels.", "<b>TOPPING:</b> In a small bowl combine: <b>1 diced cucumber</b>, <b>2 tbsp diced onion</b>, <b>Juice of 1/2 lime</b>, and a small pinch of salt. Refrigerate."], kidAlert: "Dry steak browns. Wet steak sits in its own sadness and steams. For milder kid portions, do not heavily season the raw steak yet." },
-                    { title: "3. BEAN INTEGRATION", steps: ["Heat <b>1 tsp olive oil</b> in small saucepan over med heat. Add <b>1/4 cup diced onion</b>; cook. <button class='inline-timer-btn' onclick='startTimer(3)'>⏱ 3 MIN</button>", "Add drained/rinsed beans, <b>1/3 cup water</b>, <b>1/2 tsp cumin</b>, and <b>1/2 tsp taco seasoning</b>.", "Simmer uncovered. Mash a few spoonfuls against the pot to thicken naturally. <button class='inline-timer-btn' onclick='startTimer(8)'>⏱ 8 MIN</button>", "Turn off heat and stir in <b>Juice of 1/2 lime</b>."] },
-                    { title: "4. CORN & STEAK COMBAT", steps: ["<b>CORN:</b> Steam corn per package. Transfer to bowl and stir in <b>1 tbsp butter</b>, <b>1/4 tsp taco seasoning</b>, and <b>Juice of 1/2 lime</b>.", "<b>STEAK:</b> Heat skillet over med-high for 2 mins. Add <b>1 tbsp olive oil</b>. Place steak in single layer.", "Leave untouched for 2 mins. <button class='inline-timer-btn' onclick='startTimer(2)'>⏱ 2 MIN</button> Flip/stir and cook 1-2 mins more. <button class='inline-timer-btn' onclick='startTimer(1.5)'>⏱ 1.5 MIN</button>"], kidAlert: "FOR THE KIDS: Remove their desired amount of plain corn and plain cooked steak NOW before adding the adult seasoning!" },
-                    { title: "5. FINAL FUSION", steps: ["<b>ADULT STEAK:</b> Reduce heat. Add <b>1.5 tbsp taco seasoning</b>, <b>3 tbsp water</b>, and <b>Juice of 1/2 lime</b>. Toss until liquid evaporates. <button class='inline-timer-btn' onclick='startTimer(1)'>⏱ 1 MIN</button>", "<b>KID PLATING:</b> Keep separated: rice, beans, plain steak, plain corn, cucumber, avocado, cheese so Foods Do Not Touch.", "<b>ADULT PLATING:</b> Layer rice, beans, lime-butter corn, seasoned steak, cheese, cucumber topping, avocado. Squeeze extra lime."] }
+                    { title: "1. RICE CALIBRATION", steps: ["Rinse <b>1.5 cups rice</b>.", "Add to pressure-cooker: rice, <b>1.5 cups water</b>, <b>1 tbsp butter</b>, and <b>1/2 tsp salt</b>.", "Set valve to Sealing. Cook on <b>High Pressure for 4 mins</b>. <button class='inline-timer-btn' onclick='startTimer(4)'>⏱ 4 MIN</button>", "Allow 10 minutes natural release. <button class='inline-timer-btn' onclick='startTimer(10)'>⏱ 10 MIN</button>"], kidAlert: "Do not use the stovetop 2-cup water ratio. It yields mush." },
+                    { title: "2. PREP PHASE", steps: ["Trim fat from steak. Cut into 1/2-inch cubes. Pat completely dry.", "<b>TOPPING:</b> Combine <b>1 diced cucumber</b>, <b>2 tbsp diced onion</b>, <b>Juice of 1/2 lime</b>, pinch of salt. Refrigerate."], kidAlert: "Dry steak browns. Wet steak steams." },
+                    { title: "3. BEAN INTEGRATION", steps: ["Heat <b>1 tsp oil</b> in saucepan. Cook <b>1/4 cup diced onion</b>. <button class='inline-timer-btn' onclick='startTimer(3)'>⏱ 3 MIN</button>", "Add beans, <b>1/3 cup water</b>, <b>1/2 tsp cumin</b>, <b>1/2 tsp taco seasoning</b>.", "Simmer, mashing some beans against the pot. <button class='inline-timer-btn' onclick='startTimer(8)'>⏱ 8 MIN</button>", "Turn off heat, stir in <b>Juice of 1/2 lime</b>."] },
+                    { title: "4. CORN & STEAK COMBAT", steps: ["Steam corn per package. Mix with <b>1 tbsp butter</b>, <b>1/4 tsp taco seasoning</b>, <b>Juice of 1/2 lime</b>.", "Heat skillet med-high for 2 mins. Add <b>1 tbsp olive oil</b>. Place steak in single layer.", "Untouched for 2 mins. <button class='inline-timer-btn' onclick='startTimer(2)'>⏱ 2 MIN</button> Flip/stir, cook 1.5 mins. <button class='inline-timer-btn' onclick='startTimer(1.5)'>⏱ 1.5 MIN</button>"], kidAlert: "Remove kid portions of plain corn and plain steak NOW." },
+                    { title: "5. FINAL FUSION", steps: ["Reduce heat. To adult steak add <b>1.5 tbsp taco seasoning</b>, <b>3 tbsp water</b>, <b>Juice of 1/2 lime</b>. Toss until evaporated. <button class='inline-timer-btn' onclick='startTimer(1)'>⏱ 1 MIN</button>", "<b>KID PLATING:</b> Keep separated so Foods Do Not Touch.", "<b>ADULT PLATING:</b> Layer rice, beans, corn, seasoned steak, cheese, cucumber, avocado. Squeeze extra lime."] }
                 ]
             },
             {
-                name: "COSMIC PENNE POWER-UP",
-                yield: "4-6 Servings", time: "25 mins",
-                hardware: "Large Pasta Pot, Large Skillet (12-inch), Box Grater, Colander",
-                alert: "Micro-grating the zucchini completely dissolves it into the tomato sauce, creating an invisible nutritional payload for the toddlers.",
-                have: [ { item: "Ground Beef 80/20", qty: "1 lb" }, { item: "Penne Rigate", qty: "16 oz box" }, { item: "Tomato Basil Sauce", qty: "1 Jar (23oz)" }, { item: "Garlic / Onion Pwdr", qty: "Spices" } ],
+                name: "COSMIC PENNE POWER-UP", yield: "4-6 Servings", time: "25 mins", hardware: "Large Pasta Pot, Large Skillet, Box Grater, Colander",
+                alert: "Micro-grating the zucchini dissolves it into the sauce, creating an invisible payload for the toddlers.",
+                have: [ { item: "Ground Beef 80/20", qty: "1 lb" }, { item: "Penne Rigate", qty: "16 oz" }, { item: "Tomato Basil Sauce", qty: "1 Jar (23oz)" } ],
                 buy: [ "Fresh Zucchini (1)", "Garlic Bulb", "Mozzarella Pearls (8oz)" ],
                 phases: [
-                    { title: "1. COLD PREP (MISE EN PLACE)", steps: ["Gather all ingredients. Finely grate <b>1 medium zucchini</b> using the SMALLEST holes on the box grater (this ensures toddlers won't detect texture).", "Peel and mince <b>2 cloves of fresh garlic</b>."] },
-                    { title: "2. BOIL & SEAR", steps: ["Bring large pot of heavily salted water to boil. Add <b>16oz Penne</b>. <button class='inline-timer-btn' onclick='startTimer(11)'>⏱ 11 MIN</button>", "In skillet over med-high heat, add <b>1 lb Beef</b>, minced garlic, <b>1 tsp salt</b>, <b>1 tsp onion powder</b>.", "Break apart and brown beef until no pink remains. <button class='inline-timer-btn' onclick='startTimer(6)'>⏱ 6 MIN</button> Drain excess grease."] },
-                    { title: "3. SAUCE INTEGRATION", steps: ["Reduce skillet heat to med-low. Pour in <b>1 jar Tomato Basil Sauce</b> and the grated zucchini.", "Stir to combine and let the meat sauce simmer gently while pasta finishes. <button class='inline-timer-btn' onclick='startTimer(5)'>⏱ 5 MIN</button>"] },
-                    { title: "4. ASSEMBLY & PLATING", steps: ["Drain pasta and fold directly into the bubbling meat sauce.", "Turn off heat. Scatter <b>8oz Mozzarella Pearls</b> across top. Cover with lid until gooey. <button class='inline-timer-btn' onclick='startTimer(2)'>⏱ 2 MIN</button>"], kidAlert: "Optional: Sprinkle hemp hearts ('Fairy Dust') onto the toddler plates for undetectable Omega-3s and protein!" }
+                    { title: "1. COLD PREP", steps: ["Finely grate <b>1 medium zucchini</b> using SMALLEST holes on the box grater.", "Mince <b>2 cloves of fresh garlic</b>."] },
+                    { title: "2. BOIL & SEAR", steps: ["Bring salted water to boil. Add <b>16oz Penne</b>. <button class='inline-timer-btn' onclick='startTimer(11)'>⏱ 11 MIN</button>", "In skillet med-high, add <b>1 lb Beef</b>, minced garlic, <b>1 tsp salt</b>, <b>1 tsp onion powder</b>.", "Brown beef until no pink remains. <button class='inline-timer-btn' onclick='startTimer(6)'>⏱ 6 MIN</button> Drain excess grease."] },
+                    { title: "3. SAUCE INTEGRATION", steps: ["Reduce heat to med-low. Pour in <b>1 jar Tomato Basil Sauce</b> and grated zucchini.", "Simmer gently while pasta finishes. <button class='inline-timer-btn' onclick='startTimer(5)'>⏱ 5 MIN</button>"] },
+                    { title: "4. ASSEMBLY", steps: ["Drain pasta, fold directly into meat sauce.", "Turn off heat. Scatter <b>8oz Mozzarella Pearls</b> across top. Cover until gooey. <button class='inline-timer-btn' onclick='startTimer(2)'>⏱ 2 MIN</button>"], kidAlert: "Sprinkle hemp hearts onto toddler plates for hidden Omegas!" }
                 ]
             },
             {
-                name: "CAPSULE CORP CHICKEN BOWL",
-                yield: "4 Servings", time: "30 mins",
-                hardware: "Rice Cooker, Large Skillet, Small Mixing Bowl, Cutting Board, Knife",
-                alert: "Do not put the teriyaki sauce in the pan while the chicken is raw. It contains sugar and will burn before the chicken cooks.",
-                have: [ { item: "White Rice", qty: "1.5 cups" }, { item: "Soy Sauce", qty: "1/4 cup" }, { item: "Olive Oil & Spices", qty: "Staples" } ],
+                name: "CAPSULE CORP CHICKEN BOWL", yield: "4 Servings", time: "30 mins", hardware: "Rice Cooker, Large Skillet, Small Bowl, Cutting Board",
+                alert: "Do not put the teriyaki sauce in the pan while chicken is raw. Sugar burns fast.",
+                have: [ { item: "White Rice", qty: "1.5 cups" }, { item: "Soy Sauce", qty: "1/4 cup" } ],
                 buy: [ "Chicken Breast (1.25 lbs)", "Broccoli Florets (1 bag frozen)", "Brown Sugar", "Sesame Oil" ],
                 phases: [
-                    { title: "1. RICE & SAUCE PREP", steps: ["Rinse <b>1.5 cups rice</b>. Cook in rice cooker with 1.5 cups water.", "<b>TERIYAKI KI-BLAST:</b> In small bowl, whisk: <b>1/4 cup soy sauce</b>, <b>3 tbsp brown sugar</b>, <b>1 tbsp sesame oil</b>, <b>1/2 tsp garlic powder</b>.", "<b>PROTEIN:</b> Cut <b>1.25 lbs chicken</b> into bite-sized 1-inch cubes. Pat dry with paper towels."] },
-                    { title: "2. COMBAT (COOKING)", steps: ["Steam <b>1 bag frozen broccoli</b> in microwave per package instructions.", "Heat skillet over med-high with <b>1 tbsp olive oil</b>. Add chicken cubes in a single layer. Do not crowd.", "Let sear untouched. <button class='inline-timer-btn' onclick='startTimer(3)'>⏱ 3 MIN</button> Flip and cook until internal temp hits 165F. <button class='inline-timer-btn' onclick='startTimer(4)'>⏱ 4 MIN</button>"] },
-                    { title: "3. GLAZE & SERVE", steps: ["Reduce heat to low. Pour the Teriyaki mixture over the cooked chicken.", "Let the sauce bubble and thicken around the chicken. <button class='inline-timer-btn' onclick='startTimer(2)'>⏱ 2 MIN</button>", "Layer bowls with rice, broccoli, and glazed chicken. Spoon extra pan sauce over top."] }
+                    { title: "1. PREP", steps: ["Rinse <b>1.5 cups rice</b>. Cook in rice cooker.", "<b>TERIYAKI:</b> Whisk: <b>1/4 cup soy sauce</b>, <b>3 tbsp brown sugar</b>, <b>1 tbsp sesame oil</b>, <b>1/2 tsp garlic powder</b>.", "Cut <b>1.25 lbs chicken</b> into 1-inch cubes. Pat dry."] },
+                    { title: "2. COMBAT", steps: ["Steam <b>1 bag broccoli</b> in microwave.", "Heat skillet med-high with <b>1 tbsp olive oil</b>. Add chicken in single layer.", "Sear untouched. <button class='inline-timer-btn' onclick='startTimer(3)'>⏱ 3 MIN</button> Flip, cook until 165F. <button class='inline-timer-btn' onclick='startTimer(4)'>⏱ 4 MIN</button>"] },
+                    { title: "3. GLAZE & SERVE", steps: ["Reduce heat to low. Pour Teriyaki mixture over chicken.", "Let bubble and thicken. <button class='inline-timer-btn' onclick='startTimer(2)'>⏱ 2 MIN</button>", "Layer bowls with rice, broccoli, glazed chicken."] }
                 ]
             },
             {
-                name: "SAILOR GUARDIAN SALMON",
-                yield: "2 Adults, 2 Kids", time: "20 mins",
-                hardware: "Large Non-Stick Skillet, Baking Sheet (for Asparagus), Fish Spatula",
+                name: "SAILOR GUARDIAN SALMON", yield: "2 Adults, 2 Kids", time: "20 mins", hardware: "Large Non-Stick Skillet, Baking Sheet, Spatula",
                 alert: "Fish cooks incredibly fast. Do not walk away from the stove during Phase 2.",
-                have: [ { item: "Olive Oil & Butter", qty: "Staples" }, { item: "Garlic Powder / Salt", qty: "Staples" } ],
-                buy: [ "Salmon Fillets (4 portions)", "Fresh Asparagus (1 bunch)", "Fresh Lemons (2)" ],
+                have: [ { item: "Olive Oil & Butter", qty: "Staples" }, { item: "Garlic Powder", qty: "Staples" } ],
+                buy: [ "Salmon Fillets (4)", "Fresh Asparagus (1 bunch)", "Fresh Lemons (2)" ],
                 phases: [
-                    { title: "1. PREP & ROAST", steps: ["Preheat oven to 400F.", "Snap woody ends off <b>1 bunch Asparagus</b>. Toss on baking sheet with <b>1 tbsp olive oil</b>, salt, and pepper.", "Roast asparagus in oven until tender. <button class='inline-timer-btn' onclick='startTimer(12)'>⏱ 12 MIN</button>", "Pat <b>4 Salmon Fillets</b> completely dry. Season flesh side with salt and garlic powder."] },
-                    { title: "2. PAN SEAR", steps: ["Heat skillet over med-high. Add <b>1 tbsp olive oil</b>. When oil shimmers, place salmon SKIN SIDE UP (flesh side down).", "Press gently with spatula so it lays flat. Let sear undisturbed. <button class='inline-timer-btn' onclick='startTimer(4)'>⏱ 4 MIN</button>", "Carefully flip salmon (skin side down now). Cook until opaque and flaky. <button class='inline-timer-btn' onclick='startTimer(3)'>⏱ 3 MIN</button>"] },
-                    { title: "3. BUTTER BASTE", steps: ["In the last minute of cooking, drop <b>2 tbsp butter</b> and a squeeze of <b>1/2 lemon</b> into the pan.", "Spoon the melting lemon-butter continuously over the top of the salmon fillets.", "Remove from heat immediately to prevent drying out. Serve alongside roasted asparagus."], kidAlert: "Kids often prefer their salmon flaked apart and mixed with rice or plain pasta rather than eating a whole fillet." }
+                    { title: "1. ROAST", steps: ["Preheat oven to 400F.", "Snap ends off <b>1 bunch Asparagus</b>. Toss on baking sheet with <b>1 tbsp olive oil</b>, salt, pepper.", "Roast asparagus. <button class='inline-timer-btn' onclick='startTimer(12)'>⏱ 12 MIN</button>", "Pat <b>4 Salmon Fillets</b> completely dry. Season flesh side with salt and garlic powder."] },
+                    { title: "2. PAN SEAR", steps: ["Heat skillet med-high. Add <b>1 tbsp olive oil</b>. Place salmon SKIN SIDE UP.", "Press gently. Sear undisturbed. <button class='inline-timer-btn' onclick='startTimer(4)'>⏱ 4 MIN</button>", "Carefully flip (skin down). Cook until opaque. <button class='inline-timer-btn' onclick='startTimer(3)'>⏱ 3 MIN</button>"] },
+                    { title: "3. BUTTER BASTE", steps: ["In last minute, drop <b>2 tbsp butter</b> and squeeze of <b>1/2 lemon</b> into pan.", "Spoon melting lemon-butter over fillets.", "Remove immediately. Serve with asparagus."], kidAlert: "Flake toddler salmon apart and ensure there are absolutely zero bones." }
+                ]
+            },
+            {
+                name: "SENZU BEAN TURKEY CHILI", yield: "6 Servings (Meal Prep)", time: "40 mins", hardware: "Large Dutch Oven, Cutting Board, Knife, Can Opener",
+                alert: "Finely mincing the celery and carrots creates a natural thickening base (mirepoix) while hiding the texture from picky eaters.",
+                have: [ { item: "Kidney Beans", qty: "1 Can" }, { item: "Black Beans", qty: "1 Can" }, { item: "Spices", qty: "Chili Pwdr/Cumin/Garlic" } ],
+                buy: [ "Ground Turkey (1 lb)", "Crushed Tomatoes (28oz)", "Carrots (2)", "Celery (2 stalks)", "Yellow Onion (1)" ],
+                phases: [
+                    { title: "1. STEALTH VEG PREP", steps: ["Finely dice <b>1 onion</b>.", "Mince <b>2 carrots</b> and <b>2 celery stalks</b> as small as humanly possible (the stealth phase)."] },
+                    { title: "2. THE SEAR", steps: ["Heat <b>1 tbsp oil</b> in Dutch Oven over med heat. Add onion, carrot, celery. Sauté until soft. <button class='inline-timer-btn' onclick='startTimer(6)'>⏱ 6 MIN</button>", "Add <b>1 lb Ground Turkey</b>. Break apart and brown. <button class='inline-timer-btn' onclick='startTimer(5)'>⏱ 5 MIN</button>", "Stir in <b>2 tbsp Chili Powder</b>, <b>1 tbsp Cumin</b>, <b>1 tsp Garlic Powder</b>, <b>1 tsp Salt</b>. Toast spices. <button class='inline-timer-btn' onclick='startTimer(1)'>⏱ 1 MIN</button>"] },
+                    { title: "3. SIMMER & BUILD", steps: ["Pour in <b>28oz Crushed Tomatoes</b>.", "Drain and rinse both cans of beans. Stir them into the pot.", "Bring to gentle boil, then reduce heat to low. Cover and simmer. <button class='inline-timer-btn' onclick='startTimer(20)'>⏱ 20 MIN</button>"], kidAlert: "Serve kid bowls slightly cooled with a heavy handful of shredded cheese and tortilla chips for scooping." }
+                ]
+            },
+            {
+                name: "KAMEHAMEHA MAC & CHEESE", yield: "4-6 Servings", time: "25 mins", hardware: "Blender, Large Pot, Whisk, Colander",
+                alert: "The butternut squash blends seamlessly with cheddar to create a vibrant orange sauce that looks exactly like boxed mac, but is packed with vitamins.",
+                have: [ { item: "Pasta (Elbows/Rotini)", qty: "16 oz" }, { item: "Whole Milk", qty: "1 Cup" }, { item: "Butter", qty: "2 tbsp" } ],
+                buy: [ "Frozen Butternut Squash (10oz)", "Sharp Cheddar Block (8oz)", "Parmesan (1/4 cup)" ],
+                phases: [
+                    { title: "1. THE BASE", steps: ["Steam <b>10oz frozen butternut squash</b> in microwave per package.", "Grate <b>8oz Sharp Cheddar</b> from a block (pre-shredded won't melt smoothly).", "In a blender, combine: steamed squash, <b>1 cup Whole Milk</b>, <b>1/2 tsp salt</b>, <b>1/2 tsp garlic powder</b>. Blend until completely smooth. <button class='inline-timer-btn' onclick='startTimer(1)'>⏱ 1 MIN</button>"] },
+                    { title: "2. THE BOIL", steps: ["Boil large pot of salted water. Add <b>16oz Pasta</b>. Cook until al dente. <button class='inline-timer-btn' onclick='startTimer(8)'>⏱ 8 MIN</button>", "Drain pasta, return empty pot to the stove over low heat."] },
+                    { title: "3. FUSION", steps: ["Melt <b>2 tbsp butter</b> in the empty warm pot. Pour in the blended squash mixture.", "Whisk in the grated Cheddar and <b>1/4 cup Parmesan</b> until perfectly melted and glossy.", "Remove from heat, fold in the cooked pasta until heavily coated."], kidAlert: "Do not reveal the squash secret until they have asked for seconds." }
+                ]
+            },
+            {
+                name: "LUNAR PRISM HONEY PORK", yield: "4 Servings", time: "30 mins", hardware: "Large Sheet Pan, Foil, Meat Thermometer, Small Bowl",
+                alert: "Lining the sheet pan with foil is mandatory. Baked honey creates a structural matrix on bare metal that requires a chisel to clean.",
+                have: [ { item: "Soy Sauce", qty: "2 tbsp" }, { item: "Olive Oil", qty: "2 tbsp" } ],
+                buy: [ "Pork Tenderloin (1-1.2 lbs)", "Honey (3 tbsp)", "Fresh Broccoli (2 heads)", "Garlic Bulb" ],
+                phases: [
+                    { title: "1. OVEN CALIBRATION", steps: ["Preheat oven to 400F. Line sheet pan entirely with aluminum foil.", "Cut <b>2 heads of broccoli</b> into florets. Toss on one side of the pan with <b>1 tbsp olive oil</b>, salt, pepper."] },
+                    { title: "2. GLAZE CRAFTING", steps: ["In a bowl, mix: <b>3 tbsp Honey</b>, <b>2 tbsp Soy Sauce</b>, <b>1 tbsp Olive Oil</b>, <b>2 minced garlic cloves</b>.", "Place <b>Pork Tenderloin</b> on the empty side of the sheet pan. Brush heavily with the honey glaze."] },
+                    { title: "3. ROAST", steps: ["Roast the entire pan in the oven. <button class='inline-timer-btn' onclick='startTimer(20)'>⏱ 20 MIN</button>", "Check pork internal temp (must hit 145F). If reached, remove from oven. Let rest before slicing. <button class='inline-timer-btn' onclick='startTimer(5)'>⏱ 5 MIN</button>"], kidAlert: "Slice the pork tenderloin extremely thin (against the grain) for toddlers to easily chew." }
+                ]
+            },
+            {
+                name: "PICCOLO'S GREEN POWER BOWL", yield: "2 Adult, 2 Kid", time: "10 mins", hardware: "High-Speed Blender, 4 Bowls",
+                alert: "A lightning-fast, high-nutrient breakfast or recovery meal. The frozen mango completely masks the spinach flavor.",
+                have: [ { item: "Milk (Any type)", qty: "1 Cup" } ],
+                buy: [ "Frozen Mango Chunks (2 Cups)", "Fresh Baby Spinach (2 big handfuls)", "Plain Greek Yogurt (1 Cup)", "Bananas (2)" ],
+                phases: [
+                    { title: "1. LIQUID BASE", steps: ["Add to blender first: <b>1 cup Milk</b> and <b>1 cup Greek Yogurt</b> (liquids first protects the blade)."] },
+                    { title: "2. THE GREEN CHARGE", steps: ["Add <b>2 big handfuls Baby Spinach</b>.", "Blend on high until the liquid is completely bright green and no leaf chunks remain. <button class='inline-timer-btn' onclick='startTimer(1)'>⏱ 1 MIN</button>"] },
+                    { title: "3. THICKENING", steps: ["Add <b>2 Cups Frozen Mango</b> and <b>1 Banana</b>.", "Blend until thick and smooth like soft-serve ice cream. Add a splash more milk if it gets stuck.", "Pour into bowls."], kidAlert: "Top the kid bowls with a handful of dry Cheerios or their favorite cereal. The crunch makes it feel like a treat." }
                 ]
             }
         ];
@@ -337,8 +369,17 @@
         async function fetchInventory() {
             setStatus("SCANNING DATABANKS...", true);
             try {
-                if(!SHEET_API_URL.includes("https://script.google.com/macros/s/AKfycby_EiCidBees9IA-zs7_OSxppAnD0sB2U78Qvd1-kQy7JB5sSs9l-P-FKODmQLv2c-j/exec")) { const res = await fetch(SHEET_API_URL); inventory = await res.json(); } 
-                else { inventory = [ {"Product Name": "Ground Beef 80/20", "Quantity": 5}, {"Product Name": "White Rice", "Quantity": 1}, {"Product Name": "Penne Rigate", "Quantity": 1} ]; }
+                if(!SHEET_API_URL.includes("https://script.google.com/macros/s/AKfycby_EiCidBees9IA-zs7_OSxppAnD0sB2U78Qvd1-kQy7JB5sSs9l-P-FKODmQLv2c-j/exec")) {
+                    const res = await fetch(SHEET_API_URL); inventory = await res.json();
+                } else {
+                    // Fallback Mock Data showing Expiration Logic
+                    inventory = [ 
+                        {"Product Name": "Ground Beef 80/20", "Quantity": 5, "Days Remaining": "30"}, 
+                        {"Product Name": "Whole Milk", "Quantity": 1, "Days Remaining": "-2"}, 
+                        {"Product Name": "Power Greens", "Quantity": 2, "Days Remaining": "4"},
+                        {"Product Name": "White Rice", "Quantity": 1, "Days Remaining": "300"}
+                    ];
+                }
                 renderVault();
                 if(document.getElementById('r-name').innerText === "Loading Module...") generateRecipe(); 
                 setStatus("SYSTEM ONLINE • KI STABLE", false);
@@ -351,7 +392,7 @@
             let newQty = item ? parseInt(item.Quantity) + increaseBy : increaseBy;
             if (item) item.Quantity = newQty;
             renderVault();
-            if(!SHEET_API_URL.includes("https://script.google.com/macros/s/AKfycby_EiCidBees9IA-zs7_OSxppAnD0sB2U78Qvd1-kQy7JB5sSs9l-P-FKODmQLv2c-j/exec")) {
+            if(!SHEET_API_URL.includes("https://script.google.com/macros/s/AKfycby_EiCidBees9IA-zs7_OSxppAnD0sB2U78Qvd1-kQy7JB5sSs9l-P-FKODmQLv2c-j/execD")) {
                 try { await fetch(SHEET_API_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ productName, newQuantity: newQty }) }); } catch(e) {}
             }
             setStatus("SYSTEM ONLINE • KI STABLE", false);
@@ -398,7 +439,24 @@
             const list = document.getElementById('vault-list'); list.innerHTML = '';
             inventory.forEach(item => {
                 if(!item["Product Name"]) return;
-                list.innerHTML += `<li class="list-item" style="border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="font-weight:bold;">${item["Product Name"]}</span><span style="color:var(--scouter-green); font-family:'Orbitron';">LVL: ${item.Quantity}</span></li>`;
+                
+                // CRITICAL ENERGY WARNING LOGIC
+                let days = parseInt(item["Days Remaining"]);
+                let warningHtml = "";
+                if(!isNaN(days)) {
+                    if(days < 0) warningHtml = `<div class="crit-warning">⚠️ CRITICAL: EXPIRED (${Math.abs(days)}d)</div>`;
+                    else if (days <= 14) warningHtml = `<div class="soon-warning">⚠️ EXPIRES SOON (${days}d)</div>`;
+                }
+
+                list.innerHTML += `
+                    <li class="vault-item">
+                        <div class="vault-item-header">
+                            <span style="font-weight:bold;">${item["Product Name"]}</span>
+                            <span style="color:var(--scouter-green); font-family:'Orbitron';">LVL: ${item.Quantity}</span>
+                        </div>
+                        ${warningHtml}
+                    </li>
+                `;
             });
         }
 
