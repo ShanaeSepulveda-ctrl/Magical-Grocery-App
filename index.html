@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Prism Scouter v3.0 🌙🐉</title>
+    <title>Prism Scouter v4.0 🌙🐉</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
 
         :root {
             --moon-pink: #ff3399;
@@ -13,9 +13,10 @@
             --dbz-orange: #ff8c00;
             --ssj-gold: #ffd700;
             --scouter-green: #39ff14;
-            --cosmic-dark: #0a001a;
-            --glass: rgba(15, 5, 30, 0.75);
-            --text-glow: 0 0 5px var(--moon-pink), 0 0 10px var(--neon-pink);
+            --cosmic-dark: #070012;
+            --rpg-blue: #000080;
+            --glass: rgba(10, 10, 35, 0.85);
+            --retro-border: 4px solid #fff;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -29,189 +30,141 @@
             overflow-x: hidden;
         }
 
-        /* SAILOR MOON MATRIX CANVAS */
-        #matrix-canvas {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            z-index: -1;
-            opacity: 0.6;
-        }
+        /* SAILOR MOON X MATRIX CANVAS */
+        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; opacity: 0.5; }
 
-        /* HEADER */
+        /* HEADER - 90s Anime Scouter Style */
         header {
-            background: linear-gradient(90deg, rgba(255,51,153,0.8), rgba(74,14,78,0.8));
+            background: linear-gradient(90deg, var(--moon-pink), var(--rpg-blue));
             text-align: center;
-            padding: 20px;
-            border-bottom: 3px solid var(--dbz-orange);
-            box-shadow: 0 0 20px var(--dbz-orange);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            backdrop-filter: blur(5px);
+            padding: 15px;
+            border-bottom: 4px solid var(--dbz-orange);
+            position: sticky; top: 0; z-index: 10;
+            box-shadow: 0 4px 15px rgba(255, 140, 0, 0.4);
         }
 
         header h1 { 
-            font-family: 'Orbitron', sans-serif; 
-            font-weight: 900; 
-            font-size: 1.6rem; 
+            font-family: 'Press Start 2P', cursive; 
+            font-size: 1rem; 
             color: #fff;
-            text-shadow: var(--text-glow);
-            letter-spacing: 2px;
+            text-shadow: 2px 2px 0 var(--neon-pink);
+            margin-bottom: 8px;
+            line-height: 1.4;
         }
-        .subtitle { font-size: 0.75rem; color: var(--scouter-green); font-weight: bold; margin-top: 5px; }
+        .subtitle { font-size: 0.7rem; color: var(--scouter-green); font-weight: bold; }
         .syncing { animation: pulse 1s infinite; color: var(--ssj-gold); }
 
-        /* CONTAINERS & CARDS */
-        .app-container { padding: 15px; max-width: 600px; margin: 0 auto; }
+        /* CONTAINERS & 90s RPG CARDS */
+        .app-container { padding: 12px; max-width: 600px; margin: 0 auto; }
         
         .card {
             background: var(--glass);
-            border: 2px solid var(--moon-pink);
-            border-radius: 12px;
-            padding: 18px;
-            margin-bottom: 25px;
-            box-shadow: 0 0 15px rgba(255, 51, 153, 0.4), inset 0 0 10px rgba(255, 51, 153, 0.2);
-            backdrop-filter: blur(10px);
+            border: var(--retro-border);
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: inset -2px -2px 0px rgba(255,255,255,0.3), inset 2px 2px 0px rgba(255,255,255,0.3), 0 0 15px rgba(255, 51, 153, 0.3);
         }
 
         .card-title {
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Press Start 2P', cursive;
             color: var(--ssj-gold);
-            font-size: 1.2rem;
-            border-bottom: 1px solid var(--moon-pink);
+            font-size: 0.8rem;
+            border-bottom: 2px dashed var(--moon-pink);
             padding-bottom: 10px;
             margin-bottom: 15px;
-            text-shadow: 0 0 8px var(--ssj-gold);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            line-height: 1.5;
+            display: flex; justify-content: space-between; align-items: center;
         }
 
-        /* RECIPE SPECIFICS */
-        .recipe-stat-bar {
-            display: flex;
+        /* HIGH-DENSITY DATA STYLING */
+        .data-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 10px;
             margin-bottom: 15px;
-            font-size: 0.8rem;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border: 1px solid var(--rpg-blue);
         }
-        .stat-badge {
-            background: rgba(255, 140, 0, 0.2);
-            border: 1px solid var(--dbz-orange);
-            color: var(--dbz-orange);
-            padding: 4px 8px;
-            border-radius: 4px;
-        }
+        .data-item { font-size: 0.75rem; }
+        .data-label { color: var(--dbz-orange); font-weight: bold; display: block; margin-bottom: 3px; font-size: 0.65rem; text-transform: uppercase; }
+        
+        .macro-bar { display: flex; gap: 5px; margin-top: 5px; }
+        .macro-pill { background: #222; border: 1px solid #555; font-size: 0.65rem; padding: 2px 6px; border-radius: 10px; }
+        
+        .tag-container { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; }
+        .tag { background: var(--moon-pink); color: #fff; font-size: 0.65rem; padding: 3px 8px; border-radius: 3px; font-family: 'Press Start 2P', cursive; }
 
+        /* STRUCTURED INSTRUCTIONS */
+        .phase-header {
+            color: var(--scouter-green);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.7rem;
+            margin: 15px 0 10px 0;
+            text-transform: uppercase;
+            text-shadow: 1px 1px 0 #000;
+        }
         .instruction-step {
             margin-bottom: 12px;
-            line-height: 1.5;
-            font-size: 0.9rem;
-            border-left: 3px solid var(--scouter-green);
+            line-height: 1.4;
+            font-size: 0.85rem;
+            border-left: 2px solid var(--rpg-blue);
             padding-left: 10px;
-            background: rgba(57, 255, 20, 0.05);
+            color: #ddd;
         }
-        .instruction-step b { color: var(--moon-pink); text-shadow: 0 0 3px var(--moon-pink); }
+        .instruction-step b { color: var(--ssj-gold); }
 
-        /* VAULT & LISTS */
+        /* LISTS */
         .list-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 10px;
-            border-bottom: 1px dashed rgba(255,255,255,0.2);
-            font-size: 0.9rem;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px; border-bottom: 1px dotted rgba(255,255,255,0.3); font-size: 0.85rem;
         }
-        
-        .power-level {
-            font-family: 'Orbitron', sans-serif;
-            color: var(--scouter-green);
-            text-shadow: 0 0 5px var(--scouter-green);
-            font-weight: bold;
-        }
-
-        /* CRITICAL ENERGY (EXPIRING SOON) */
-        .critical-warning {
-            color: #ff003c;
-            text-shadow: 0 0 8px #ff003c;
-            font-size: 0.75rem;
-            animation: pulse 1.5s infinite;
-            display: block;
-            margin-top: 4px;
-        }
+        .power-level { font-family: 'Press Start 2P', cursive; color: var(--scouter-green); font-size: 0.6rem; }
+        .critical-warning { color: #ff003c; font-size: 0.7rem; display: block; margin-top: 4px; font-weight: bold; }
 
         /* MARKET CHECKBOXES */
         .shop-item {
-            display: flex;
-            align-items: center;
-            padding: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--moon-pink);
-            border-radius: 8px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            transition: 0.3s;
+            display: flex; align-items: center; padding: 12px;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--rpg-blue);
+            margin-bottom: 8px; cursor: pointer; transition: 0.3s;
         }
-        .shop-item.bought {
-            border-color: var(--scouter-green);
-            background: rgba(57, 255, 20, 0.1);
-            opacity: 0.6;
-        }
+        .shop-item.bought { border-color: var(--scouter-green); background: rgba(57, 255, 20, 0.1); opacity: 0.5; }
         .shop-item.bought .item-name { text-decoration: line-through; color: var(--scouter-green); }
-
         .checkbox {
-            width: 20px; height: 20px;
-            border: 2px solid var(--moon-pink);
-            border-radius: 4px;
-            margin-right: 15px;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 0 5px var(--moon-pink);
+            width: 18px; height: 18px; border: 2px solid var(--moon-pink);
+            margin-right: 15px; display: flex; align-items: center; justify-content: center;
         }
-        .bought .checkbox { background: var(--scouter-green); border-color: var(--scouter-green); box-shadow: 0 0 8px var(--scouter-green); }
-        .bought .checkbox::after { content: '✓'; color: #000; font-weight: bold; }
+        .bought .checkbox { background: var(--scouter-green); border-color: var(--scouter-green); }
+        .bought .checkbox::after { content: 'X'; color: #000; font-family: 'Press Start 2P', cursive; font-size: 0.6rem; }
 
         /* BUTTONS */
         .magic-btn {
-            background: transparent;
-            border: 2px solid var(--dbz-orange);
-            color: var(--dbz-orange);
-            padding: 12px;
-            width: 100%;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: bold;
-            font-size: 1rem;
-            text-transform: uppercase;
-            cursor: pointer;
-            border-radius: 8px;
-            box-shadow: inset 0 0 10px rgba(255, 140, 0, 0.2), 0 0 10px rgba(255, 140, 0, 0.4);
-            transition: 0.2s;
-            margin-top: 10px;
+            background: rgba(0,0,0,0.5); border: 2px solid var(--dbz-orange); color: var(--dbz-orange);
+            padding: 15px; width: 100%; font-family: 'Press Start 2P', cursive;
+            font-size: 0.7rem; text-transform: uppercase; cursor: pointer;
+            box-shadow: inset 2px 2px 0 rgba(255,140,0,0.3); transition: 0.1s; margin-top: 10px;
         }
-        .magic-btn:active { background: var(--dbz-orange); color: #000; box-shadow: 0 0 20px var(--dbz-orange); }
-        .magic-btn.pink { border-color: var(--neon-pink); color: var(--neon-pink); box-shadow: inset 0 0 10px rgba(255, 0, 127, 0.2), 0 0 10px rgba(255, 0, 127, 0.4); }
+        .magic-btn:active { background: var(--dbz-orange); color: #000; transform: translateY(2px); }
+        .magic-btn.pink { border-color: var(--neon-pink); color: var(--neon-pink); }
         .magic-btn.pink:active { background: var(--neon-pink); color: #fff; }
 
         /* NAV */
         nav {
             position: fixed; bottom: 0; left: 0; width: 100%;
-            background: rgba(10, 0, 26, 0.95);
-            border-top: 2px solid var(--moon-pink);
-            display: flex; justify-content: space-around;
-            padding: 12px 0 25px 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 -5px 15px rgba(255, 51, 153, 0.3);
+            background: #000; border-top: var(--retro-border);
+            display: flex; justify-content: space-around; padding: 10px 0 20px 0; z-index: 100;
         }
         .nav-item {
             display: flex; flex-direction: column; align-items: center;
-            font-size: 0.75rem; color: #666; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+            font-size: 0.6rem; color: #666; cursor: pointer; font-family: 'Press Start 2P', cursive;
         }
-        .nav-item.active { color: var(--neon-pink); text-shadow: 0 0 5px var(--neon-pink); }
-        .nav-icon { font-size: 1.5rem; margin-bottom: 5px; opacity: 0.5; }
-        .nav-item.active .nav-icon { opacity: 1; filter: drop-shadow(0 0 5px var(--neon-pink)); }
+        .nav-item.active { color: var(--neon-pink); text-shadow: 2px 2px 0 #333; }
+        .nav-icon { font-size: 1.5rem; margin-bottom: 8px; filter: grayscale(100%); }
+        .nav-item.active .nav-icon { filter: grayscale(0%); }
 
         .hidden { display: none !important; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
     </style>
 </head>
 <body>
@@ -226,38 +179,52 @@
     <div class="app-container">
         
         <div id="view-recipes" class="view-section">
+            
+            <button class="magic-btn" onclick="generateRecipe()" style="margin-bottom: 15px; background: #000;">🔄 REROLL MISSION 🔄</button>
+
             <div class="card">
                 <div class="card-title">
-                    <span>✨ TACTICAL MENU</span>
-                    <span style="font-size: 1.5rem; cursor:pointer;" onclick="generateRecipe()">🔄</span>
-                </div>
-                <h2 id="r-name" style="color: var(--neon-pink); margin-bottom: 10px; font-family: 'Orbitron'; text-shadow: 0 0 8px var(--neon-pink);">Loading Module...</h2>
-                
-                <div class="recipe-stat-bar">
-                    <span class="stat-badge" id="r-time">⏱️ 0m</span>
-                    <span class="stat-badge" id="r-power">🔥 PL: 0</span>
+                    <span id="r-name" style="color: var(--neon-pink);">Loading...</span>
                 </div>
                 
-                <p id="r-desc" style="font-size: 0.85rem; color: #aaa; margin-bottom: 20px;"></p>
-                
-                <h4 style="color: var(--scouter-green); margin-bottom: 10px;">🎒 VERIFIED IN VAULT</h4>
-                <ul id="r-have" style="list-style: none; margin-bottom: 20px; font-size: 0.85rem;"></ul>
+                <div class="tag-container" id="r-tags"></div>
 
-                <h4 style="color: var(--dbz-orange); margin-bottom: 10px;">🛒 MISSING COMPONENTS</h4>
-                <ul id="r-buy" style="list-style: none; margin-bottom: 15px; font-size: 0.85rem;"></ul>
-                <button class="magic-btn pink" onclick="sendToMarket()">➕ PUSH TO SCOUTER LIST</button>
+                <div class="data-grid">
+                    <div class="data-item"><span class="data-label">⏳ TIME</span><span id="r-time"></span></div>
+                    <div class="data-item"><span class="data-label">🍽️ YIELD</span><span id="r-yield"></span></div>
+                    <div class="data-item" style="grid-column: 1 / -1;">
+                        <span class="data-label">🔥 MACROS (Per Serving)</span>
+                        <div class="macro-bar" id="r-macros"></div>
+                    </div>
+                </div>
+
+                <div class="data-grid" style="background: rgba(0,0,128,0.2);">
+                    <div class="data-item" style="grid-column: 1 / -1;">
+                        <span class="data-label">🛠️ HARDWARE REQUIRED</span>
+                        <span id="r-equipment" style="font-size: 0.8rem; color:#ccc;"></span>
+                    </div>
+                </div>
+                
+                <h4 style="color: var(--scouter-green); margin: 15px 0 10px 0; font-size: 0.8rem;">🎒 VERIFIED IN VAULT</h4>
+                <ul id="r-have" style="list-style: none; margin-bottom: 15px;"></ul>
+
+                <h4 style="color: var(--dbz-orange); margin: 15px 0 10px 0; font-size: 0.8rem;">🛒 MISSING MATERIA</h4>
+                <ul id="r-buy" style="list-style: none; margin-bottom: 15px;"></ul>
+                <button class="magic-btn pink" onclick="sendToMarket()">➕ PUSH MISSING TO SCOUTER</button>
             </div>
 
-            <div class="card" id="recipe-instructions-card">
-                <div class="card-title">📜 EXECUTION PROTOCOL</div>
-                <div id="r-steps"></div>
+            <div class="card">
+                <div class="card-title">📜 EXECUTION LOG</div>
+                <div id="r-steps-prep"></div>
+                <div id="r-steps-cook"></div>
+                <div id="r-steps-serve"></div>
             </div>
         </div>
 
         <div id="view-market" class="view-section hidden">
             <div class="card">
                 <div class="card-title">🛒 TARGET ACQUISITION</div>
-                <p style="font-size: 0.75rem; color:#aaa; margin-bottom: 15px;">Tap acquired targets to instantly sync to the main data frame.</p>
+                <p style="font-size: 0.75rem; color:#aaa; margin-bottom: 15px;">Tap acquired targets to instantly sync to the main data sheet.</p>
                 <div id="market-list"></div>
             </div>
         </div>
@@ -266,9 +233,8 @@
             <div class="card">
                 <div class="card-title">
                     <span>🐉 DATA VAULT</span>
-                    <span class="power-level" onclick="fetchInventory()" style="cursor:pointer;">🔄 SYNC</span>
+                    <span style="font-size: 1.2rem; cursor:pointer;" onclick="fetchInventory()">🔄</span>
                 </div>
-                <p style="font-size: 0.75rem; color:#aaa; margin-bottom: 15px;">Scanning for Critical Energy (expiring items)...</p>
                 <ul id="vault-list" style="list-style: none;"></ul>
             </div>
         </div>
@@ -277,49 +243,32 @@
 
     <nav>
         <div class="nav-item active" onclick="switchTab('recipes', this)">
-            <span class="nav-icon">🔮</span><span>Tactics</span>
+            <span class="nav-icon">⚔️</span><span>TACTICS</span>
         </div>
         <div class="nav-item" onclick="switchTab('market', this)">
-            <span class="nav-icon">🎯</span><span>Scouter</span>
+            <span class="nav-icon">🎯</span><span>SCOUTER</span>
         </div>
         <div class="nav-item" onclick="switchTab('vault', this)">
-            <span class="nav-icon">📊</span><span>Vault</span>
+            <span class="nav-icon">💾</span><span>VAULT</span>
         </div>
     </nav>
 
     <script>
-        // --- MATRIX RAIN LOGIC ---
+        // --- MATRIX RAIN ---
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        // DBZ & Sailor Moon Symbols
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         const chars = '🌙✨🌸⚡️🐉💖⭐🪐☄️'.split('');
-        const fontSize = 16;
-        const columns = canvas.width / fontSize;
-        const drops = [];
-        for(let x = 0; x < columns; x++) drops[x] = 1;
-
+        const fontSize = 16; const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
         function drawMatrix() {
-            ctx.fillStyle = 'rgba(10, 0, 26, 0.05)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            ctx.fillStyle = '#ff007f'; // Neon Pink
+            ctx.fillStyle = 'rgba(7, 0, 18, 0.1)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.font = fontSize + 'px monospace';
-            
             for(let i = 0; i < drops.length; i++) {
                 const text = chars[Math.floor(Math.random() * chars.length)];
-                
-                // Randomize colors slightly between pink, purple, and orange
-                const colors = ['#ff007f', '#ff8c00', '#b57eff'];
-                ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
-                
+                ctx.fillStyle = ['#ff007f', '#ff8c00', '#b57eff'][Math.floor(Math.random() * 3)];
                 ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                
-                if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
+                if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
                 drops[i]++;
             }
         }
@@ -329,88 +278,119 @@
         const SHEET_API_URL = "https://script.google.com/macros/s/AKfycby_EiCidBees9IA-zs7_OSxppAnD0sB2U78Qvd1-kQy7JB5sSs9l-P-FKODmQLv2c-j/exec"; 
         
         let inventory = [];
-        let marketList = ["Fresh Zucchini", "Mozzarella Pearls"];
+        let marketList = [];
         let currentRecipeNeeds = [];
 
-        // UPGRADED RECIPE DATABASE (Precision & Macros)
+        // HYPER-DETAILED RECIPE DATABASE
         const recipeDB = [
             {
-                name: "Cosmic Penne Power-Up",
-                time: "25 MIN",
-                powerLevel: "OVER 9000! (650 kcal)",
-                desc: "Elven stovetop heat-beater. Hidden veggies for the toddlers, bold flavor for the squad.",
-                have: [
-                    { item: "Ground Beef 80/20", qty: "1 lb" },
-                    { item: "Penne Rigate Pasta", qty: "16 oz box" },
-                    { item: "Organic Tomato Basil Sauce", qty: "1 Jar (23 oz)" }
+                name: "COSMIC PENNE POWER-UP",
+                tags: ["KID FRIENDLY", "HIGH PROTEIN", "HIDDEN VEG"],
+                time: "Prep: 10m | Cook: 15m",
+                yield: "4-6 Servings",
+                macros: { cal: "620", p: "38g", c: "55g", f: "22g" },
+                equipment: ["Large Skillet (12-inch)", "Large Pasta Pot", "Box Grater", "Colander", "Chef's Knife"],
+                have: [ { item: "Ground Beef 80/20", qty: "1 lb" }, { item: "Penne Rigate", qty: "16 oz" }, { item: "Tomato Basil Sauce", qty: "1 Jar (23oz)" } ],
+                buy: ["Fresh Zucchini", "Garlic Bulb", "Mozzarella Pearls (8oz)"],
+                prep: [
+                    "<b>[MISE EN PLACE]:</b> Gather all ingredients and equipment on counter.",
+                    "<b>[VEG]:</b> Finely grate <b>1 medium zucchini</b> using the small holes on the box grater (this ensures toddlers won't detect it).",
+                    "<b>[AROMATICS]:</b> Peel and mince <b>2 cloves garlic</b>."
                 ],
-                buy: ["Fresh Zucchini", "Mozzarella Pearls"],
-                steps: [
-                    "<b>PREP [0:00]:</b> Finely grate exactly <b>1 medium zucchini</b> (this hides it completely in the sauce). Mince <b>2 cloves of fresh garlic</b>.",
-                    "<b>BOIL [0:05]:</b> Bring a large pot of heavily salted water to a boil. Add <b>16 oz Penne</b>. Cook for exactly 11 minutes. Drain.",
-                    "<b>SEAR [0:07]:</b> In a large skillet over medium-high heat, brown <b>1 lb of Ground Beef</b> with the minced garlic, <b>1 tsp Salt</b>, and <b>1 tsp Onion Powder</b>. Drain excess grease.",
-                    "<b>FUSION [0:15]:</b> Reduce heat to low. Pour in the entire jar of <b>Tomato Basil Sauce</b> and the grated zucchini. Simmer for 10 minutes.",
-                    "<b>FINISH [0:25]:</b> Fold the cooked pasta into the meat sauce. Turn off heat. Drop in <b>1 cup of fresh Mozzarella Pearls</b> and serve immediately while melty!"
+                cook: [
+                    "<b>[PASTA]:</b> Bring large pot of salted water to boil. Add <b>16oz Penne</b>. Set timer for 11 mins.",
+                    "<b>[SEAR]:</b> In skillet over medium-high heat, add <b>1 lb Beef</b>, minced garlic, <b>1 tsp salt</b>, and <b>1/2 tsp black pepper</b>. Break apart and brown until no pink remains (approx 6 mins).",
+                    "<b>[SAUCE]:</b> Drain excess fat from skillet. Reduce heat to medium-low. Pour in <b>1 jar Tomato Basil Sauce</b> and the grated zucchini. Stir to combine.",
+                    "<b>[SIMMER]:</b> Let meat sauce simmer gently while pasta finishes boiling. Drain pasta."
+                ],
+                serve: [
+                    "<b>[FUSION]:</b> Fold drained pasta directly into the meat sauce skillet.",
+                    "<b>[MAGIC]:</b> Turn off heat. Scatter <b>8oz Mozzarella Pearls</b> across the top. Cover with lid for 2 mins until gooey.",
+                    "<b>[PLATE]:</b> Serve immediately. (Optional: Sprinkle hemp hearts on toddler plates for hidden omega-3s)."
                 ]
             },
             {
-                name: "Saiyan Skillet Tacos",
-                time: "15 MIN",
-                powerLevel: "HIGH PROTEIN (550 kcal)",
-                desc: "Lightning fast recovery meal. No oven required.",
-                have: [
-                    { item: "Ground Beef 80/20", qty: "1 lb" },
-                    { item: "Sharp Cheddar Cheese", qty: "1.5 cups, shredded" }
+                name: "SAIYAN RECOVERY TACOS",
+                tags: ["FAST", "HIGH PROTEIN", "NO OVEN"],
+                time: "Prep: 5m | Cook: 10m",
+                yield: "4 Servings",
+                macros: { cal: "550", p: "42g", c: "30g", f: "28g" },
+                equipment: ["Large Cast Iron Skillet", "Can Opener", "Cutting Board", "Tongs"],
+                have: [ { item: "Ground Beef 80/20", qty: "1 lb" }, { item: "Sharp Cheddar", qty: "1.5 cups" }, { item: "Olive Oil", qty: "1 tbsp" } ],
+                buy: ["Bell Peppers (2)", "Black Beans (15oz can)", "Fresh Limes (2)", "Avocado (1)"],
+                prep: [
+                    "<b>[VEG]:</b> Core and thinly slice <b>2 Bell Peppers</b>.",
+                    "<b>[BEANS]:</b> Open, drain, and rigorously rinse <b>1 can Black Beans</b>.",
+                    "<b>[GARNISH]:</b> Slice limes into wedges. Dice the avocado."
                 ],
-                buy: ["Bell Peppers", "Black Beans (Canned)", "Fresh Lime"],
-                steps: [
-                    "<b>PREP [0:00]:</b> Thinly slice <b>2 Bell Peppers</b>. Drain and rinse <b>1 can (15 oz) of Black Beans</b>.",
-                    "<b>SAUTÉ [0:05]:</b> Heat <b>1 tbsp Olive Oil</b> in a skillet. Sauté peppers for 4 mins until soft.",
-                    "<b>BROWN [0:10]:</b> Add <b>1 lb Ground Beef</b> to the pan. Season with <b>1 tbsp Chili Powder</b>, <b>1 tsp Cumin</b>, and <b>1 tsp Salt</b>. Cook until no longer pink.",
-                    "<b>COMBINE [0:12]:</b> Toss in the black beans just to heat through.",
-                    "<b>SERVE [0:15]:</b> Serve in bowls topped heavily with shredded <b>Sharp Cheddar</b> and a mandatory hard squeeze of <b>Fresh Lime Juice</b>."
+                cook: [
+                    "<b>[SAUTÉ]:</b> Heat <b>1 tbsp Olive Oil</b> in skillet over med-high. Toss in bell peppers. Char for 4 mins.",
+                    "<b>[BROWN]:</b> Push peppers to skillet edge. Add <b>1 lb Beef</b> to center. Season aggressively with <b>1 tbsp Chili Powder, 1 tsp Cumin, 1 tsp Salt</b>. Cook 5 mins.",
+                    "<b>[COMBINE]:</b> Fold beans into the beef and pepper mixture. Reduce heat to low, let warm for 2 mins."
+                ],
+                serve: [
+                    "<b>[PLATE]:</b> Scoop mixture directly into bowls (or tortillas if preferred).",
+                    "<b>[GARNISH]:</b> Top heavily with <b>Sharp Cheddar</b> and avocado.",
+                    "<b>[KI BLAST]:</b> Squeeze 1-2 lime wedges over each bowl immediately before eating to cut the richness."
+                ]
+            },
+            {
+                name: "CAPSULE CORP CHICKEN BOWL",
+                tags: ["MEAL PREP", "LEAN KI", "EASY"],
+                time: "Prep: 10m | Cook: 20m",
+                yield: "4 Servings",
+                macros: { cal: "480", p: "35g", c: "60g", f: "12g" },
+                equipment: ["Rice Cooker (or Pot)", "Medium Skillet", "Measuring Cups"],
+                have: [ { item: "Long Grain Rice", qty: "1.5 cups" }, { item: "Soy Sauce", qty: "3 tbsp" }, { item: "Chicken Bouillon", qty: "1 cube" } ],
+                buy: ["Chicken Breast (1 lb)", "Frozen Broccoli (1 bag)", "Sesame Oil"],
+                prep: [
+                    "<b>[GRAIN]:</b> Rinse <b>1.5 cups Rice</b> until water runs clear.",
+                    "<b>[PROTEIN]:</b> Cut <b>1 lb Chicken</b> into bite-sized 1-inch cubes."
+                ],
+                cook: [
+                    "<b>[RICE]:</b> Cook rice with 3 cups water and <b>1 Bouillon Cube</b>.",
+                    "<b>[VEG]:</b> Steam <b>1 bag Broccoli</b> in microwave per package instructions.",
+                    "<b>[CHICKEN]:</b> Heat skillet with <b>1 tbsp Sesame Oil</b>. Sear chicken cubes for 7-8 mins until cooked through. Add <b>3 tbsp Soy Sauce</b> in the last minute to glaze."
+                ],
+                serve: [
+                    "<b>[BUILD]:</b> Layer a bed of rice, top with chicken and broccoli.",
+                    "<b>[BOOST]:</b> Drizzle with extra soy sauce or hot sauce if desired."
                 ]
             }
         ];
 
         async function fetchInventory() {
-            setStatus("SCANNING DATABANKS...", true);
+            setStatus("SCANNING VAULT...", true);
             try {
                 if(!SHEET_API_URL.includes("https://script.google.com/macros/s/AKfycby_EiCidBees9IA-zs7_OSxppAnD0sB2U78Qvd1-kQy7JB5sSs9l-P-FKODmQLv2c-j/exec")) {
-                    const response = await fetch(SHEET_API_URL);
-                    inventory = await response.json();
+                    const res = await fetch(SHEET_API_URL);
+                    inventory = await res.json();
                 } else {
-                    // Fallback Mock Data showing the new Expiring functionality
                     inventory = [
                         {"Product Name": "Ground Beef 80/20", "Quantity": 5, "Days Remaining": 30},
-                        {"Product Name": "Whole Milk", "Quantity": 2, "Days Remaining": -5},
                         {"Product Name": "Power Greens", "Quantity": 1, "Days Remaining": 3},
-                        {"Product Name": "Penne Rigate Pasta", "Quantity": 1, "Days Remaining": 631}
+                        {"Product Name": "Penne Rigate", "Quantity": 1, "Days Remaining": 631}
                     ];
                 }
                 renderVault();
-                generateRecipe(); 
+                if(document.getElementById('r-name').innerText === "Loading...") generateRecipe(); 
                 setStatus("SYSTEM ONLINE • KI STABLE", false);
             } catch (e) {
-                console.error(e);
                 setStatus("UPLINK FAILED", false);
             }
         }
 
         async function updateSheetQuantity(productName, increaseBy) {
-            setStatus("BEAMING TO CLOUD...", true);
+            setStatus("WRITING TO MAINFRAME...", true);
             let item = inventory.find(i => i["Product Name"] === productName);
             let newQty = item ? parseInt(item.Quantity) + increaseBy : increaseBy;
             if (item) item.Quantity = newQty;
             renderVault();
-
             if(!SHEET_API_URL.includes("https://script.google.com/macros/s/AKfycby_EiCidBees9IA-zs7_OSxppAnD0sB2U78Qvd1-kQy7JB5sSs9l-P-FKODmQLv2c-j/exec")) {
                 try {
-                    await fetch(SHEET_API_URL, {
-                        method: 'POST',
-                        mode: 'no-cors',
+                    await fetch(SHEET_API_URL, { method: 'POST', mode: 'no-cors',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ productName: productName, newQuantity: newQty })
+                        body: JSON.stringify({ productName, newQuantity: newQty })
                     });
                 } catch(e) {}
             }
@@ -419,10 +399,20 @@
 
         function generateRecipe() {
             const recipe = recipeDB[Math.floor(Math.random() * recipeDB.length)];
+            
             document.getElementById('r-name').innerText = recipe.name;
-            document.getElementById('r-time').innerText = "⏱️ " + recipe.time;
-            document.getElementById('r-power').innerText = "🔥 PL: " + recipe.powerLevel;
-            document.getElementById('r-desc').innerText = recipe.desc;
+            document.getElementById('r-time').innerText = recipe.time;
+            document.getElementById('r-yield').innerText = recipe.yield;
+            document.getElementById('r-equipment').innerText = recipe.equipment.join(", ");
+            
+            document.getElementById('r-macros').innerHTML = `
+                <span class="macro-pill">🔥 ${recipe.macros.cal}</span>
+                <span class="macro-pill">🥩 ${recipe.macros.p}</span>
+                <span class="macro-pill">🌾 ${recipe.macros.c}</span>
+                <span class="macro-pill">🥑 ${recipe.macros.f}</span>
+            `;
+
+            document.getElementById('r-tags').innerHTML = recipe.tags.map(t => `<span class="tag">${t}</span>`).join('');
             
             currentRecipeNeeds = recipe.buy;
 
@@ -434,15 +424,19 @@
                 `<li class="list-item"><span style="color:var(--neon-pink);">⚠️ ${i}</span></li>`
             ).join('');
 
-            document.getElementById('r-steps').innerHTML = recipe.steps.map(step => 
-                `<div class="instruction-step">${step}</div>`
-            ).join('');
+            // Structure Steps
+            const buildSteps = (arr, title) => `
+                <div class="phase-header">🗡️ ${title} PHASE</div>
+                ${arr.map(step => `<div class="instruction-step">${step}</div>`).join('')}
+            `;
+            
+            document.getElementById('r-steps-prep').innerHTML = buildSteps(recipe.prep, "PREP");
+            document.getElementById('r-steps-cook').innerHTML = buildSteps(recipe.cook, "COMBAT (COOK)");
+            document.getElementById('r-steps-serve').innerHTML = buildSteps(recipe.serve, "VICTORY (SERVE)");
         }
 
         function sendToMarket() {
-            currentRecipeNeeds.forEach(item => {
-                if(!marketList.includes(item)) marketList.push(item);
-            });
+            currentRecipeNeeds.forEach(item => { if(!marketList.includes(item)) marketList.push(item); });
             renderMarket();
             switchTab('market', document.querySelectorAll('.nav-item')[1]);
         }
@@ -453,16 +447,12 @@
             marketList.forEach(item => {
                 const div = document.createElement('div');
                 div.className = 'shop-item';
-                div.innerHTML = `<div class="checkbox"></div><span class="item-name" style="font-weight:bold;">${item}</span>`;
-                
+                div.innerHTML = `<div class="checkbox"></div><span class="item-name" style="font-size:0.8rem; font-weight:bold;">${item}</span>`;
                 div.onclick = function() {
                     if(!this.classList.contains('bought')) {
                         this.classList.add('bought');
                         updateSheetQuantity(item, 1);
-                        setTimeout(() => {
-                            marketList = marketList.filter(i => i !== item);
-                            renderMarket();
-                        }, 2000);
+                        setTimeout(() => { marketList = marketList.filter(i => i !== item); renderMarket(); }, 2000);
                     }
                 };
                 list.appendChild(div);
@@ -474,35 +464,28 @@
             list.innerHTML = '';
             inventory.forEach(item => {
                 if(!item["Product Name"]) return;
-                
-                // CHECK FOR CRITICAL ENERGY (Expiring Soon logic)
-                let warningHTML = "";
-                let days = parseInt(item["Days Remaining"]);
+                let warn = ""; let days = parseInt(item["Days Remaining"]);
                 if(!isNaN(days)) {
-                    if(days < 0) {
-                        warningHTML = `<span class="critical-warning">⚠️ CRITICAL: EXPIRED (${Math.abs(days)} days ago)</span>`;
-                    } else if (days <= 14) {
-                        warningHTML = `<span class="critical-warning">⚠️ WARNING: EXPIRING IN ${days} DAYS</span>`;
-                    }
+                    if(days < 0) warn = `<span class="critical-warning">⚠️ EXPIRED (${Math.abs(days)}d)</span>`;
+                    else if (days <= 14) warn = `<span class="critical-warning" style="color:var(--dbz-orange);">⚠️ EXPIRES IN ${days}d</span>`;
                 }
-
                 list.innerHTML += `
                     <li class="list-item" style="flex-direction: column; align-items: flex-start;">
                         <div style="display:flex; justify-content:space-between; width:100%;">
                             <span style="font-weight:bold;">${item["Product Name"]}</span>
-                            <span class="power-level">QTY: ${item.Quantity}</span>
+                            <span class="power-level">LVL: ${item.Quantity}</span>
                         </div>
-                        ${warningHTML}
+                        ${warn}
                     </li>
                 `;
             });
         }
 
-        function switchTab(view, element) {
-            document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        function switchTab(view, el) {
+            document.querySelectorAll('.view-section').forEach(e => e.classList.add('hidden'));
+            document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active'));
             document.getElementById('view-' + view).classList.remove('hidden');
-            element.classList.add('active');
+            el.classList.add('active');
             if(view === 'market') renderMarket();
         }
 
