@@ -3,212 +3,273 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Moon Scouter v2.0 🌙🐉</title>
+    <title>Prism Scouter v3.0 🌙🐉</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
         :root {
-            --moon-pink: #ff9ecd;
-            --sailor-white: #ffffff;
+            --moon-pink: #ff3399;
+            --neon-pink: #ff007f;
             --dbz-orange: #ff8c00;
+            --ssj-gold: #ffd700;
             --scouter-green: #39ff14;
-            --cosmic-purple: #4a0e4e;
-            --glass: rgba(255, 255, 255, 0.85);
+            --cosmic-dark: #0a001a;
+            --glass: rgba(15, 5, 30, 0.75);
+            --text-glow: 0 0 5px var(--moon-pink), 0 0 10px var(--neon-pink);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Trebuchet MS', sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            background: linear-gradient(180deg, #ffe6f2 0%, #d9b3ff 100%);
-            color: var(--cosmic-purple);
+            background-color: var(--cosmic-dark);
+            color: #fff;
+            font-family: 'Space Mono', monospace;
             min-height: 100vh;
-            padding-bottom: 80px;
-            background-attachment: fixed;
+            padding-bottom: 90px;
+            overflow-x: hidden;
         }
 
-        /* Magical Anime Header */
+        /* SAILOR MOON MATRIX CANVAS */
+        #matrix-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        /* HEADER */
         header {
-            background: linear-gradient(90deg, var(--moon-pink), var(--cosmic-purple));
-            color: white;
+            background: linear-gradient(90deg, rgba(255,51,153,0.8), rgba(74,14,78,0.8));
             text-align: center;
             padding: 20px;
-            border-bottom: 4px solid var(--dbz-orange);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border-bottom: 3px solid var(--dbz-orange);
+            box-shadow: 0 0 20px var(--dbz-orange);
             position: sticky;
             top: 0;
             z-index: 10;
+            backdrop-filter: blur(5px);
         }
 
-        header h1 { font-size: 1.5rem; text-transform: uppercase; letter-spacing: 2px; text-shadow: 2px 2px 0px #ff3385; }
-        .subtitle { font-size: 0.8rem; color: var(--dbz-orange); font-weight: bold; }
+        header h1 { 
+            font-family: 'Orbitron', sans-serif; 
+            font-weight: 900; 
+            font-size: 1.6rem; 
+            color: #fff;
+            text-shadow: var(--text-glow);
+            letter-spacing: 2px;
+        }
+        .subtitle { font-size: 0.75rem; color: var(--scouter-green); font-weight: bold; margin-top: 5px; }
+        .syncing { animation: pulse 1s infinite; color: var(--ssj-gold); }
 
-        /* Container & Cards */
+        /* CONTAINERS & CARDS */
         .app-container { padding: 15px; max-width: 600px; margin: 0 auto; }
         
         .card {
             background: var(--glass);
             border: 2px solid var(--moon-pink);
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 16px rgba(74, 14, 78, 0.15);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 25px;
+            box-shadow: 0 0 15px rgba(255, 51, 153, 0.4), inset 0 0 10px rgba(255, 51, 153, 0.2);
             backdrop-filter: blur(10px);
-            position: relative;
-            overflow: hidden;
         }
 
         .card-title {
-            color: var(--dbz-orange);
+            font-family: 'Orbitron', sans-serif;
+            color: var(--ssj-gold);
             font-size: 1.2rem;
-            font-weight: 900;
-            border-bottom: 2px dashed var(--moon-pink);
-            padding-bottom: 8px;
-            margin-bottom: 12px;
-            text-transform: uppercase;
+            border-bottom: 1px solid var(--moon-pink);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 8px var(--ssj-gold);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        /* Scouter UI Elements */
-        .power-level {
-            font-family: 'Courier New', monospace;
-            color: var(--scouter-green);
-            background: #111;
-            padding: 2px 6px;
+        /* RECIPE SPECIFICS */
+        .recipe-stat-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            font-size: 0.8rem;
+        }
+        .stat-badge {
+            background: rgba(255, 140, 0, 0.2);
+            border: 1px solid var(--dbz-orange);
+            color: var(--dbz-orange);
+            padding: 4px 8px;
             border-radius: 4px;
-            border: 1px solid var(--scouter-green);
+        }
+
+        .instruction-step {
+            margin-bottom: 12px;
+            line-height: 1.5;
+            font-size: 0.9rem;
+            border-left: 3px solid var(--scouter-green);
+            padding-left: 10px;
+            background: rgba(57, 255, 20, 0.05);
+        }
+        .instruction-step b { color: var(--moon-pink); text-shadow: 0 0 3px var(--moon-pink); }
+
+        /* VAULT & LISTS */
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 10px;
+            border-bottom: 1px dashed rgba(255,255,255,0.2);
+            font-size: 0.9rem;
+        }
+        
+        .power-level {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--scouter-green);
+            text-shadow: 0 0 5px var(--scouter-green);
             font-weight: bold;
         }
 
-        /* Shopping List Actions */
+        /* CRITICAL ENERGY (EXPIRING SOON) */
+        .critical-warning {
+            color: #ff003c;
+            text-shadow: 0 0 8px #ff003c;
+            font-size: 0.75rem;
+            animation: pulse 1.5s infinite;
+            display: block;
+            margin-top: 4px;
+        }
+
+        /* MARKET CHECKBOXES */
         .shop-item {
             display: flex;
             align-items: center;
             padding: 12px;
-            background: white;
-            border: 2px solid #eee;
-            border-radius: 10px;
-            margin-bottom: 8px;
-            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--moon-pink);
+            border-radius: 8px;
+            margin-bottom: 10px;
             cursor: pointer;
+            transition: 0.3s;
         }
-
         .shop-item.bought {
-            background: #e8ffe8;
             border-color: var(--scouter-green);
-            opacity: 0.7;
+            background: rgba(57, 255, 20, 0.1);
+            opacity: 0.6;
         }
-
-        .shop-item.bought .item-name {
-            text-decoration: line-through;
-            color: #888;
-        }
+        .shop-item.bought .item-name { text-decoration: line-through; color: var(--scouter-green); }
 
         .checkbox {
-            width: 24px;
-            height: 24px;
+            width: 20px; height: 20px;
             border: 2px solid var(--moon-pink);
-            border-radius: 50%;
+            border-radius: 4px;
             margin-right: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 5px var(--moon-pink);
         }
+        .bought .checkbox { background: var(--scouter-green); border-color: var(--scouter-green); box-shadow: 0 0 8px var(--scouter-green); }
+        .bought .checkbox::after { content: '✓'; color: #000; font-weight: bold; }
 
-        .bought .checkbox { background: var(--scouter-green); border-color: var(--scouter-green); }
-        .bought .checkbox::after { content: '✓'; color: black; font-weight: bold; }
-
-        /* Buttons */
+        /* BUTTONS */
         .magic-btn {
-            background: linear-gradient(45deg, var(--dbz-orange), #ff4500);
-            border: none;
-            border-radius: 20px;
-            padding: 10px 20px;
-            color: white;
-            font-weight: bold;
-            box-shadow: 0 4px 0 #cc3700;
-            cursor: pointer;
-            text-transform: uppercase;
+            background: transparent;
+            border: 2px solid var(--dbz-orange);
+            color: var(--dbz-orange);
+            padding: 12px;
             width: 100%;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            font-size: 1rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 8px;
+            box-shadow: inset 0 0 10px rgba(255, 140, 0, 0.2), 0 0 10px rgba(255, 140, 0, 0.4);
+            transition: 0.2s;
             margin-top: 10px;
         }
-        .magic-btn:active { transform: translateY(4px); box-shadow: 0 0 0 #cc3700; }
+        .magic-btn:active { background: var(--dbz-orange); color: #000; box-shadow: 0 0 20px var(--dbz-orange); }
+        .magic-btn.pink { border-color: var(--neon-pink); color: var(--neon-pink); box-shadow: inset 0 0 10px rgba(255, 0, 127, 0.2), 0 0 10px rgba(255, 0, 127, 0.4); }
+        .magic-btn.pink:active { background: var(--neon-pink); color: #fff; }
 
-        /* Bottom Nav */
+        /* NAV */
         nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: white;
-            border-top: 4px solid var(--cosmic-purple);
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0 20px 0;
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: rgba(10, 0, 26, 0.95);
+            border-top: 2px solid var(--moon-pink);
+            display: flex; justify-content: space-around;
+            padding: 12px 0 25px 0;
             z-index: 100;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 -5px 15px rgba(255, 51, 153, 0.3);
         }
-
         .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-size: 0.8rem;
-            font-weight: bold;
-            color: #aaa;
-            cursor: pointer;
+            display: flex; flex-direction: column; align-items: center;
+            font-size: 0.75rem; color: #666; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
         }
-        .nav-item.active { color: var(--cosmic-purple); }
-        .nav-icon { font-size: 1.6rem; margin-bottom: 4px; filter: grayscale(100%); }
-        .nav-item.active .nav-icon { filter: grayscale(0%); transform: scale(1.1); }
+        .nav-item.active { color: var(--neon-pink); text-shadow: 0 0 5px var(--neon-pink); }
+        .nav-icon { font-size: 1.5rem; margin-bottom: 5px; opacity: 0.5; }
+        .nav-item.active .nav-icon { opacity: 1; filter: drop-shadow(0 0 5px var(--neon-pink)); }
 
         .hidden { display: none !important; }
-
-        /* Mini Animation for Sync */
-        @keyframes syncPulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.1); } 100% { opacity: 1; transform: scale(1); } }
-        .syncing { animation: syncPulse 1s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
     </style>
 </head>
 <body>
 
+    <canvas id="matrix-canvas"></canvas>
+
     <header>
-        <h1>🌙 Moon Scouter 🐉</h1>
-        <div class="subtitle" id="sync-status">PRISM POWER INVENTORY ONLINE</div>
+        <h1>🌙 PRISM SCOUTER 🐉</h1>
+        <div class="subtitle" id="sync-status">SYSTEM ONLINE • KI STABLE</div>
     </header>
 
     <div class="app-container">
         
         <div id="view-recipes" class="view-section">
             <div class="card">
-                <div class="card-title">✨ Culinary Transformation</div>
-                <h2 id="r-name" style="color: var(--moon-pink); margin-bottom: 5px;">Loading...</h2>
-                <p id="r-desc" style="font-size: 0.9rem; color: #666; font-style: italic; margin-bottom: 15px;"></p>
+                <div class="card-title">
+                    <span>✨ TACTICAL MENU</span>
+                    <span style="font-size: 1.5rem; cursor:pointer;" onclick="generateRecipe()">🔄</span>
+                </div>
+                <h2 id="r-name" style="color: var(--neon-pink); margin-bottom: 10px; font-family: 'Orbitron'; text-shadow: 0 0 8px var(--neon-pink);">Loading Module...</h2>
                 
-                <button class="magic-btn" onclick="generateRecipe()" style="margin-bottom: 20px;">☄️ Reroll Meal</button>
+                <div class="recipe-stat-bar">
+                    <span class="stat-badge" id="r-time">⏱️ 0m</span>
+                    <span class="stat-badge" id="r-power">🔥 PL: 0</span>
+                </div>
+                
+                <p id="r-desc" style="font-size: 0.85rem; color: #aaa; margin-bottom: 20px;"></p>
+                
+                <h4 style="color: var(--scouter-green); margin-bottom: 10px;">🎒 VERIFIED IN VAULT</h4>
+                <ul id="r-have" style="list-style: none; margin-bottom: 20px; font-size: 0.85rem;"></ul>
 
-                <h4 style="color: var(--cosmic-purple);">🎒 In The Vault</h4>
-                <ul id="r-have" style="list-style: none; margin-bottom: 15px; font-size: 0.9rem;"></ul>
+                <h4 style="color: var(--dbz-orange); margin-bottom: 10px;">🛒 MISSING COMPONENTS</h4>
+                <ul id="r-buy" style="list-style: none; margin-bottom: 15px; font-size: 0.85rem;"></ul>
+                <button class="magic-btn pink" onclick="sendToMarket()">➕ PUSH TO SCOUTER LIST</button>
+            </div>
 
-                <h4 style="color: var(--dbz-orange);">🛒 Send to Market Scouter</h4>
-                <ul id="r-buy" style="list-style: none; margin-bottom: 15px; font-size: 0.9rem;"></ul>
-                <button class="magic-btn" onclick="sendToMarket()" style="background: var(--moon-pink); box-shadow: 0 4px 0 #d175a3;">➕ Add Need to Market List</button>
+            <div class="card" id="recipe-instructions-card">
+                <div class="card-title">📜 EXECUTION PROTOCOL</div>
+                <div id="r-steps"></div>
             </div>
         </div>
 
         <div id="view-market" class="view-section hidden">
             <div class="card">
-                <div class="card-title">🛒 Market Scouter</div>
-                <p style="font-size: 0.8rem; margin-bottom: 15px;">Tap an item to cross it off. It will instantly auto-update your Google Sheet! 💥</p>
-                
-                <div id="market-list">
-                    </div>
+                <div class="card-title">🛒 TARGET ACQUISITION</div>
+                <p style="font-size: 0.75rem; color:#aaa; margin-bottom: 15px;">Tap acquired targets to instantly sync to the main data frame.</p>
+                <div id="market-list"></div>
             </div>
         </div>
 
         <div id="view-vault" class="view-section hidden">
             <div class="card">
-                <div class="card-title">🐉 The Vault</div>
-                <div style="display:flex; justify-content: space-between; margin-bottom: 15px;">
-                    <span style="font-size: 0.8rem;">Live Data Matrix</span>
-                    <span class="power-level" onclick="fetchInventory()">🔄 SYNC</span>
+                <div class="card-title">
+                    <span>🐉 DATA VAULT</span>
+                    <span class="power-level" onclick="fetchInventory()" style="cursor:pointer;">🔄 SYNC</span>
                 </div>
-                <ul id="vault-list" style="list-style: none; font-size: 0.9rem;">
-                    </ul>
+                <p style="font-size: 0.75rem; color:#aaa; margin-bottom: 15px;">Scanning for Critical Energy (expiring items)...</p>
+                <ul id="vault-list" style="list-style: none;"></ul>
             </div>
         </div>
 
@@ -216,74 +277,134 @@
 
     <nav>
         <div class="nav-item active" onclick="switchTab('recipes', this)">
-            <span class="nav-icon">🌙</span><span>Magic</span>
+            <span class="nav-icon">🔮</span><span>Tactics</span>
         </div>
         <div class="nav-item" onclick="switchTab('market', this)">
-            <span class="nav-icon">🛒</span><span>Market</span>
+            <span class="nav-icon">🎯</span><span>Scouter</span>
         </div>
         <div class="nav-item" onclick="switchTab('vault', this)">
-            <span class="nav-icon">🐉</span><span>Vault</span>
+            <span class="nav-icon">📊</span><span>Vault</span>
         </div>
     </nav>
 
     <script>
-        // PASTE YOUR GOOGLE APPS SCRIPT URL HERE
-        const SHEET_API_URL = "https://script.google.com/macros/s/AKfycby_EiCidBees9IA-zs7_OSxppAnD0sB2U78Qvd1-kQy7JB5sSs9l-P-FKODmQLv2c-j/exec";
+        // --- MATRIX RAIN LOGIC ---
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
+        // DBZ & Sailor Moon Symbols
+        const chars = '🌙✨🌸⚡️🐉💖⭐🪐☄️'.split('');
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+        for(let x = 0; x < columns; x++) drops[x] = 1;
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(10, 0, 26, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#ff007f'; // Neon Pink
+            ctx.font = fontSize + 'px monospace';
+            
+            for(let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                
+                // Randomize colors slightly between pink, purple, and orange
+                const colors = ['#ff007f', '#ff8c00', '#b57eff'];
+                ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
+                
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 50);
+
+        // --- APP LOGIC ---
+        const SHEET_API_URL = "https://script.google.com/macros/s/AKfycby_EiCidBees9IA-zs7_OSxppAnD0sB2U78Qvd1-kQy7JB5sSs9l-P-FKODmQLv2c-j/exec"; 
+        
         let inventory = [];
-        let marketList = ["Fresh Zucchini", "Mozzarella Pearls", "Bell Peppers"]; // Sample initial list
+        let marketList = ["Fresh Zucchini", "Mozzarella Pearls"];
         let currentRecipeNeeds = [];
 
+        // UPGRADED RECIPE DATABASE (Precision & Macros)
         const recipeDB = [
             {
-                name: "✨ Cosmic Penne Power-Up",
-                desc: "An elven-inspired stovetop dish hiding high-level veggie nutrients in the sauce.",
-                have: ["Ground Beef 80/20", "Penne Rigate Pasta", "Power Greens", "Organic Tomato Basil Pasta Sauce"],
-                buy: ["Fresh Zucchini", "Fresh Garlic", "Mozzarella Pearls"]
+                name: "Cosmic Penne Power-Up",
+                time: "25 MIN",
+                powerLevel: "OVER 9000! (650 kcal)",
+                desc: "Elven stovetop heat-beater. Hidden veggies for the toddlers, bold flavor for the squad.",
+                have: [
+                    { item: "Ground Beef 80/20", qty: "1 lb" },
+                    { item: "Penne Rigate Pasta", qty: "16 oz box" },
+                    { item: "Organic Tomato Basil Sauce", qty: "1 Jar (23 oz)" }
+                ],
+                buy: ["Fresh Zucchini", "Mozzarella Pearls"],
+                steps: [
+                    "<b>PREP [0:00]:</b> Finely grate exactly <b>1 medium zucchini</b> (this hides it completely in the sauce). Mince <b>2 cloves of fresh garlic</b>.",
+                    "<b>BOIL [0:05]:</b> Bring a large pot of heavily salted water to a boil. Add <b>16 oz Penne</b>. Cook for exactly 11 minutes. Drain.",
+                    "<b>SEAR [0:07]:</b> In a large skillet over medium-high heat, brown <b>1 lb of Ground Beef</b> with the minced garlic, <b>1 tsp Salt</b>, and <b>1 tsp Onion Powder</b>. Drain excess grease.",
+                    "<b>FUSION [0:15]:</b> Reduce heat to low. Pour in the entire jar of <b>Tomato Basil Sauce</b> and the grated zucchini. Simmer for 10 minutes.",
+                    "<b>FINISH [0:25]:</b> Fold the cooked pasta into the meat sauce. Turn off heat. Drop in <b>1 cup of fresh Mozzarella Pearls</b> and serve immediately while melty!"
+                ]
             },
             {
-                name: "🐉 Saiyan Energy Tacos",
-                desc: "High protein, fast-recovery skillet bowls. No baking required.",
-                have: ["Ground Beef 80/20", "Sharp Cheddar Cheese"],
-                buy: ["Bell Peppers", "Black Beans", "Avocado", "Lime"]
+                name: "Saiyan Skillet Tacos",
+                time: "15 MIN",
+                powerLevel: "HIGH PROTEIN (550 kcal)",
+                desc: "Lightning fast recovery meal. No oven required.",
+                have: [
+                    { item: "Ground Beef 80/20", qty: "1 lb" },
+                    { item: "Sharp Cheddar Cheese", qty: "1.5 cups, shredded" }
+                ],
+                buy: ["Bell Peppers", "Black Beans (Canned)", "Fresh Lime"],
+                steps: [
+                    "<b>PREP [0:00]:</b> Thinly slice <b>2 Bell Peppers</b>. Drain and rinse <b>1 can (15 oz) of Black Beans</b>.",
+                    "<b>SAUTÉ [0:05]:</b> Heat <b>1 tbsp Olive Oil</b> in a skillet. Sauté peppers for 4 mins until soft.",
+                    "<b>BROWN [0:10]:</b> Add <b>1 lb Ground Beef</b> to the pan. Season with <b>1 tbsp Chili Powder</b>, <b>1 tsp Cumin</b>, and <b>1 tsp Salt</b>. Cook until no longer pink.",
+                    "<b>COMBINE [0:12]:</b> Toss in the black beans just to heat through.",
+                    "<b>SERVE [0:15]:</b> Serve in bowls topped heavily with shredded <b>Sharp Cheddar</b> and a mandatory hard squeeze of <b>Fresh Lime Juice</b>."
+                ]
             }
         ];
 
-        // --- Core Functions ---
-
         async function fetchInventory() {
-            setStatus("SYNCING DATA...", true);
+            setStatus("SCANNING DATABANKS...", true);
             try {
-                if(!SHEET_API_URL.includes("YOUR_DEPLOYED")) {
+                if(!SHEET_API_URL.includes("https://script.google.com/macros/s/AKfycby_EiCidBees9IA-zs7_OSxppAnD0sB2U78Qvd1-kQy7JB5sSs9l-P-FKODmQLv2c-j/exec")) {
                     const response = await fetch(SHEET_API_URL);
                     inventory = await response.json();
                 } else {
-                    // Fallback local data if API isn't set up yet
+                    // Fallback Mock Data showing the new Expiring functionality
                     inventory = [
-                        {"Product Name": "Ground Beef 80/20", "Quantity": 5},
-                        {"Product Name": "Penne Rigate Pasta", "Quantity": 1},
-                        {"Product Name": "Power Greens", "Quantity": 1}
+                        {"Product Name": "Ground Beef 80/20", "Quantity": 5, "Days Remaining": 30},
+                        {"Product Name": "Whole Milk", "Quantity": 2, "Days Remaining": -5},
+                        {"Product Name": "Power Greens", "Quantity": 1, "Days Remaining": 3},
+                        {"Product Name": "Penne Rigate Pasta", "Quantity": 1, "Days Remaining": 631}
                     ];
                 }
                 renderVault();
-                generateRecipe(); // Load a recipe based on live data
-                setStatus("PRISM POWER INVENTORY ONLINE", false);
+                generateRecipe(); 
+                setStatus("SYSTEM ONLINE • KI STABLE", false);
             } catch (e) {
                 console.error(e);
-                setStatus("CONNECTION ERROR", false);
+                setStatus("UPLINK FAILED", false);
             }
         }
 
         async function updateSheetQuantity(productName, increaseBy) {
-            setStatus("WRITING TO CLOUD...", true);
-            
-            // Optimistic local update
+            setStatus("BEAMING TO CLOUD...", true);
             let item = inventory.find(i => i["Product Name"] === productName);
             let newQty = item ? parseInt(item.Quantity) + increaseBy : increaseBy;
             if (item) item.Quantity = newQty;
             renderVault();
 
-            if(!SHEET_API_URL.includes("YOUR_DEPLOYED")) {
+            if(!SHEET_API_URL.includes("https://script.google.com/macros/s/AKfycby_EiCidBees9IA-zs7_OSxppAnD0sB2U78Qvd1-kQy7JB5sSs9l-P-FKODmQLv2c-j/exec")) {
                 try {
                     await fetch(SHEET_API_URL, {
                         method: 'POST',
@@ -291,21 +412,31 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ productName: productName, newQuantity: newQty })
                     });
-                } catch(e) { console.error("Update failed", e); }
+                } catch(e) {}
             }
-            setStatus("PRISM POWER INVENTORY ONLINE", false);
+            setStatus("SYSTEM ONLINE • KI STABLE", false);
         }
-
-        // --- UI Interactions ---
 
         function generateRecipe() {
             const recipe = recipeDB[Math.floor(Math.random() * recipeDB.length)];
             document.getElementById('r-name').innerText = recipe.name;
+            document.getElementById('r-time').innerText = "⏱️ " + recipe.time;
+            document.getElementById('r-power').innerText = "🔥 PL: " + recipe.powerLevel;
             document.getElementById('r-desc').innerText = recipe.desc;
+            
             currentRecipeNeeds = recipe.buy;
 
-            document.getElementById('r-have').innerHTML = recipe.have.map(i => `<li style="padding: 5px 0;">✅ ${i}</li>`).join('');
-            document.getElementById('r-buy').innerHTML = recipe.buy.map(i => `<li style="padding: 5px 0;">⚠️ ${i}</li>`).join('');
+            document.getElementById('r-have').innerHTML = recipe.have.map(i => 
+                `<li class="list-item"><span>✅ ${i.item}</span> <span style="color:#aaa;">${i.qty}</span></li>`
+            ).join('');
+            
+            document.getElementById('r-buy').innerHTML = recipe.buy.map(i => 
+                `<li class="list-item"><span style="color:var(--neon-pink);">⚠️ ${i}</span></li>`
+            ).join('');
+
+            document.getElementById('r-steps').innerHTML = recipe.steps.map(step => 
+                `<div class="instruction-step">${step}</div>`
+            ).join('');
         }
 
         function sendToMarket() {
@@ -322,18 +453,12 @@
             marketList.forEach(item => {
                 const div = document.createElement('div');
                 div.className = 'shop-item';
-                div.innerHTML = `
-                    <div class="checkbox"></div>
-                    <span class="item-name">${item}</span>
-                `;
-                // Cross off logic
+                div.innerHTML = `<div class="checkbox"></div><span class="item-name" style="font-weight:bold;">${item}</span>`;
+                
                 div.onclick = function() {
                     if(!this.classList.contains('bought')) {
                         this.classList.add('bought');
-                        // Instantly push to Google Sheet!
                         updateSheetQuantity(item, 1);
-                        
-                        // Optional: Remove from list after a delay
                         setTimeout(() => {
                             marketList = marketList.filter(i => i !== item);
                             renderMarket();
@@ -349,10 +474,25 @@
             list.innerHTML = '';
             inventory.forEach(item => {
                 if(!item["Product Name"]) return;
+                
+                // CHECK FOR CRITICAL ENERGY (Expiring Soon logic)
+                let warningHTML = "";
+                let days = parseInt(item["Days Remaining"]);
+                if(!isNaN(days)) {
+                    if(days < 0) {
+                        warningHTML = `<span class="critical-warning">⚠️ CRITICAL: EXPIRED (${Math.abs(days)} days ago)</span>`;
+                    } else if (days <= 14) {
+                        warningHTML = `<span class="critical-warning">⚠️ WARNING: EXPIRING IN ${days} DAYS</span>`;
+                    }
+                }
+
                 list.innerHTML += `
-                    <li style="display:flex; justify-content:space-between; border-bottom:1px solid #ddd; padding: 10px 0;">
-                        <span>${item["Product Name"]}</span>
-                        <span class="power-level">LVL: ${item.Quantity}</span>
+                    <li class="list-item" style="flex-direction: column; align-items: flex-start;">
+                        <div style="display:flex; justify-content:space-between; width:100%;">
+                            <span style="font-weight:bold;">${item["Product Name"]}</span>
+                            <span class="power-level">QTY: ${item.Quantity}</span>
+                        </div>
+                        ${warningHTML}
                     </li>
                 `;
             });
@@ -373,10 +513,8 @@
             else el.classList.remove('syncing');
         }
 
-        // Boot Sequence
         fetchInventory();
         renderMarket();
-
     </script>
 </body>
 </html>
