@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Prism Scouter v8.0 🌙🐉</title>
+    <title>Prism Scouter v9.0 🌙🐉</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Nunito:wght@400;700;900&display=swap');
 
@@ -16,6 +16,7 @@
             --cosmic-dark: #0a0514;
             --glass: rgba(15, 10, 25, 0.85);
             --completed-bg: rgba(57, 255, 20, 0.1);
+            --youngling-blue: #00e5ff;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -74,6 +75,15 @@
         h2 { color: var(--neon-pink); font-family: 'Orbitron'; font-size: 1.6rem; margin-bottom: 10px; text-transform: uppercase; }
         .recipe-stat-bar { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
         .stat-badge { background: rgba(255, 140, 0, 0.2); border: 2px solid var(--dbz-orange); color: var(--dbz-orange); padding: 6px 10px; border-radius: 6px; font-weight: 900; font-size: 0.9rem; }
+        
+        /* YOUNGLING MOD BOX */
+        .kid-mod-box {
+            background: rgba(0, 229, 255, 0.1); border: 2px dashed var(--youngling-blue);
+            color: var(--youngling-blue); padding: 15px; border-radius: 8px;
+            margin-bottom: 20px; font-size: 0.95rem; font-weight: 700; line-height: 1.5;
+        }
+        .kid-mod-box b { color: #fff; font-family: 'Orbitron'; letter-spacing: 1px; }
+
         .section-header { font-family: 'Orbitron'; font-size: 1.2rem; margin: 25px 0 10px 0; padding-bottom: 5px; border-bottom: 2px solid; text-transform: uppercase; }
         .section-header.green { color: var(--scouter-green); border-color: rgba(57, 255, 20, 0.5); }
         .section-header.orange { color: var(--dbz-orange); border-color: rgba(255, 140, 0, 0.5); }
@@ -92,7 +102,6 @@
         .completed .task-checkbox::after { content: '✔'; color: black; font-weight: 900; font-size: 18px; }
         .task-text b { color: var(--ssj-gold); font-size: 1.15em; } 
         
-        /* INTERACTIVE TIMERS */
         .timer-btn {
             background: rgba(57, 255, 20, 0.15); border: 2px solid var(--scouter-green);
             color: var(--scouter-green); font-family: 'Space Mono', monospace; font-size: 0.85rem; font-weight: 900;
@@ -186,7 +195,10 @@
                 <span class="stat-badge" id="r-time">⏱️ --</span>
                 <span class="stat-badge" id="r-power">⚡️ --</span>
             </div>
-            <p id="r-desc" style="font-size: 0.9rem; color: #ccc; margin-bottom: 20px; line-height: 1.5; font-weight: bold;"></p>
+            <p id="r-desc" style="font-size: 0.95rem; color: #ccc; margin-bottom: 20px; line-height: 1.5; font-weight: bold;"></p>
+            
+            <!-- YOUNGLING MODIFICATION -->
+            <div id="r-kid" class="kid-mod-box"></div>
             
             <div class="section-header green">🎒 VERIFIED IN VAULT</div>
             <ul id="r-have" class="tactical-list"></ul>
@@ -242,16 +254,26 @@
     <div id="view-prep" class="view-section hidden">
         <div class="card">
             <h2>🍱 WEEKLY PREP MODULE</h2>
-            <p style="font-size: 0.9rem; color:#aaa; margin-bottom: 20px; font-weight: bold;">Complete these side-quests to front-load your week.</p>
+            <p style="font-size: 0.9rem; color:#aaa; margin-bottom: 20px; font-weight: bold;">Complete these side-quests to front-load your week and survive the morning rush.</p>
             
-            <div class="section-header green">⚡️ HIGH-ENERGY SNACKS</div>
+            <div class="section-header pink">🎒 KLAUS'S PRE-SCHOOL RATIONS</div>
             <div class="task-item" onclick="this.classList.toggle('completed')">
                 <div class="task-checkbox"></div>
-                <div class="task-text"><b>Oat & Hemp Power Bites:</b> Mix 2 cups rolled oats, 1/2 cup peanut butter, 1/3 cup honey, and 1/4 cup hemp hearts. Chill 30 mins, roll into spheres.</div>
+                <div class="task-text"><b>Hidden Veggie Monster Muffins:</b> Blend 2 cups fresh spinach, 1/3 cup honey, 1 banana, and 1/3 cup melted coconut oil. Fold into 2 cups whole wheat flour and 1 tsp baking soda. Bake at 375°F for 15 mins. (Freezes perfectly for lunchboxes).</div>
             </div>
             <div class="task-item" onclick="this.classList.toggle('completed')">
                 <div class="task-checkbox"></div>
-                <div class="task-text"><b>Pre-Sliced Scouter Packs:</b> Wash and slice 3 bell peppers and 2 cucumbers. Store in airtight glass containers with a damp paper towel.</div>
+                <div class="task-text"><b>Turkey Pinwheel Boxes:</b> Take 4 large flour tortillas. Spread heavily with cream cheese. Layer exact strips of deli turkey and thinly shredded carrots. Roll extremely tight, slice into 1-inch pinwheels. Store in bento boxes.</div>
+            </div>
+
+            <div class="section-header green">⚡️ HIGH-ENERGY SNACKS</div>
+            <div class="task-item" onclick="this.classList.toggle('completed')">
+                <div class="task-checkbox"></div>
+                <div class="task-text"><b>Oat & Hemp Power Bites:</b> Mix 2 cups rolled oats, 1/2 cup peanut butter, 1/3 cup honey, 1 tbsp chia seeds, and 1/4 cup hemp hearts. Chill 30 mins, roll into bite-sized spheres.</div>
+            </div>
+            <div class="task-item" onclick="this.classList.toggle('completed')">
+                <div class="task-checkbox"></div>
+                <div class="task-text"><b>Safe Scouter Packs:</b> Wash and slice 3 bell peppers. Halve grapes/cherry tomatoes *vertically* (crucial for the 2yo choking hazard). Store in airtight glass containers with a damp paper towel to retain crunch.</div>
             </div>
 
             <button class="magic-btn pink" onclick="sendPrepToMarket()" style="margin-top: 25px;">➕ PUSH PREP INGREDIENTS TO SCOUTER</button>
@@ -286,7 +308,6 @@
                 btnElement.classList.remove('active-timer');
                 btnElement.dataset.running = "false";
                 
-                // Try to play a generic browser beep if allowed
                 try {
                     let ctx = new (window.AudioContext || window.webkitAudioContext)();
                     let osc = ctx.createOscillator();
@@ -301,19 +322,16 @@
         }, 1000);
     }
 
-
-    // --- FULL SCREEN FIXED MATRIX RAIN ---
+    // --- MATRIX RAIN ---
     const canvas = document.getElementById('matrix-canvas');
     const ctx = canvas.getContext('2d');
     function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
-
     const chars = '★☾♥♦●✦✧Z'.split('');
     const fontSize = 16; 
     let drops = [];
     for(let i=0; i<canvas.width/fontSize; i++) drops[i] = 1;
-
     function drawMatrix() {
         ctx.fillStyle = 'rgba(10, 5, 20, 0.1)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -350,174 +368,129 @@
     let inventory = [];
     let marketList = [];
     let currentRecipeNeeds = [];
-    let prepIngredients = ["Rolled Oats", "Peanut Butter", "Honey", "Hemp Hearts", "Bell Peppers", "Cucumbers"];
+    let prepIngredients = ["Whole Wheat Flour", "Fresh Spinach", "Honey", "Coconut Oil", "Bananas", "Rolled Oats", "Peanut Butter", "Hemp Hearts", "Bell Peppers", "Grapes", "Large Flour Tortillas", "Deli Turkey", "Cream Cheese"];
 
-    // --- MASSIVE PINCH OF YUM STYLE DATABASE ---
+    // --- MASSIVE PINCH OF YUM STYLE DATABASE WITH EXACT MEASUREMENTS & KID MODS ---
     const recipeDB = [
         { 
             name: "Tuxedo Mask Steak Bites & Garlic Mash", time: "45 MIN", powerLevel: "GENTLEMAN'S BANQUET", 
-            desc: "Heavy garlic-butter seared steak cubes paired with exact-measured rich mashed potatoes and roasted asparagus. A complete, perfectly balanced dinner.", 
-            have: [], buy: ["Sirloin Steak (1.5 lbs)", "Yukon Gold Potatoes (2 lbs)", "Asparagus (1 bunch)", "Unsalted Butter", "Heavy Cream", "Fresh Garlic"], 
-            prep: ["Peel and cube <b>2 lbs</b> Yukon Gold potatoes.", "Trim the woody ends off <b>1 bunch</b> asparagus.", "Cube <b>1.5 lbs</b> steak into 1-inch pieces. Season heavily with salt/pepper.", "Mince exactly <b>6 cloves</b> garlic."], 
+            desc: "Heavy garlic-butter seared steak cubes infused with fresh rosemary. Paired with extremely rich mashed potatoes and roasted asparagus.", 
+            kidMod: "👶 <b>YOUNGLING MOD:</b> Snip the steak bites into very small 1/4-inch pieces (pea-sized) for the 2-year-old. Serve their mash *before* adding the heavy minced garlic chunks.",
+            have: [], buy: ["Sirloin Steak (1.5 lbs)", "Yukon Gold Potatoes (2 lbs)", "Asparagus (1 bunch)", "Unsalted Butter", "Heavy Cream", "Fresh Garlic", "Fresh Rosemary (1 sprig)"], 
+            prep: ["Peel and cube <b>2 lbs</b> Yukon Gold potatoes.", "Trim the woody ends off <b>1 bunch</b> asparagus.", "Cube <b>1.5 lbs</b> steak into 1-inch pieces. Season heavily with <b>1 tbsp Kosher salt</b> and <b>1 tsp black pepper</b>.", "Mince exactly <b>6 cloves</b> garlic. Strip leaves off <b>1 sprig</b> of rosemary and mince."], 
             cook: [
-                "Preheat oven to 400°F. Toss asparagus with 1 tbsp olive oil, salt/pepper on a baking sheet. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(12, this)'>⏱️ 12 MIN ROAST TIMER</button>",
+                "Preheat oven to 400°F. Toss asparagus with <b>1 tbsp olive oil</b>, 1/2 tsp salt, 1/4 tsp pepper on a baking sheet. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(12, this)'>⏱️ 12 MIN ROAST TIMER</button>",
                 "Boil large pot of salted water. Add potatoes. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(15, this)'>⏱️ 15 MIN POTATO TIMER</button>",
                 "Drain and mash potatoes aggressively with <b>4 tbsp butter</b>, <b>1/4 cup cream</b>, and 1 tsp salt until velvety.",
                 "Heat cast-iron skillet on HIGH. Add 1 tbsp oil. Drop steak cubes in a single layer.",
                 "<button class='timer-btn' onclick='event.stopPropagation(); startTimer(2, this)'>⏱️ 2 MIN CRUST TIMER</button>",
-                "Flip cubes, instantly add <b>3 tbsp butter</b> and minced garlic. Baste steak for 1 minute."
+                "Flip cubes, instantly add <b>3 tbsp butter</b>, minced garlic, and minced rosemary. Baste steak for exactly 1 minute."
             ], 
-            serve: ["Create a heavy base of garlic mashed potatoes on each plate.", "Ladle the garlic-butter steak bites directly over the mash.", "Place the roasted asparagus on the side."] 
+            serve: ["Create a heavy base of garlic mashed potatoes on each plate.", "Ladle the garlic-herb butter steak bites directly over the mash.", "Place the roasted asparagus on the side."] 
         },
         { 
             name: "Super Saiyan Honey Garlic Chicken & Broccoli", time: "30 MIN", powerLevel: "KI RECOVERY", 
-            desc: "Sweet, sticky, crispy chicken chunks over steamed broccoli and jasmine rice. High protein, massive flavor.", 
-            have: [{i: "Rice", q: "1.5 Cups Dry"}], buy: ["Chicken Breasts (1.5 lbs)", "Broccoli Florets", "Soy Sauce", "Honey", "Garlic", "Cornstarch"], 
-            prep: ["Cube <b>1.5 lbs</b> chicken. Toss in a bowl with <b>2 tbsp cornstarch</b>, salt, and pepper.", "Mix sauce: <b>1/3 cup honey</b>, <b>1/3 cup soy sauce</b>, and <b>4 minced garlic cloves</b>."], 
+            desc: "Sweet, sticky, crispy chicken chunks infused with ginger and chili flakes, over steamed broccoli and jasmine rice.", 
+            kidMod: "👶 <b>YOUNGLING MOD:</b> Hold back the red pepper flakes from the main sauce. Plate the kids' portions, then stir 1/2 tsp red pepper flakes into the adult skillet for a spicy kick.",
+            have: [{i: "Rice", q: "1.5 Cups Dry"}], buy: ["Chicken Breasts (1.5 lbs)", "Broccoli Florets", "Soy Sauce", "Honey", "Garlic", "Fresh Ginger", "Red Pepper Flakes", "Cornstarch"], 
+            prep: ["Cube <b>1.5 lbs</b> chicken. Toss in a bowl with <b>2 tbsp cornstarch</b>, 1 tsp salt, and 1/2 tsp pepper.", "Mix sauce: <b>1/3 cup honey</b>, <b>1/3 cup soy sauce</b>, <b>4 minced garlic cloves</b>, and <b>1 tsp freshly grated ginger</b>."], 
             cook: [
                 "Start <b>1.5 cups</b> dry rice in the rice cooker.",
-                "Heat 2 tbsp oil in a large skillet over medium-high. Add chicken cubes in a single layer.",
+                "Heat <b>2 tbsp oil</b> in a large skillet over medium-high. Add chicken cubes in a single layer.",
                 "<button class='timer-btn' onclick='event.stopPropagation(); startTimer(6, this)'>⏱️ 6 MIN CHICKEN SEAR</button> (Flip halfway through).",
                 "Push chicken to the side. Add <b>2 cups</b> broccoli florets and 2 tbsp water. Cover pan.",
                 "<button class='timer-btn' onclick='event.stopPropagation(); startTimer(3, this)'>⏱️ 3 MIN STEAM TIMER</button>",
-                "Uncover, pour the honey garlic sauce over everything. Simmer for 2 minutes until sauce is thick and sticky."
+                "Uncover, pour the honey garlic-ginger sauce over everything. Simmer for 2 minutes until thick and glossy."
             ], 
-            serve: ["Serve the sticky chicken and broccoli over massive bowls of fresh rice.", "Drizzle leftover pan sauce over the top."] 
+            serve: ["Serve the sticky chicken and broccoli over massive bowls of fresh rice.", "Drizzle leftover pan sauce over the top. Garnish adult bowls with red pepper flakes."] 
         },
         { 
-            name: "Majin Buu Hidden-Veggie Mac & Cheese", time: "35 MIN", powerLevel: "TODDLER APPROVED", 
-            desc: "An ultra-creamy, heavily cheesy stovetop mac that secretly hides an entire pureed squash and carrots in the sauce. Paired with roasted turkey meatballs.", 
-            have: [{i: "Penne or Macaroni", q: "16oz"}, {i: "Cheddar Cheese", q: "3 Cups"}], buy: ["Frozen Turkey Meatballs", "Butternut Squash (Frozen cubes)", "Carrots", "Milk", "Cream Cheese (4oz)"], 
-            prep: ["Shred exactly <b>3 cups</b> sharp cheddar cheese.", "Chop <b>2 large carrots</b>.", "Thaw <b>1 cup</b> frozen butternut squash cubes."], 
+            name: "Majin Buu Hidden-Veggie Mac & Cheese", time: "35 MIN", powerLevel: "STEALTH ALCHEMY", 
+            desc: "An ultra-creamy stovetop mac that secretly hides an entire pureed squash and carrots in the sauce. Elevated with mustard powder for depth.", 
+            kidMod: "👶 <b>YOUNGLING MOD:</b> Serve as is! This is the ultimate stealth dish. The squash and carrots are completely undetectable in the cheddar matrix. Cut the turkey meatballs in halves to prevent choking.",
+            have: [{i: "Penne or Macaroni", q: "16oz"}, {i: "Cheddar Cheese", q: "3 Cups"}], buy: ["Frozen Turkey Meatballs", "Butternut Squash (Frozen cubes)", "Carrots", "Milk", "Cream Cheese (4oz)", "Mustard Powder", "Paprika"], 
+            prep: ["Shred exactly <b>3 cups</b> sharp cheddar cheese.", "Chop <b>2 large carrots</b>.", "Thaw <b>1 cup</b> frozen butternut squash cubes.", "Measure exactly <b>1/2 tsp mustard powder</b> and <b>1/2 tsp smoked paprika</b>."], 
             cook: [
                 "Place frozen meatballs on a baking sheet at 375°F. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(20, this)'>⏱️ 20 MIN MEATBALL TIMER</button>",
-                "In a small pot, boil the chopped carrots and squash until very soft (about 10 mins). Drain, then blend smooth with <b>1/2 cup milk</b>.",
+                "In a small pot, boil the chopped carrots and squash until very soft (about 10 mins). Drain.",
+                "Blend the soft veggies smooth with <b>1/2 cup milk</b>, the mustard powder, paprika, and 1 tsp salt.",
                 "Boil the 16oz pasta in salted water. Drain well.",
                 "Return warm pasta to the big pot. Stir in the veggie puree, <b>4oz cream cheese</b>, and <b>3 cups cheddar</b>.",
                 "Stir vigorously over low heat until it becomes a violently cheesy, glowing orange sauce."
             ], 
-            serve: ["Serve massive scoops of the mac and cheese with 3-4 turkey meatballs on the side.", "Watch the kids eat vegetables without knowing it."] 
+            serve: ["Serve massive scoops of the mac and cheese with 3-4 turkey meatballs on the side."] 
         },
         { 
-            name: "Kame House Shrimp Tacos & Cilantro Rice", time: "35 MIN", powerLevel: "COASTAL FUSION", 
-            desc: "Bright, zesty shrimp tacos served alongside fluffy cilantro-lime rice and savory black beans.", 
-            have: [{i: "Rice", q: "1 Cup Dry"}], buy: ["Shrimp (1 lb peeled)", "Corn Tortillas", "Cabbage Slaw", "Limes (3)", "Mayo", "Fresh Cilantro", "Black Beans (1 Can)"], 
-            prep: ["Pat dry <b>1 lb</b> shrimp. Toss with 1 tbsp chili powder and 1 tsp salt.", "Mix <b>1/4 cup mayo</b> with the juice of <b>1/2 lime</b>.", "Finely chop <b>1/2 cup</b> cilantro."], 
-            cook: [
-                "Start <b>1 cup</b> dry rice in the rice cooker.",
-                "Simmer <b>1 can</b> black beans (do not drain) with 1/2 tsp cumin. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(10, this)'>⏱️ 10 MIN BEAN SIMMER</button>",
-                "When rice finishes, fold in cilantro and juice of 1 lime.",
-                "Heat skillet on HIGH. Sear shrimp. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(2, this)'>⏱️ 2 MIN PER SIDE TIMER</button>",
-                "Char corn tortillas directly on a gas burner or dry skillet for 10 seconds per side."
-            ], 
-            serve: ["Layer tortillas with slaw, shrimp, and a drizzle of lime mayo.", "Serve with cilantro-lime rice and black beans."] 
-        },
-        {
             name: "Capsule Corp Crunchwrap Supremes", time: "30 MIN", powerLevel: "TACO NIGHT V2",
-            desc: "A massive, crispy, folded hexagon of beef, liquid cheese, and crunch. Served with a side of Mexican street corn salad.",
-            have: [{i: "Ground Beef 80/20", q: "1 lb"}], buy: ["Burrito Sized Tortillas", "Tostada Shells", "Nacho Cheese Sauce", "Sour Cream", "Shredded Lettuce", "Frozen Corn (1 Bag)", "Cotija Cheese"],
-            prep: ["Thaw <b>1 bag</b> frozen corn.", "Wash and shred <b>2 cups</b> lettuce.", "Mix taco seasoning into <b>1 lb</b> raw ground beef."],
+            desc: "A massive, crispy folded hexagon of beef, liquid cheese, and crunch. Spiced heavily with cumin and oregano.",
+            kidMod: "👶 <b>YOUNGLING MOD:</b> Make 'Mini Foldies' for the kids. Use a smaller tortilla, skip the hard tostada shell (too hard to bite), and just fold the beef and cheese in half like a soft quesadilla.",
+            have: [{i: "Ground Beef 80/20", q: "1 lb"}], buy: ["Burrito Sized Tortillas", "Tostada Shells", "Nacho Cheese Sauce", "Sour Cream", "Shredded Lettuce", "Frozen Corn (1 Bag)", "Cotija Cheese", "Cumin", "Oregano"],
+            prep: ["Thaw <b>1 bag</b> frozen corn.", "Wash and shred <b>2 cups</b> lettuce.", "Mix <b>1 tbsp chili powder</b>, <b>1 tsp cumin</b>, <b>1 tsp oregano</b>, and 1 tsp salt into <b>1 lb</b> raw ground beef."],
             cook: [
                 "Brown ground beef in a skillet. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(7, this)'>⏱️ 7 MIN BEEF TIMER</button> Drain grease.",
-                "In a separate skillet, char the corn with 1 tbsp butter and chili powder until blackened spots appear.",
-                "Build Crunchwrap: Large tortilla > layer of beef > warm nacho cheese > tostada shell > sour cream > lettuce > fold edges tightly into center.",
-                "Place folded side down in a hot, oiled skillet. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(2, this)'>⏱️ 2 MIN SEAR TIMER</button> Flip and repeat."
+                "In a separate skillet, char the corn with 1 tbsp butter and 1/2 tsp chili powder until blackened spots appear.",
+                "Build Crunchwrap: Large tortilla > layer of spiced beef > warm nacho cheese > tostada shell > sour cream > lettuce > fold edges tightly into center.",
+                "Place folded side down in a hot, lightly oiled skillet. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(2, this)'>⏱️ 2 MIN SEAR TIMER</button> Flip and repeat for 2 mins."
             ],
-            serve: ["Cut the golden Crunchwrap in half.", "Toss the charred corn with 2 tbsp mayo, lime juice, and Cotija cheese for the side salad."]
+            serve: ["Cut the golden Crunchwrap in half to reveal the layers.", "Toss the charred corn with 2 tbsp mayo, lime juice, and 1/4 cup Cotija cheese for a street-corn side salad."]
         },
         {
             name: "Lothlórien Lemon Herb Salmon & Orzo", time: "30 MIN", powerLevel: "ELVEN LIGHT",
-            desc: "Flaky, buttery, lemon-garlic salmon fillets roasted perfectly, served over a bed of creamy parmesan-spinach orzo pasta.",
-            have: [{i: "Power Greens", q: "2 Cups"}], buy: ["Salmon Fillets (4)", "Orzo Pasta (1 Cup)", "Chicken Broth (32oz)", "Lemons (2)", "Parmesan", "Garlic"],
-            prep: ["Preheat oven to 400°F.", "Mince <b>4 cloves</b> garlic.", "Slice 1 lemon into rounds, juice the other."],
+            desc: "Flaky, buttery, lemon-dill salmon roasted perfectly, served over a bed of creamy parmesan-spinach orzo pasta.",
+            kidMod: "👶 <b>YOUNGLING MOD:</b> Take their portion of salmon and flake it directly into the warm, creamy orzo. It turns into a comforting, easy-to-eat 'salmon mac and cheese' texture.",
+            have: [{i: "Power Greens", q: "2 Cups"}], buy: ["Salmon Fillets (4)", "Orzo Pasta (1 Cup)", "Chicken Broth (32oz)", "Lemons (2)", "Parmesan", "Garlic", "Fresh Dill"],
+            prep: ["Preheat oven to 400°F.", "Mince <b>4 cloves</b> garlic and <b>1 tbsp fresh dill</b>.", "Slice 1 lemon into rounds, juice the other."],
             cook: [
-                "Place salmon on a foil-lined tray. Rub with olive oil, salt, pepper, and lay lemon rounds on top. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(14, this)'>⏱️ 14 MIN ROAST TIMER</button>",
-                "In a deep skillet, sauté garlic in 2 tbsp butter for 1 minute.",
+                "Place salmon on a foil-lined tray. Rub with 1 tbsp olive oil, salt, pepper, the minced dill, and lay lemon rounds on top. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(14, this)'>⏱️ 14 MIN ROAST TIMER</button>",
+                "In a deep skillet, sauté minced garlic in <b>2 tbsp butter</b> for 1 minute.",
                 "Add <b>1 cup orzo</b> to the skillet and toast for 2 mins.",
-                "Pour in <b>2.5 cups chicken broth</b>. Bring to a boil, then simmer uncovered until liquid absorbs. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(10, this)'>⏱️ 10 MIN ORZO TIMER</button>",
-                "Stir 2 cups Power Greens and 1/2 cup Parmesan into the hot orzo until wilted and creamy."
+                "Pour in <b>2.5 cups chicken broth</b> and the lemon juice. Bring to a boil, then simmer uncovered until liquid absorbs. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(10, this)'>⏱️ 10 MIN ORZO TIMER</button>",
+                "Stir 2 cups Power Greens, <b>1/4 cup heavy cream</b>, and 1/2 cup Parmesan into the hot orzo until wilted and creamy."
             ],
-            serve: ["Spoon a massive mound of creamy green orzo onto the plate.", "Rest the hot lemon salmon directly on top."]
+            serve: ["Spoon a massive mound of creamy green orzo onto the plate.", "Rest the hot lemon-dill salmon directly on top."]
         },
         {
-            name: "Cosmic Garlic Penne & Power Salad", time: "30 MIN", powerLevel: "BALANCED ALCHEMY", 
-            desc: "Velvety, rich pasta paired with a tangy, crunchy, strawberry-feta side salad to balance the heavy carbs.", 
-            have: [{i: "Penne", q: "16oz"}, {i: "Tomato Sauce", q: "24oz"}, {i: "Power Greens", q: "1 Tub"}], buy: ["Heavy Cream (1/2 Cup)", "Garlic Bulb", "Butter", "Parmesan", "Strawberries", "Feta Cheese", "Balsamic Vinaigrette"], 
-            prep: ["Mince <b>6 cloves</b> garlic and grate <b>1 cup</b> Parmesan.", "Slice <b>1 cup</b> strawberries.", "Place half the tub of Power Greens into a large salad bowl."], 
+            name: "Piccolo’s Pesto Chicken Meatballs & Orzo", time: "35 MIN", powerLevel: "GREEN ENERGY",
+            desc: "Incredibly juicy ground chicken meatballs packed with parmesan and basil, seared and served over bright, lemony orzo.",
+            kidMod: "👶 <b>YOUNGLING MOD:</b> Deconstruct it! Cut the meatballs into quarters. The soft texture of ground chicken is much easier for toddlers to chew than beef.",
+            have: [{i: "Orzo Pasta", q: "1 Cup"}], buy: ["Ground Chicken (1 lb)", "Pesto Sauce (1 Jar)", "Parmesan", "Panko Breadcrumbs", "Chicken Broth (32oz)", "Cherry Tomatoes"],
+            prep: ["In a large bowl, mix: <b>1 lb ground chicken</b>, <b>1/2 cup Panko</b>, <b>1/2 cup grated Parmesan</b>, <b>3 tbsp Pesto</b>, 1 egg, 1 tsp salt, 1/2 tsp garlic powder.", "Roll mixture into 12 even meatballs.", "Halve <b>1 pint</b> cherry tomatoes."],
             cook: [
-                "Boil 4 qts water with <b>2 tbsp salt</b>. Cook Penne. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(11, this)'>⏱️ 11 MIN PASTA TIMER</button>", 
-                "Reserve <b>1/2 cup</b> pasta water before draining.",
-                "Melt <b>3 tbsp butter</b> in skillet. Add garlic for 1 min.", 
-                "Add Tomato Sauce and 1/2 cup heavy cream. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(5, this)'>⏱️ 5 MIN SAUCE SIMMER</button>", 
-                "Fold remaining Power Greens into the warm pasta sauce until wilted."
-            ], 
-            serve: ["Toss salad greens with strawberries, <b>1/2 cup feta</b>, and Balsamic.", "Fold drained pasta into the skillet sauce. Top heavily with Parmesan."] 
-        },
-        {
-            name: "Namekian Green Goddess Soup & Grilled Cheese", time: "35 MIN", powerLevel: "COMFORT SHIELD",
-            desc: "A rich, vibrant broccoli-cheddar soup packed with extra hidden greens, paired with a massively crispy garlic-butter grilled cheese.",
-            have: [{i: "Power Greens", q: "2 Cups"}, {i: "Sharp Cheddar", q: "3 Cups"}], buy: ["Broccoli (3 Heads)", "Chicken Broth", "Heavy Cream", "Sourdough Bread (1 Loaf)", "Butter"],
-            prep: ["Chop broccoli into very small florets.", "Shred <b>3 cups</b> sharp cheddar.", "Butter 8 slices of sourdough bread heavily."],
-            cook: [
-                "In a large pot, melt 4 tbsp butter. Sauté chopped broccoli for 5 mins.",
-                "Add 3 cups chicken broth and 2 cups Power Greens. Simmer until soft. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(15, this)'>⏱️ 15 MIN SOUP TIMER</button>",
-                "Use an immersion blender (or mash heavily) to puree the soup slightly.",
-                "Turn off heat. Stir in 1 cup heavy cream and 2 cups cheddar until melted.",
-                "In a skillet, toast the grilled cheese sandwiches (using the remaining 1 cup cheddar inside). <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(3, this)'>⏱️ 3 MIN PER SIDE</button>"
+                "Heat 2 tbsp oil in a large skillet over medium heat. Sear the meatballs until deeply golden on all sides. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(10, this)'>⏱️ 10 MIN SEAR TIMER</button>",
+                "Remove meatballs. In the same skillet, toast <b>1 cup Orzo</b> in the leftover chicken fat for 2 mins.",
+                "Pour in <b>2.5 cups chicken broth</b>. Nestle the meatballs back into the broth. Simmer uncovered. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(12, this)'>⏱️ 12 MIN SIMMER</button>",
+                "Turn off heat. Swirl in exactly <b>1/4 cup of Pesto sauce</b> and the halved tomatoes. Let sit 2 mins."
             ],
-            serve: ["Ladle thick green soup into bowls.", "Slice the massive grilled cheese diagonally and dunk directly into the soup."]
-        },
-        {
-            name: "Sailor Mars Spicy Peanut Noodles", time: "25 MIN", powerLevel: "FIRE & EARTH",
-            desc: "Chewy ramen noodles coated in a violently delicious, spicy peanut butter sauce, topped with crispy seared tofu and edamame.",
-            have: [{i: "Pasta/Ramen Noodles", q: "10oz"}], buy: ["Extra Firm Tofu (1 Block)", "Peanut Butter", "Soy Sauce", "Sriracha", "Frozen Edamame", "Green Onions"],
-            prep: ["Press and cube <b>1 block</b> extra firm tofu. Toss with 1 tbsp cornstarch.", "Mix sauce: <b>1/2 cup peanut butter</b>, <b>1/3 cup soy sauce</b>, <b>2 tbsp Sriracha</b>, <b>2 tbsp hot water</b>.", "Slice <b>1 bunch</b> green onions."],
-            cook: [
-                "Boil noodles. Throw in 1 cup frozen edamame during the last 2 minutes. Drain.",
-                "Heat 2 tbsp oil in a skillet on medium-high. Fry tofu cubes until crispy on all sides. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(8, this)'>⏱️ 8 MIN TOFU FRY</button>",
-                "In a massive bowl, dump the hot noodles and edamame.",
-                "Pour the spicy peanut sauce over the noodles and toss aggressively until fully coated."
-            ],
-            serve: ["Portion noodles into bowls.", "Top with crispy tofu cubes and massive handfuls of green onions."]
-        },
-        {
-            name: "Shenron's Sheet Pan Sausage & Veggies", time: "40 MIN", powerLevel: "LAZY ALCHEMY",
-            desc: "The ultimate low-effort, high-flavor meal. Smoked sausage, potatoes, and peppers roasted together on one pan. Zero cleanup.",
-            have: [], buy: ["Smoked Kielbasa or Chicken Sausage (1.5 lbs)", "Baby Yellow Potatoes", "Bell Peppers (3 colors)", "Olive Oil", "Italian Seasoning"],
-            prep: ["Preheat oven to 400°F.", "Slice sausage into thick coin rounds.", "Halve <b>1.5 lbs</b> baby potatoes.", "Chop <b>3 bell peppers</b> into large chunks."],
-            cook: [
-                "Dump everything onto a massive baking sheet.",
-                "Drizzle aggressively with <b>3 tbsp olive oil</b>, <b>1 tbsp Italian Seasoning</b>, salt, and pepper. Toss with your hands.",
-                "Roast in the oven. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(20, this)'>⏱️ 20 MIN ROAST TIMER</button>",
-                "Pull out, flip everything with a spatula, and roast again until potatoes are fork-tender and sausage is charred. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(15, this)'>⏱️ 15 MIN FINAL ROAST</button>"
-            ],
-            serve: ["Eat directly off the pan if PL allows, or divide into bowls.", "Great with a side of mustard or hot sauce."]
-        },
-        {
-            name: "Chi-Chi's Chicken Parm & Zucchini Noodles", time: "40 MIN", powerLevel: "FUSION ITALIAN",
-            desc: "Massive, crispy, cheese-smothered chicken cutlets served over a 50/50 mix of regular pasta and fresh zucchini noodles to sneak in the veg.",
-            have: [{i: "Spaghetti", q: "8oz"}, {i: "Tomato Sauce", q: "24oz"}], buy: ["Chicken Breasts (2 large)", "Panko Breadcrumbs", "Eggs", "Mozzarella Cheese", "Zucchini (2 large)"],
-            prep: ["Slice chicken breasts in half horizontally to make 4 thin cutlets.", "Spiralize or peel the <b>2 zucchinis</b> into long noodles.", "Set up breading station: 1 bowl beaten eggs, 1 bowl Panko + salt/garlic powder."],
-            cook: [
-                "Dip chicken in egg, then press heavily into Panko.",
-                "Heat 1/4 inch of oil in a massive skillet. Fry cutlets until golden brown. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(4, this)'>⏱️ 4 MIN PER SIDE</button>",
-                "Move chicken to a baking sheet. Top with tomato sauce and mozzarella. Broil to melt. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(3, this)'>⏱️ 3 MIN BROIL TIMER</button>",
-                "Boil spaghetti. In the last 2 minutes, drop the zucchini noodles into the pasta water to blanch. Drain together."
-            ],
-            serve: ["Toss the 50/50 pasta/zood mix with the remaining warm tomato sauce.", "Place the massive crispy chicken parm directly on top."]
+            serve: ["Plate the creamy, vibrant green orzo and top with 3 juicy meatballs per person.", "Dust heavily with extra Parmesan."]
         },
         {
             name: "Trunks' Time-Traveling Turkey Chili", time: "35 MIN", powerLevel: "HEARTY BOWL",
-            desc: "A thick, incredibly hearty chili made with lean turkey, black beans, and hidden grated carrots. Fast enough for a weeknight.",
-            have: [{i: "Power Greens", q: "1 Handful (optional)"}], buy: ["Ground Turkey (1 lb)", "Crushed Tomatoes (28oz)", "Black Beans (2 Cans)", "Carrots (2)", "Chili Powder", "Sour Cream", "Cornbread Mix"],
-            prep: ["Preheat oven and mix cornbread according to box instructions.", "Finely grate <b>2 carrots</b>.", "Drain and rinse the black beans."],
+            desc: "A thick, incredibly hearty chili made with lean turkey, black beans, hidden grated carrots, and a secret dash of cocoa powder for deep, savory richness.",
+            kidMod: "👶 <b>YOUNGLING MOD:</b> The spice can be overwhelming. Serve their chili scooped over a small bed of plain pasta (like macaroni) or a pile of Fritos, and drop a heavy dollop of sour cream on top to cool it down instantly.",
+            have: [{i: "Power Greens", q: "1 Handful (optional)"}], buy: ["Ground Turkey (1 lb)", "Crushed Tomatoes (28oz)", "Black Beans (2 Cans)", "Carrots (2)", "Chili Powder", "Cumin", "Cocoa Powder", "Sour Cream", "Cornbread Mix"],
+            prep: ["Preheat oven and mix cornbread according to box instructions.", "Finely grate <b>2 carrots</b>.", "Drain and rinse the black beans.", "Measure the spice blend: <b>3 tbsp chili powder</b>, <b>1 tbsp cumin</b>, <b>1 tbsp unsweetened cocoa powder</b>, 1 tsp salt."],
             cook: [
                 "Bake the cornbread. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(15, this)'>⏱️ 15 MIN CORNBREAD TIMER</button>",
                 "In a large soup pot, brown the ground turkey with 2 tbsp olive oil and the grated carrots. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(8, this)'>⏱️ 8 MIN SEAR</button>",
-                "Add <b>3 tbsp chili powder</b>, 1 tsp cumin, salt, and pepper. Stir 1 minute to toast spices.",
+                "Add the entire spice blend (chili, cumin, cocoa). Stir aggressively for 1 minute to toast the spices.",
                 "Dump in crushed tomatoes and beans. Bring to a boil, reduce, and simmer. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(15, this)'>⏱️ 15 MIN CHILI SIMMER</button>"
             ],
-            serve: ["Ladle chili into deep bowls.", "Top with massive spoonfuls of sour cream and serve with warm, buttery cornbread."]
+            serve: ["Ladle thick chili into deep bowls.", "Top with massive spoonfuls of sour cream and serve with warm, buttery cornbread."]
+        },
+        {
+            name: "Capsule Corp Coconut Curry Chicken", time: "30 MIN", powerLevel: "GOLDEN KI",
+            desc: "A rich, vibrant, golden coconut curry loaded with tender chicken, bell peppers, and exact curry paste ratios to build deep flavor without burning the palate.",
+            kidMod: "👶 <b>YOUNGLING MOD:</b> Pull a small portion of the curry sauce into a separate bowl for the kids and whisk in 1 tbsp of honey. This neutralizes the curry heat and makes it sweet and savory.",
+            have: [{i: "Rice", q: "1.5 Cups Dry"}], buy: ["Chicken Breasts (1.5 lbs)", "Red Curry Paste (Jar)", "Coconut Milk (1 Can Full Fat)", "Red Bell Pepper", "Fresh Ginger", "Garlic"],
+            prep: ["Cube <b>1.5 lbs</b> chicken breasts.", "Slice <b>1 Red Bell Pepper</b> into thin strips.", "Mince <b>4 cloves garlic</b> and <b>1 tbsp fresh ginger</b>."],
+            cook: [
+                "Start <b>1.5 cups</b> dry rice in the rice cooker.",
+                "In a deep skillet, heat 1 tbsp oil. Sauté chicken until browned but not cooked through. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(5, this)'>⏱️ 5 MIN SEAR</button> Remove chicken.",
+                "In the same skillet, add garlic, ginger, and exactly <b>3 tbsp Red Curry Paste</b>. Stir for 1 minute until highly fragrant.",
+                "Pour in <b>1 can full-fat coconut milk</b> and whisk until smooth. Add the bell peppers and raw chicken back in.",
+                "Simmer uncovered until sauce slightly thickens and chicken is cooked. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(10, this)'>⏱️ 10 MIN SIMMER</button>"
+            ],
+            serve: ["Ladle the heavy, golden coconut curry directly over massive bowls of fresh rice."]
         }
     ];
 
@@ -540,6 +513,7 @@
         document.getElementById('r-time').innerText = "⏱️ " + recipe.time;
         document.getElementById('r-power').innerText = "⚡️ PL: " + recipe.powerLevel;
         document.getElementById('r-desc').innerText = recipe.desc;
+        document.getElementById('r-kid').innerHTML = recipe.kidMod;
         currentRecipeNeeds = recipe.buy;
 
         document.getElementById('r-have').innerHTML = recipe.have.map(i => `<li>✅ <b>${i.i}</b> <span style="float:right; color:#ccc;">${i.q}</span></li>`).join('') || "<li>No vault items needed!</li>";
@@ -628,7 +602,7 @@
         prepIngredients.forEach(item => { if(!marketList.includes(item)) marketList.push(item); });
         renderMarket();
         switchTab('market', document.querySelectorAll('.nav-item')[1]);
-        alert("Prep ingredients pushed to Scouter!");
+        alert("Pre-School Rations pushed to Scouter!");
     }
 
     function renderMarket() {
