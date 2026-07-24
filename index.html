@@ -3,31 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Prism Scouter v9.0 🌙🐉</title>
+    <title>Prism Scouter v10.0 (AI Edition) 🌙🐉</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Nunito:wght@400;700;900&display=swap');
 
         :root {
-            --moon-pink: #ff3399;
-            --neon-pink: #ff007f;
-            --dbz-orange: #ff8c00;
-            --ssj-gold: #ffd700;
-            --scouter-green: #39ff14;
-            --cosmic-dark: #0a0514;
-            --glass: rgba(15, 10, 25, 0.85);
-            --completed-bg: rgba(57, 255, 20, 0.1);
-            --youngling-blue: #00e5ff;
+            --moon-pink: #ff3399; --neon-pink: #ff007f; --dbz-orange: #ff8c00;
+            --ssj-gold: #ffd700; --scouter-green: #39ff14; --cosmic-dark: #0a0514;
+            --glass: rgba(15, 10, 25, 0.85); --completed-bg: rgba(57, 255, 20, 0.1);
+            --youngling-blue: #00e5ff; --ai-glow: #b57eff;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            background-color: var(--cosmic-dark);
-            color: #fff;
-            font-family: 'Nunito', sans-serif; 
-            min-height: 100vh;
-            overflow-x: hidden;
-            padding-bottom: 90px;
+            background-color: var(--cosmic-dark); color: #fff;
+            font-family: 'Nunito', sans-serif; min-height: 100vh;
+            overflow-x: hidden; padding-bottom: 90px;
         }
 
         #matrix-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; opacity: 0.25; }
@@ -38,7 +30,7 @@
             position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px);
             box-shadow: 0 4px 15px rgba(255, 140, 0, 0.4);
         }
-        header h1 { font-family: 'Orbitron'; font-weight: 900; font-size: 1.5rem; text-shadow: 0 0 8px var(--neon-pink); letter-spacing: 2px; text-transform: uppercase; }
+        header h1 { font-family: 'Orbitron'; font-weight: 900; font-size: 1.5rem; text-shadow: 0 0 8px var(--neon-pink); letter-spacing: 2px; }
         .subtitle { font-size: 0.8rem; color: var(--scouter-green); font-weight: 900; margin-top: 5px; }
 
         .app-container { padding: 15px; max-width: 800px; margin: 0 auto; }
@@ -47,7 +39,6 @@
             background: rgba(57, 255, 20, 0.1); border: 2px solid var(--scouter-green);
             padding: 12px; border-radius: 8px; font-size: 0.95rem; font-weight: 700;
             color: var(--scouter-green); text-align: center; margin-bottom: 20px;
-            box-shadow: inset 0 0 10px rgba(57, 255, 20, 0.2);
         }
 
         .card {
@@ -56,35 +47,37 @@
             box-shadow: 0 0 15px rgba(255, 51, 153, 0.2); backdrop-filter: blur(15px);
         }
 
+        /* AI BUTTONS */
+        .ai-gen-btn {
+            background: linear-gradient(45deg, #4a0e4e, var(--moon-pink));
+            border: 3px solid var(--ai-glow); color: #fff;
+            padding: 15px; width: 100%; font-family: 'Orbitron'; font-weight: 900; font-size: 1.1rem;
+            cursor: pointer; border-radius: 10px; transition: 0.2s; margin-bottom: 20px; text-transform: uppercase;
+            box-shadow: 0 0 15px rgba(181, 126, 255, 0.5); display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .ai-gen-btn:active { transform: scale(0.98); }
+        .ai-loading { animation: pulseAI 1s infinite; pointer-events: none; }
+        @keyframes pulseAI { 0% { box-shadow: 0 0 15px rgba(181, 126, 255, 0.5); } 50% { box-shadow: 0 0 30px var(--ai-glow); } 100% { box-shadow: 0 0 15px rgba(181, 126, 255, 0.5); } }
+
         .selector-wrapper { margin-bottom: 20px; }
         select {
             width: 100%; padding: 15px; font-size: 1.1rem; font-family: 'Orbitron'; font-weight: bold;
             background: rgba(0,0,0,0.7); color: var(--ssj-gold); border: 2px solid var(--dbz-orange);
-            border-radius: 8px; cursor: pointer; appearance: none; text-align: center;
+            border-radius: 8px; cursor: pointer; text-align: center;
         }
 
-        .converter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
-        .conv-input { background: rgba(255,255,255,0.1); border: 2px solid var(--neon-pink); color: white; padding: 10px; border-radius: 6px; font-family: 'Nunito'; font-size: 1rem; font-weight: bold; text-align: center; width: 100%; }
-        .conv-select { background: rgba(0,0,0,0.8); border: 2px solid var(--neon-pink); color: var(--moon-pink); padding: 10px; border-radius: 6px; font-family: 'Orbitron'; font-weight: bold; width: 100%; }
-        .conv-result { text-align: center; font-family: 'Orbitron'; color: var(--scouter-green); font-size: 1.2rem; font-weight: 900; background: rgba(57,255,20,0.1); padding: 10px; border-radius: 6px; border: 1px dashed var(--scouter-green); margin-top: 10px; }
-
         .progress-container { width: 100%; height: 25px; background: #222; border-radius: 12px; border: 2px solid #555; margin-bottom: 20px; overflow: hidden; position: relative; }
-        .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--scouter-green), var(--ssj-gold)); transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--scouter-green), var(--ssj-gold)); transition: width 0.4s; }
         .progress-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'Orbitron'; font-size: 0.8rem; font-weight: 900; color: white; text-shadow: 1px 1px 2px black; }
 
         h2 { color: var(--neon-pink); font-family: 'Orbitron'; font-size: 1.6rem; margin-bottom: 10px; text-transform: uppercase; }
         .recipe-stat-bar { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
         .stat-badge { background: rgba(255, 140, 0, 0.2); border: 2px solid var(--dbz-orange); color: var(--dbz-orange); padding: 6px 10px; border-radius: 6px; font-weight: 900; font-size: 0.9rem; }
         
-        /* YOUNGLING MOD BOX */
-        .kid-mod-box {
-            background: rgba(0, 229, 255, 0.1); border: 2px dashed var(--youngling-blue);
-            color: var(--youngling-blue); padding: 15px; border-radius: 8px;
-            margin-bottom: 20px; font-size: 0.95rem; font-weight: 700; line-height: 1.5;
-        }
+        .kid-mod-box { background: rgba(0, 229, 255, 0.1); border: 2px dashed var(--youngling-blue); color: var(--youngling-blue); padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 0.95rem; font-weight: 700; line-height: 1.5; }
         .kid-mod-box b { color: #fff; font-family: 'Orbitron'; letter-spacing: 1px; }
 
-        .section-header { font-family: 'Orbitron'; font-size: 1.2rem; margin: 25px 0 10px 0; padding-bottom: 5px; border-bottom: 2px solid; text-transform: uppercase; }
+        .section-header { font-family: 'Orbitron'; font-size: 1.2rem; margin: 25px 0 10px 0; padding-bottom: 5px; border-bottom: 2px solid; }
         .section-header.green { color: var(--scouter-green); border-color: rgba(57, 255, 20, 0.5); }
         .section-header.orange { color: var(--dbz-orange); border-color: rgba(255, 140, 0, 0.5); }
         .section-header.pink { color: var(--neon-pink); border-color: rgba(255, 0, 127, 0.5); }
@@ -94,37 +87,19 @@
             padding: 15px; margin-bottom: 12px; cursor: pointer; transition: all 0.2s ease;
             font-size: 1.1rem; line-height: 1.5; font-weight: 700; display: flex; gap: 15px; align-items: flex-start;
         }
-        .task-item:hover { border-color: var(--moon-pink); transform: translateX(5px); }
         .task-item.completed { background: var(--completed-bg); border-color: var(--scouter-green); opacity: 0.6; }
         .task-item.completed .task-text { text-decoration: line-through; color: var(--scouter-green); }
         .task-checkbox { width: 28px; height: 28px; min-width: 28px; border: 2px solid #888; border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
         .completed .task-checkbox { background: var(--scouter-green); border-color: var(--scouter-green); }
         .completed .task-checkbox::after { content: '✔'; color: black; font-weight: 900; font-size: 18px; }
-        .task-text b { color: var(--ssj-gold); font-size: 1.15em; } 
-        
-        .timer-btn {
-            background: rgba(57, 255, 20, 0.15); border: 2px solid var(--scouter-green);
-            color: var(--scouter-green); font-family: 'Space Mono', monospace; font-size: 0.85rem; font-weight: 900;
-            padding: 6px 12px; border-radius: 6px; cursor: pointer; margin-top: 8px; display: block; width: fit-content;
-            box-shadow: 0 0 5px rgba(57, 255, 20, 0.2); transition: 0.2s;
-        }
-        .timer-btn:active { transform: scale(0.95); }
-        .timer-btn.active-timer { background: var(--scouter-green); color: #000; animation: pulseGreen 1s infinite; box-shadow: 0 0 15px var(--scouter-green); }
-        @keyframes pulseGreen { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
 
         ul.tactical-list { list-style: none; font-size: 1rem; }
         ul.tactical-list li { padding: 10px; border-bottom: 1px dashed rgba(255,255,255,0.2); font-weight: 700; }
-        ul.tactical-list li b { color: var(--ssj-gold); }
+        
+        .timer-btn { background: rgba(57, 255, 20, 0.15); border: 2px solid var(--scouter-green); color: var(--scouter-green); font-family: 'Space Mono', monospace; font-size: 0.85rem; font-weight: 900; padding: 6px 12px; border-radius: 6px; cursor: pointer; margin-top: 8px; display: block; width: fit-content; }
 
-        .magic-btn {
-            background: transparent; border: 3px solid var(--dbz-orange); color: var(--dbz-orange);
-            padding: 15px; width: 100%; font-family: 'Orbitron'; font-weight: 900; font-size: 1.1rem;
-            cursor: pointer; border-radius: 10px; transition: 0.2s; margin-top: 15px; text-transform: uppercase;
-        }
-        .magic-btn:active { transform: scale(0.98); }
+        .magic-btn { background: transparent; border: 3px solid var(--dbz-orange); color: var(--dbz-orange); padding: 15px; width: 100%; font-family: 'Orbitron'; font-weight: 900; font-size: 1.1rem; cursor: pointer; border-radius: 10px; margin-top: 15px; text-transform: uppercase; }
         .magic-btn.pink { border-color: var(--neon-pink); color: var(--neon-pink); background: rgba(255,0,127,0.1); }
-        .magic-btn.coupon { border-color: var(--scouter-green); color: var(--scouter-green); margin-bottom: 20px; }
-        .magic-btn.sm { padding: 10px; font-size: 0.9rem; margin-top: 0; }
 
         nav {
             position: fixed; bottom: 0; left: 0; width: 100%;
@@ -132,18 +107,8 @@
             display: flex; justify-content: space-around; padding: 15px 0; z-index: 100; backdrop-filter: blur(10px);
         }
         .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 0.8rem; font-family: 'Orbitron'; color: #666; cursor: pointer; font-weight: 900; }
-        .nav-item.active { color: var(--neon-pink); text-shadow: 0 0 10px var(--neon-pink); transform: scale(1.1); transition: 0.2s; }
+        .nav-item.active { color: var(--neon-pink); text-shadow: 0 0 10px var(--neon-pink); transform: scale(1.1); }
         .nav-icon { font-size: 1.8rem; margin-bottom: 4px; }
-
-        #level-up-toast {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
-            background: rgba(0,0,0,0.9); border: 5px solid var(--ssj-gold); padding: 40px;
-            border-radius: 20px; z-index: 1000; text-align: center; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 0 50px var(--ssj-gold); pointer-events: none;
-        }
-        #level-up-toast.show { transform: translate(-50%, -50%) scale(1); }
-        #level-up-toast h1 { font-family: 'Orbitron'; font-size: 3rem; color: var(--ssj-gold); text-shadow: 0 0 20px var(--dbz-orange); margin-bottom: 10px; }
-
         .hidden { display: none !important; }
     </style>
 </head>
@@ -151,42 +116,25 @@
 
 <canvas id="matrix-canvas"></canvas>
 
-<div id="level-up-toast">
-    <h1>LEVEL UP! ⚡️</h1>
-    <p style="font-size: 1.2rem; font-weight: bold; color: white;">ALCHEMY COMPLETE!</p>
-</div>
-
 <header>
     <h1>🌙 PRISM SCOUTER 🐉</h1>
     <div class="subtitle" id="sync-status">SYSTEM ONLINE • KI STABLE</div>
 </header>
 
 <div class="app-container">
-
-    <div class="daily-reminder">
-        🌱 Daily Protocol: Step away from the screens. Get outside, breathe the fresh air, and enjoy a moment in nature today.
-    </div>
+    <div class="daily-reminder">🌱 Daily Protocol: Step away from the screens. Get outside, breathe the fresh air, and enjoy a moment in nature today.</div>
 
     <!-- VIEW 1: RECIPES (ALCHEMY) -->
     <div id="view-recipes" class="view-section">
         
-        <div class="card">
-            <h2 style="font-size: 1.2rem; color: var(--moon-pink);">⚖️ ALCHEMY CONVERTER</h2>
-            <div class="converter-grid">
-                <input type="number" id="conv-val" class="conv-input" placeholder="Amount (e.g. 8)">
-                <select id="conv-type" class="conv-select">
-                    <option value="oz-cup">Fluid Oz ➔ Cups</option>
-                    <option value="cup-oz">Cups ➔ Fluid Oz</option>
-                    <option value="tbsp-cup">Tbsp ➔ Cups</option>
-                    <option value="cup-tbsp">Cups ➔ Tbsp</option>
-                </select>
-            </div>
-            <button class="magic-btn sm pink" onclick="runConversion()">CONVERT KI UNITS</button>
-            <div id="conv-output" class="conv-result">--</div>
-        </div>
+        <button id="ai-btn" class="ai-gen-btn" onclick="generateAIRecipe()">
+            <span>✨ GENERATE AI ALCHEMY ✨</span>
+        </button>
 
         <div class="selector-wrapper">
-            <select id="recipe-selector" onchange="loadSelectedRecipe()"></select>
+            <select id="recipe-selector" onchange="loadSelectedRecipe()">
+                <option>Loading Database...</option>
+            </select>
         </div>
 
         <div class="card" id="recipe-card">
@@ -197,7 +145,6 @@
             </div>
             <p id="r-desc" style="font-size: 0.95rem; color: #ccc; margin-bottom: 20px; line-height: 1.5; font-weight: bold;"></p>
             
-            <!-- YOUNGLING MODIFICATION -->
             <div id="r-kid" class="kid-mod-box"></div>
             
             <div class="section-header green">🎒 VERIFIED IN VAULT</div>
@@ -210,20 +157,10 @@
 
         <div class="card">
             <h2 style="color: var(--ssj-gold);">📜 ALCHEMY EXECUTION</h2>
-            
-            <div class="progress-container">
-                <div class="progress-bar" id="alchemy-progress"></div>
-                <div class="progress-text" id="alchemy-text">KI GATHERING: 0%</div>
-            </div>
-
-            <div class="section-header pink">🔪 PHASE 1: PREP</div>
-            <div id="r-prep" class="task-list"></div>
-
-            <div class="section-header orange">🧪 PHASE 2: ALCHEMY</div>
-            <div id="r-cook" class="task-list"></div>
-
-            <div class="section-header green">✨ PHASE 3: VICTORY</div>
-            <div id="r-serve" class="task-list"></div>
+            <div class="progress-container"><div class="progress-bar" id="alchemy-progress"></div><div class="progress-text" id="alchemy-text">KI GATHERING: 0%</div></div>
+            <div class="section-header pink">🔪 PHASE 1: PREP</div><div id="r-prep"></div>
+            <div class="section-header orange">🧪 PHASE 2: ALCHEMY</div><div id="r-cook"></div>
+            <div class="section-header green">✨ PHASE 3: VICTORY</div><div id="r-serve"></div>
         </div>
     </div>
 
@@ -231,10 +168,6 @@
     <div id="view-market" class="view-section hidden">
         <div class="card">
             <h2>🛒 TARGET ACQUISITION</h2>
-            <button class="magic-btn coupon" onclick="window.open('https://www.kingsoopers.com/savings/cl/coupons/', '_blank')">
-                ✂️ OPEN KING SOOPERS COUPONS
-            </button>
-            <p style="font-size: 0.9rem; color:#aaa; margin-bottom: 15px; font-weight: bold;">Tap acquired targets to instantly sync to the main data frame.</p>
             <div id="market-list"></div>
         </div>
     </div>
@@ -242,10 +175,7 @@
     <!-- VIEW 3: INVENTORY VAULT -->
     <div id="view-vault" class="view-section hidden">
         <div class="card">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px;">
-                <h2>🐉 DATA VAULT</h2>
-                <span style="color:var(--scouter-green); font-size: 1rem; cursor:pointer; font-weight: 900; font-family:'Orbitron';" onclick="fetchInventory()">🔄 SYNC</span>
-            </div>
+            <h2>🐉 DATA VAULT</h2>
             <ul id="vault-list" class="tactical-list"></ul>
         </div>
     </div>
@@ -254,32 +184,9 @@
     <div id="view-prep" class="view-section hidden">
         <div class="card">
             <h2>🍱 WEEKLY PREP MODULE</h2>
-            <p style="font-size: 0.9rem; color:#aaa; margin-bottom: 20px; font-weight: bold;">Complete these side-quests to front-load your week and survive the morning rush.</p>
-            
-            <div class="section-header pink">🎒 KLAUS'S PRE-SCHOOL RATIONS</div>
-            <div class="task-item" onclick="this.classList.toggle('completed')">
-                <div class="task-checkbox"></div>
-                <div class="task-text"><b>Hidden Veggie Monster Muffins:</b> Blend 2 cups fresh spinach, 1/3 cup honey, 1 banana, and 1/3 cup melted coconut oil. Fold into 2 cups whole wheat flour and 1 tsp baking soda. Bake at 375°F for 15 mins. (Freezes perfectly for lunchboxes).</div>
-            </div>
-            <div class="task-item" onclick="this.classList.toggle('completed')">
-                <div class="task-checkbox"></div>
-                <div class="task-text"><b>Turkey Pinwheel Boxes:</b> Take 4 large flour tortillas. Spread heavily with cream cheese. Layer exact strips of deli turkey and thinly shredded carrots. Roll extremely tight, slice into 1-inch pinwheels. Store in bento boxes.</div>
-            </div>
-
-            <div class="section-header green">⚡️ HIGH-ENERGY SNACKS</div>
-            <div class="task-item" onclick="this.classList.toggle('completed')">
-                <div class="task-checkbox"></div>
-                <div class="task-text"><b>Oat & Hemp Power Bites:</b> Mix 2 cups rolled oats, 1/2 cup peanut butter, 1/3 cup honey, 1 tbsp chia seeds, and 1/4 cup hemp hearts. Chill 30 mins, roll into bite-sized spheres.</div>
-            </div>
-            <div class="task-item" onclick="this.classList.toggle('completed')">
-                <div class="task-checkbox"></div>
-                <div class="task-text"><b>Safe Scouter Packs:</b> Wash and slice 3 bell peppers. Halve grapes/cherry tomatoes *vertically* (crucial for the 2yo choking hazard). Store in airtight glass containers with a damp paper towel to retain crunch.</div>
-            </div>
-
-            <button class="magic-btn pink" onclick="sendPrepToMarket()" style="margin-top: 25px;">➕ PUSH PREP INGREDIENTS TO SCOUTER</button>
+            <div id="prep-list-render"></div>
         </div>
     </div>
-
 </div>
 
 <nav>
@@ -290,306 +197,170 @@
 </nav>
 
 <script>
-    // --- TIMERS ---
-    function startTimer(minutes, btnElement) {
-        let seconds = minutes * 60;
-        if(btnElement.dataset.running === "true") return;
-        btnElement.dataset.running = "true";
-        btnElement.classList.add('active-timer');
-        
-        let interval = setInterval(() => {
-            let m = Math.floor(seconds / 60);
-            let s = seconds % 60;
-            btnElement.innerText = `⏱️ ${m}:${s.toString().padStart(2, '0')} REMAINING`;
-            
-            if(seconds <= 0) {
-                clearInterval(interval);
-                btnElement.innerText = `✨ TIME UP!`;
-                btnElement.classList.remove('active-timer');
-                btnElement.dataset.running = "false";
-                
-                try {
-                    let ctx = new (window.AudioContext || window.webkitAudioContext)();
-                    let osc = ctx.createOscillator();
-                    osc.type = 'square';
-                    osc.frequency.setValueAtTime(440, ctx.currentTime); 
-                    osc.connect(ctx.destination);
-                    osc.start();
-                    osc.stop(ctx.currentTime + 0.2);
-                } catch(e) {}
-            }
-            seconds--;
-        }, 1000);
-    }
-
-    // --- MATRIX RAIN ---
-    const canvas = document.getElementById('matrix-canvas');
-    const ctx = canvas.getContext('2d');
-    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-    const chars = '★☾♥♦●✦✧Z'.split('');
-    const fontSize = 16; 
-    let drops = [];
-    for(let i=0; i<canvas.width/fontSize; i++) drops[i] = 1;
-    function drawMatrix() {
-        ctx.fillStyle = 'rgba(10, 5, 20, 0.1)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.font = fontSize + 'px monospace';
-        if(drops.length < canvas.width / fontSize) {
-            for(let i=drops.length; i<canvas.width/fontSize; i++) drops[i] = 1;
-        }
-        for(let i = 0; i < drops.length; i++) {
-            const text = chars[Math.floor(Math.random() * chars.length)];
-            const colors = ['#ff007f', '#ff8c00', '#b57eff'];
-            ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
-            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-            if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-            drops[i]++;
-        }
-    }
-    setInterval(drawMatrix, 50);
-
-    // --- CONVERTER ALCHEMY ---
-    function runConversion() {
-        let val = parseFloat(document.getElementById('conv-val').value);
-        let type = document.getElementById('conv-type').value;
-        if(isNaN(val)) return;
-        let result = "";
-        if(type === 'oz-cup') result = `${val} fl oz = ${(val / 8).toFixed(2)} cups`;
-        if(type === 'cup-oz') result = `${val} cups = ${(val * 8).toFixed(2)} fl oz`;
-        if(type === 'tbsp-cup') result = `${val} tbsp = ${(val / 16).toFixed(2)} cups`;
-        if(type === 'cup-tbsp') result = `${val} cups = ${(val * 16).toFixed(2)} tbsp`;
-        document.getElementById('conv-output').innerText = result;
-    }
-
-    // --- GOOGLE SCRIPT CONNECTION ---
-    const SHEET_API_URL = "https://script.google.com/macros/s/AKfycby_EiCidBees9IA-zs7_OSxppAnD0sB2U78Qvd1-kQy7JB5sSs9l-P-FKODmQLv2c-j/exec"; 
-    let inventory = [];
+    //https://script.google.com/macros/s/AKfycbyGNUg610oIOzXamcSptpmsr_M6sO5CGMmdZ3udxC62WM1sERIFG-FBXOByL5HIlSFq/exec:
+    const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyGNUg610oIOzXamcSptpmsr_M6sO5CGMmdZ3udxC62WM1sERIFG-FBXOByL5HIlSFq/exec"; 
+    
+    let dbInventory = [];
+    let dbRecipes = [];
+    let dbPrep = [];
     let marketList = [];
     let currentRecipeNeeds = [];
-    let prepIngredients = ["Whole Wheat Flour", "Fresh Spinach", "Honey", "Coconut Oil", "Bananas", "Rolled Oats", "Peanut Butter", "Hemp Hearts", "Bell Peppers", "Grapes", "Large Flour Tortillas", "Deli Turkey", "Cream Cheese"];
 
-    // --- MASSIVE PINCH OF YUM STYLE DATABASE WITH EXACT MEASUREMENTS & KID MODS ---
-    const recipeDB = [
-        { 
-            name: "Tuxedo Mask Steak Bites & Garlic Mash", time: "45 MIN", powerLevel: "GENTLEMAN'S BANQUET", 
-            desc: "Heavy garlic-butter seared steak cubes infused with fresh rosemary. Paired with extremely rich mashed potatoes and roasted asparagus.", 
-            kidMod: "👶 <b>YOUNGLING MOD:</b> Snip the steak bites into very small 1/4-inch pieces (pea-sized) for the 2-year-old. Serve their mash *before* adding the heavy minced garlic chunks.",
-            have: [], buy: ["Sirloin Steak (1.5 lbs)", "Yukon Gold Potatoes (2 lbs)", "Asparagus (1 bunch)", "Unsalted Butter", "Heavy Cream", "Fresh Garlic", "Fresh Rosemary (1 sprig)"], 
-            prep: ["Peel and cube <b>2 lbs</b> Yukon Gold potatoes.", "Trim the woody ends off <b>1 bunch</b> asparagus.", "Cube <b>1.5 lbs</b> steak into 1-inch pieces. Season heavily with <b>1 tbsp Kosher salt</b> and <b>1 tsp black pepper</b>.", "Mince exactly <b>6 cloves</b> garlic. Strip leaves off <b>1 sprig</b> of rosemary and mince."], 
-            cook: [
-                "Preheat oven to 400°F. Toss asparagus with <b>1 tbsp olive oil</b>, 1/2 tsp salt, 1/4 tsp pepper on a baking sheet. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(12, this)'>⏱️ 12 MIN ROAST TIMER</button>",
-                "Boil large pot of salted water. Add potatoes. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(15, this)'>⏱️ 15 MIN POTATO TIMER</button>",
-                "Drain and mash potatoes aggressively with <b>4 tbsp butter</b>, <b>1/4 cup cream</b>, and 1 tsp salt until velvety.",
-                "Heat cast-iron skillet on HIGH. Add 1 tbsp oil. Drop steak cubes in a single layer.",
-                "<button class='timer-btn' onclick='event.stopPropagation(); startTimer(2, this)'>⏱️ 2 MIN CRUST TIMER</button>",
-                "Flip cubes, instantly add <b>3 tbsp butter</b>, minced garlic, and minced rosemary. Baste steak for exactly 1 minute."
-            ], 
-            serve: ["Create a heavy base of garlic mashed potatoes on each plate.", "Ladle the garlic-herb butter steak bites directly over the mash.", "Place the roasted asparagus on the side."] 
-        },
-        { 
-            name: "Super Saiyan Honey Garlic Chicken & Broccoli", time: "30 MIN", powerLevel: "KI RECOVERY", 
-            desc: "Sweet, sticky, crispy chicken chunks infused with ginger and chili flakes, over steamed broccoli and jasmine rice.", 
-            kidMod: "👶 <b>YOUNGLING MOD:</b> Hold back the red pepper flakes from the main sauce. Plate the kids' portions, then stir 1/2 tsp red pepper flakes into the adult skillet for a spicy kick.",
-            have: [{i: "Rice", q: "1.5 Cups Dry"}], buy: ["Chicken Breasts (1.5 lbs)", "Broccoli Florets", "Soy Sauce", "Honey", "Garlic", "Fresh Ginger", "Red Pepper Flakes", "Cornstarch"], 
-            prep: ["Cube <b>1.5 lbs</b> chicken. Toss in a bowl with <b>2 tbsp cornstarch</b>, 1 tsp salt, and 1/2 tsp pepper.", "Mix sauce: <b>1/3 cup honey</b>, <b>1/3 cup soy sauce</b>, <b>4 minced garlic cloves</b>, and <b>1 tsp freshly grated ginger</b>."], 
-            cook: [
-                "Start <b>1.5 cups</b> dry rice in the rice cooker.",
-                "Heat <b>2 tbsp oil</b> in a large skillet over medium-high. Add chicken cubes in a single layer.",
-                "<button class='timer-btn' onclick='event.stopPropagation(); startTimer(6, this)'>⏱️ 6 MIN CHICKEN SEAR</button> (Flip halfway through).",
-                "Push chicken to the side. Add <b>2 cups</b> broccoli florets and 2 tbsp water. Cover pan.",
-                "<button class='timer-btn' onclick='event.stopPropagation(); startTimer(3, this)'>⏱️ 3 MIN STEAM TIMER</button>",
-                "Uncover, pour the honey garlic-ginger sauce over everything. Simmer for 2 minutes until thick and glossy."
-            ], 
-            serve: ["Serve the sticky chicken and broccoli over massive bowls of fresh rice.", "Drizzle leftover pan sauce over the top. Garnish adult bowls with red pepper flakes."] 
-        },
-        { 
-            name: "Majin Buu Hidden-Veggie Mac & Cheese", time: "35 MIN", powerLevel: "STEALTH ALCHEMY", 
-            desc: "An ultra-creamy stovetop mac that secretly hides an entire pureed squash and carrots in the sauce. Elevated with mustard powder for depth.", 
-            kidMod: "👶 <b>YOUNGLING MOD:</b> Serve as is! This is the ultimate stealth dish. The squash and carrots are completely undetectable in the cheddar matrix. Cut the turkey meatballs in halves to prevent choking.",
-            have: [{i: "Penne or Macaroni", q: "16oz"}, {i: "Cheddar Cheese", q: "3 Cups"}], buy: ["Frozen Turkey Meatballs", "Butternut Squash (Frozen cubes)", "Carrots", "Milk", "Cream Cheese (4oz)", "Mustard Powder", "Paprika"], 
-            prep: ["Shred exactly <b>3 cups</b> sharp cheddar cheese.", "Chop <b>2 large carrots</b>.", "Thaw <b>1 cup</b> frozen butternut squash cubes.", "Measure exactly <b>1/2 tsp mustard powder</b> and <b>1/2 tsp smoked paprika</b>."], 
-            cook: [
-                "Place frozen meatballs on a baking sheet at 375°F. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(20, this)'>⏱️ 20 MIN MEATBALL TIMER</button>",
-                "In a small pot, boil the chopped carrots and squash until very soft (about 10 mins). Drain.",
-                "Blend the soft veggies smooth with <b>1/2 cup milk</b>, the mustard powder, paprika, and 1 tsp salt.",
-                "Boil the 16oz pasta in salted water. Drain well.",
-                "Return warm pasta to the big pot. Stir in the veggie puree, <b>4oz cream cheese</b>, and <b>3 cups cheddar</b>.",
-                "Stir vigorously over low heat until it becomes a violently cheesy, glowing orange sauce."
-            ], 
-            serve: ["Serve massive scoops of the mac and cheese with 3-4 turkey meatballs on the side."] 
-        },
-        { 
-            name: "Capsule Corp Crunchwrap Supremes", time: "30 MIN", powerLevel: "TACO NIGHT V2",
-            desc: "A massive, crispy folded hexagon of beef, liquid cheese, and crunch. Spiced heavily with cumin and oregano.",
-            kidMod: "👶 <b>YOUNGLING MOD:</b> Make 'Mini Foldies' for the kids. Use a smaller tortilla, skip the hard tostada shell (too hard to bite), and just fold the beef and cheese in half like a soft quesadilla.",
-            have: [{i: "Ground Beef 80/20", q: "1 lb"}], buy: ["Burrito Sized Tortillas", "Tostada Shells", "Nacho Cheese Sauce", "Sour Cream", "Shredded Lettuce", "Frozen Corn (1 Bag)", "Cotija Cheese", "Cumin", "Oregano"],
-            prep: ["Thaw <b>1 bag</b> frozen corn.", "Wash and shred <b>2 cups</b> lettuce.", "Mix <b>1 tbsp chili powder</b>, <b>1 tsp cumin</b>, <b>1 tsp oregano</b>, and 1 tsp salt into <b>1 lb</b> raw ground beef."],
-            cook: [
-                "Brown ground beef in a skillet. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(7, this)'>⏱️ 7 MIN BEEF TIMER</button> Drain grease.",
-                "In a separate skillet, char the corn with 1 tbsp butter and 1/2 tsp chili powder until blackened spots appear.",
-                "Build Crunchwrap: Large tortilla > layer of spiced beef > warm nacho cheese > tostada shell > sour cream > lettuce > fold edges tightly into center.",
-                "Place folded side down in a hot, lightly oiled skillet. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(2, this)'>⏱️ 2 MIN SEAR TIMER</button> Flip and repeat for 2 mins."
-            ],
-            serve: ["Cut the golden Crunchwrap in half to reveal the layers.", "Toss the charred corn with 2 tbsp mayo, lime juice, and 1/4 cup Cotija cheese for a street-corn side salad."]
-        },
-        {
-            name: "Lothlórien Lemon Herb Salmon & Orzo", time: "30 MIN", powerLevel: "ELVEN LIGHT",
-            desc: "Flaky, buttery, lemon-dill salmon roasted perfectly, served over a bed of creamy parmesan-spinach orzo pasta.",
-            kidMod: "👶 <b>YOUNGLING MOD:</b> Take their portion of salmon and flake it directly into the warm, creamy orzo. It turns into a comforting, easy-to-eat 'salmon mac and cheese' texture.",
-            have: [{i: "Power Greens", q: "2 Cups"}], buy: ["Salmon Fillets (4)", "Orzo Pasta (1 Cup)", "Chicken Broth (32oz)", "Lemons (2)", "Parmesan", "Garlic", "Fresh Dill"],
-            prep: ["Preheat oven to 400°F.", "Mince <b>4 cloves</b> garlic and <b>1 tbsp fresh dill</b>.", "Slice 1 lemon into rounds, juice the other."],
-            cook: [
-                "Place salmon on a foil-lined tray. Rub with 1 tbsp olive oil, salt, pepper, the minced dill, and lay lemon rounds on top. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(14, this)'>⏱️ 14 MIN ROAST TIMER</button>",
-                "In a deep skillet, sauté minced garlic in <b>2 tbsp butter</b> for 1 minute.",
-                "Add <b>1 cup orzo</b> to the skillet and toast for 2 mins.",
-                "Pour in <b>2.5 cups chicken broth</b> and the lemon juice. Bring to a boil, then simmer uncovered until liquid absorbs. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(10, this)'>⏱️ 10 MIN ORZO TIMER</button>",
-                "Stir 2 cups Power Greens, <b>1/4 cup heavy cream</b>, and 1/2 cup Parmesan into the hot orzo until wilted and creamy."
-            ],
-            serve: ["Spoon a massive mound of creamy green orzo onto the plate.", "Rest the hot lemon-dill salmon directly on top."]
-        },
-        {
-            name: "Piccolo’s Pesto Chicken Meatballs & Orzo", time: "35 MIN", powerLevel: "GREEN ENERGY",
-            desc: "Incredibly juicy ground chicken meatballs packed with parmesan and basil, seared and served over bright, lemony orzo.",
-            kidMod: "👶 <b>YOUNGLING MOD:</b> Deconstruct it! Cut the meatballs into quarters. The soft texture of ground chicken is much easier for toddlers to chew than beef.",
-            have: [{i: "Orzo Pasta", q: "1 Cup"}], buy: ["Ground Chicken (1 lb)", "Pesto Sauce (1 Jar)", "Parmesan", "Panko Breadcrumbs", "Chicken Broth (32oz)", "Cherry Tomatoes"],
-            prep: ["In a large bowl, mix: <b>1 lb ground chicken</b>, <b>1/2 cup Panko</b>, <b>1/2 cup grated Parmesan</b>, <b>3 tbsp Pesto</b>, 1 egg, 1 tsp salt, 1/2 tsp garlic powder.", "Roll mixture into 12 even meatballs.", "Halve <b>1 pint</b> cherry tomatoes."],
-            cook: [
-                "Heat 2 tbsp oil in a large skillet over medium heat. Sear the meatballs until deeply golden on all sides. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(10, this)'>⏱️ 10 MIN SEAR TIMER</button>",
-                "Remove meatballs. In the same skillet, toast <b>1 cup Orzo</b> in the leftover chicken fat for 2 mins.",
-                "Pour in <b>2.5 cups chicken broth</b>. Nestle the meatballs back into the broth. Simmer uncovered. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(12, this)'>⏱️ 12 MIN SIMMER</button>",
-                "Turn off heat. Swirl in exactly <b>1/4 cup of Pesto sauce</b> and the halved tomatoes. Let sit 2 mins."
-            ],
-            serve: ["Plate the creamy, vibrant green orzo and top with 3 juicy meatballs per person.", "Dust heavily with extra Parmesan."]
-        },
-        {
-            name: "Trunks' Time-Traveling Turkey Chili", time: "35 MIN", powerLevel: "HEARTY BOWL",
-            desc: "A thick, incredibly hearty chili made with lean turkey, black beans, hidden grated carrots, and a secret dash of cocoa powder for deep, savory richness.",
-            kidMod: "👶 <b>YOUNGLING MOD:</b> The spice can be overwhelming. Serve their chili scooped over a small bed of plain pasta (like macaroni) or a pile of Fritos, and drop a heavy dollop of sour cream on top to cool it down instantly.",
-            have: [{i: "Power Greens", q: "1 Handful (optional)"}], buy: ["Ground Turkey (1 lb)", "Crushed Tomatoes (28oz)", "Black Beans (2 Cans)", "Carrots (2)", "Chili Powder", "Cumin", "Cocoa Powder", "Sour Cream", "Cornbread Mix"],
-            prep: ["Preheat oven and mix cornbread according to box instructions.", "Finely grate <b>2 carrots</b>.", "Drain and rinse the black beans.", "Measure the spice blend: <b>3 tbsp chili powder</b>, <b>1 tbsp cumin</b>, <b>1 tbsp unsweetened cocoa powder</b>, 1 tsp salt."],
-            cook: [
-                "Bake the cornbread. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(15, this)'>⏱️ 15 MIN CORNBREAD TIMER</button>",
-                "In a large soup pot, brown the ground turkey with 2 tbsp olive oil and the grated carrots. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(8, this)'>⏱️ 8 MIN SEAR</button>",
-                "Add the entire spice blend (chili, cumin, cocoa). Stir aggressively for 1 minute to toast the spices.",
-                "Dump in crushed tomatoes and beans. Bring to a boil, reduce, and simmer. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(15, this)'>⏱️ 15 MIN CHILI SIMMER</button>"
-            ],
-            serve: ["Ladle thick chili into deep bowls.", "Top with massive spoonfuls of sour cream and serve with warm, buttery cornbread."]
-        },
-        {
-            name: "Capsule Corp Coconut Curry Chicken", time: "30 MIN", powerLevel: "GOLDEN KI",
-            desc: "A rich, vibrant, golden coconut curry loaded with tender chicken, bell peppers, and exact curry paste ratios to build deep flavor without burning the palate.",
-            kidMod: "👶 <b>YOUNGLING MOD:</b> Pull a small portion of the curry sauce into a separate bowl for the kids and whisk in 1 tbsp of honey. This neutralizes the curry heat and makes it sweet and savory.",
-            have: [{i: "Rice", q: "1.5 Cups Dry"}], buy: ["Chicken Breasts (1.5 lbs)", "Red Curry Paste (Jar)", "Coconut Milk (1 Can Full Fat)", "Red Bell Pepper", "Fresh Ginger", "Garlic"],
-            prep: ["Cube <b>1.5 lbs</b> chicken breasts.", "Slice <b>1 Red Bell Pepper</b> into thin strips.", "Mince <b>4 cloves garlic</b> and <b>1 tbsp fresh ginger</b>."],
-            cook: [
-                "Start <b>1.5 cups</b> dry rice in the rice cooker.",
-                "In a deep skillet, heat 1 tbsp oil. Sauté chicken until browned but not cooked through. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(5, this)'>⏱️ 5 MIN SEAR</button> Remove chicken.",
-                "In the same skillet, add garlic, ginger, and exactly <b>3 tbsp Red Curry Paste</b>. Stir for 1 minute until highly fragrant.",
-                "Pour in <b>1 can full-fat coconut milk</b> and whisk until smooth. Add the bell peppers and raw chicken back in.",
-                "Simmer uncovered until sauce slightly thickens and chicken is cooked. <br><button class='timer-btn' onclick='event.stopPropagation(); startTimer(10, this)'>⏱️ 10 MIN SIMMER</button>"
-            ],
-            serve: ["Ladle the heavy, golden coconut curry directly over massive bowls of fresh rice."]
+    // --- FETCH ALL DATA FROM GOOGLE SHEETS ON LOAD ---
+    async function fetchMainframe() {
+        document.getElementById('sync-status').innerText = "CONNECTING TO MAINFRAME...";
+        try {
+            const response = await fetch(SHEET_API_URL);
+            const data = await response.json();
+            
+            dbInventory = data.inventory || [];
+            dbRecipes = data.recipes || [];
+            dbPrep = data.prep || [];
+            
+            renderVault();
+            renderPrep();
+            populateDropdown();
+            
+            if(dbRecipes.length > 0) {
+                loadSelectedRecipe();
+            } else {
+                document.getElementById('r-name').innerText = "Vault is empty! Generate a recipe!";
+            }
+            document.getElementById('sync-status').innerText = "SYSTEM ONLINE • KI STABLE";
+        } catch (e) {
+            document.getElementById('sync-status').innerText = "ERROR CONNECTING TO SHEET";
         }
-    ];
+    }
 
-    let activeTasks = 0; let completedTasks = 0;
+    // --- AI GENERATION LOGIC ---
+    async function generateAIRecipe() {
+        const btn = document.getElementById('ai-btn');
+        btn.classList.add('ai-loading');
+        btn.innerHTML = "<span>🌀 CHANNELING GEMINI KI...</span>";
+        document.getElementById('sync-status').innerText = "AI GENERATING RECIPE...";
+
+        try {
+            const response = await fetch(SHEET_API_URL, {
+                method: 'POST', mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: "generate_recipe" })
+            });
+            // no-cors means we won't get a readable response back immediately in browser, 
+            // so we wait 4 seconds for the script to finish writing to the sheet, then refresh!
+            setTimeout(() => {
+                btn.classList.remove('ai-loading');
+                btn.innerHTML = "<span>✨ GENERATE AI ALCHEMY ✨</span>";
+                fetchMainframe(); // Refresh to pull the new recipe from the sheet!
+                alert("New Alchemy Invented and Saved to Database!");
+            }, 5000);
+            
+        } catch(e) {
+            btn.classList.remove('ai-loading');
+            btn.innerHTML = "<span>✨ GENERATE AI ALCHEMY ✨</span>";
+        }
+    }
 
     function populateDropdown() {
         const select = document.getElementById('recipe-selector');
-        recipeDB.forEach((r, index) => {
+        select.innerHTML = '';
+        
+        // Reverse array so newest AI recipes show up at the top of the list!
+        dbRecipes.slice().reverse().forEach((r, index) => {
             const option = document.createElement('option');
-            option.value = index; option.innerText = r.name;
+            option.value = dbRecipes.length - 1 - index; // Keep original index reference
+            option.innerText = r["Recipe Name"];
             select.appendChild(option);
         });
     }
 
+    let activeTasks = 0; let completedTasks = 0;
+
     function loadSelectedRecipe() {
+        if(dbRecipes.length === 0) return;
         const index = document.getElementById('recipe-selector').value;
-        const recipe = recipeDB[index];
+        const recipe = dbRecipes[index];
         
-        document.getElementById('r-name').innerText = recipe.name;
-        document.getElementById('r-time').innerText = "⏱️ " + recipe.time;
-        document.getElementById('r-power').innerText = "⚡️ PL: " + recipe.powerLevel;
-        document.getElementById('r-desc').innerText = recipe.desc;
-        document.getElementById('r-kid').innerHTML = recipe.kidMod;
-        currentRecipeNeeds = recipe.buy;
+        document.getElementById('r-name').innerText = recipe["Recipe Name"];
+        document.getElementById('r-time').innerText = "⏱️ " + recipe["Time"];
+        document.getElementById('r-power').innerText = "⚡️ PL: " + recipe["Power Level"];
+        document.getElementById('r-desc').innerText = recipe["Description"];
+        document.getElementById('r-kid').innerHTML = "👶 <b>YOUNGLING MOD:</b> " + recipe["Kid Mod"];
+        
+        // Parse the pipe-separated strings back into arrays
+        let haveArr = recipe["Vault Items"].split('|');
+        let buyArr = recipe["Target Items"].split('|');
+        let prepArr = recipe["Prep Steps"].split('|');
+        let cookArr = recipe["Cook Steps"].split('|');
+        let serveArr = recipe["Serve Steps"].split('|');
+        
+        currentRecipeNeeds = buyArr.map(s => s.trim());
 
-        document.getElementById('r-have').innerHTML = recipe.have.map(i => `<li>✅ <b>${i.i}</b> <span style="float:right; color:#ccc;">${i.q}</span></li>`).join('') || "<li>No vault items needed!</li>";
-        document.getElementById('r-buy').innerHTML = recipe.buy.map(i => `<li>⚠️ <span style="color:var(--neon-pink);">${i}</span></li>`).join('');
+        document.getElementById('r-have').innerHTML = haveArr.map(i => `<li>✅ <b>${i.trim()}</b></li>`).join('');
+        document.getElementById('r-buy').innerHTML = buyArr.map(i => `<li>⚠️ <span style="color:var(--neon-pink);">${i.trim()}</span></li>`).join('');
         
-        activeTasks = recipe.prep.length + recipe.cook.length + recipe.serve.length;
+        activeTasks = prepArr.length + cookArr.length + serveArr.length;
         completedTasks = 0;
-        updateProgressBar();
+        document.getElementById('alchemy-progress').style.width = '0%';
+        document.getElementById('alchemy-text').innerText = `KI GATHERING: 0%`;
 
-        document.getElementById('r-prep').innerHTML = recipe.prep.map(step => buildTaskItem(step)).join('');
-        document.getElementById('r-cook').innerHTML = recipe.cook.map(step => buildTaskItem(step)).join('');
-        document.getElementById('r-serve').innerHTML = recipe.serve.map(step => buildTaskItem(step)).join('');
+        document.getElementById('r-prep').innerHTML = prepArr.map(step => buildTaskItem(step.trim())).join('');
+        document.getElementById('r-cook').innerHTML = cookArr.map(step => buildTaskItem(step.trim())).join('');
+        document.getElementById('r-serve').innerHTML = serveArr.map(step => buildTaskItem(step.trim())).join('');
     }
 
     function buildTaskItem(text) {
-        return `
-            <div class="task-item" onclick="toggleTask(this)">
-                <div class="task-checkbox"></div>
-                <div class="task-text">${text}</div>
-            </div>
-        `;
+        if(!text) return "";
+        return `<div class="task-item" onclick="toggleTask(this)"><div class="task-checkbox"></div><div class="task-text">${text}</div></div>`;
     }
 
     function toggleTask(element) {
-        if(element.classList.contains('completed')) {
-            element.classList.remove('completed'); completedTasks--;
-        } else {
-            element.classList.add('completed'); completedTasks++;
-        }
-        updateProgressBar();
-    }
-
-    function updateProgressBar() {
-        const percent = (completedTasks / activeTasks) * 100;
+        if(element.classList.contains('completed')) { element.classList.remove('completed'); completedTasks--; } 
+        else { element.classList.add('completed'); completedTasks++; }
+        let percent = (completedTasks / activeTasks) * 100;
         document.getElementById('alchemy-progress').style.width = percent + '%';
         document.getElementById('alchemy-text').innerText = `KI GATHERING: ${Math.round(percent)}%`;
-        if(percent === 100) triggerLevelUp();
     }
 
-    function triggerLevelUp() {
-        const toast = document.getElementById('level-up-toast');
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 3000);
+    // --- OTHER UI FUNCTIONS ---
+    function renderPrep() {
+        const container = document.getElementById('prep-list-render');
+        container.innerHTML = '';
+        dbPrep.forEach(task => {
+            if(!task["Task Name"]) return;
+            container.innerHTML += `
+                <div class="section-header pink">${task["Category"]}</div>
+                <div class="task-item" onclick="this.classList.toggle('completed')">
+                    <div class="task-checkbox"></div>
+                    <div class="task-text"><b>${task["Task Name"]}:</b> ${task["Instructions"]}</div>
+                </div>
+            `;
+        });
     }
 
-    async function fetchInventory() {
-        document.getElementById('sync-status').innerText = "SCANNING DATABANKS...";
-        try {
-            const response = await fetch(SHEET_API_URL);
-            const data = await response.json();
-            if(data && data.length > 0) inventory = data;
-            renderVault();
-            document.getElementById('sync-status').innerText = "SYSTEM ONLINE • KI STABLE";
-        } catch (e) {
-            if(inventory.length === 0) {
-                inventory = [{"Product Name": "Ground Beef 80/20", "Quantity": "Fallback Mode"}];
-                renderVault(); 
-            }
-            document.getElementById('sync-status').innerText = "UPLINK FAILED - LOCAL MODE";
-        }
+    function renderVault() {
+        const list = document.getElementById('vault-list');
+        list.innerHTML = '';
+        dbInventory.forEach(item => {
+            if(!item["Product Name"]) return;
+            list.innerHTML += `<li style="display:flex; justify-content:space-between; font-size:1.1rem;"><span>${item["Product Name"]}</span><span style="color:var(--scouter-green); font-weight:900;">QTY: ${item.Quantity}</span></li>`;
+        });
     }
 
-    async function updateSheetQuantity(productName, increaseBy) {
-        document.getElementById('sync-status').innerText = "BEAMING TO CLOUD...";
-        let item = inventory.find(i => i["Product Name"] === productName);
-        let newQty = item ? parseInt(item.Quantity || 0) + increaseBy : increaseBy;
-        if (item) item.Quantity = newQty;
-        renderVault();
-        try {
-            await fetch(SHEET_API_URL, {
-                method: 'POST', mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ productName: productName, newQuantity: newQty })
-            });
-        } catch(e) {}
-        document.getElementById('sync-status').innerText = "SYSTEM ONLINE • KI STABLE";
+    function renderMarket() {
+        const list = document.getElementById('market-list');
+        list.innerHTML = '';
+        marketList.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'task-item'; 
+            div.innerHTML = `<div class="task-checkbox"></div><div class="task-text" style="font-weight:900;">${item}</div>`;
+            div.onclick = function() {
+                if(!this.classList.contains('completed')) {
+                    this.classList.add('completed');
+                    setTimeout(() => { marketList = marketList.filter(i => i !== item); renderMarket(); }, 1500);
+                }
+            };
+            list.appendChild(div);
+        });
     }
 
     function sendToMarket() {
@@ -598,58 +369,31 @@
         switchTab('market', document.querySelectorAll('.nav-item')[1]);
     }
 
-    function sendPrepToMarket() {
-        prepIngredients.forEach(item => { if(!marketList.includes(item)) marketList.push(item); });
-        renderMarket();
-        switchTab('market', document.querySelectorAll('.nav-item')[1]);
-        alert("Pre-School Rations pushed to Scouter!");
-    }
-
-    function renderMarket() {
-        const list = document.getElementById('market-list');
-        list.innerHTML = '';
-        if(marketList.length === 0) list.innerHTML = `<p style="color:#666; font-style:italic;">Target list is empty.</p>`;
-        marketList.forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'task-item'; 
-            div.innerHTML = `<div class="task-checkbox"></div><div class="task-text" style="font-weight:900;">${item}</div>`;
-            div.onclick = function() {
-                if(!this.classList.contains('completed')) {
-                    this.classList.add('completed');
-                    updateSheetQuantity(item, 1);
-                    setTimeout(() => { marketList = marketList.filter(i => i !== item); renderMarket(); }, 1500);
-                }
-            };
-            list.appendChild(div);
-        });
-    }
-
-    function renderVault() {
-        const list = document.getElementById('vault-list');
-        list.innerHTML = '';
-        inventory.forEach(item => {
-            if(!item["Product Name"]) return;
-            list.innerHTML += `
-                <li style="display:flex; justify-content:space-between; font-size:1.1rem;">
-                    <span>${item["Product Name"]}</span>
-                    <span style="color:var(--scouter-green); font-weight:900;">QTY: ${item.Quantity}</span>
-                </li>
-            `;
-        });
-    }
-
     function switchTab(view, element) {
         document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
         document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
         document.getElementById('view-' + view).classList.remove('hidden');
         element.classList.add('active');
-        if(view === 'market') renderMarket();
     }
 
-    populateDropdown();
-    loadSelectedRecipe(); 
-    fetchInventory();
-    renderMarket();
+    // MATRIX RAIN (Minified for space)
+    const cvs = document.getElementById('matrix-canvas'); const ctx = cvs.getContext('2d');
+    function res() { cvs.width = window.innerWidth; cvs.height = window.innerHeight; }
+    window.addEventListener('resize', res); res();
+    const ch = '★☾♥♦●✦✧Z'.split(''); const fs = 16; let dr = [];
+    for(let i=0; i<cvs.width/fs; i++) dr[i] = 1;
+    setInterval(() => {
+        ctx.fillStyle = 'rgba(10,5,20,0.1)'; ctx.fillRect(0,0,cvs.width,cvs.height); ctx.font = fs + 'px monospace';
+        if(dr.length < cvs.width/fs) { for(let i=dr.length; i<cvs.width/fs; i++) dr[i] = 1; }
+        for(let i=0; i<dr.length; i++) {
+            ctx.fillStyle = ['#ff007f','#ff8c00','#b57eff'][Math.floor(Math.random()*3)];
+            ctx.fillText(ch[Math.floor(Math.random()*ch.length)], i*fs, dr[i]*fs);
+            if(dr[i]*fs > cvs.height && Math.random() > 0.975) dr[i] = 0; dr[i]++;
+        }
+    }, 50);
+
+    // Boot
+    fetchMainframe();
 </script>
 </body>
 </html>
