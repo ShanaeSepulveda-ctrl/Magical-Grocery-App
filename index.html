@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Prism Scouter v4.5 🌙🐉</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+    <title>Prism Scouter v4.0 🌙🐉</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
 
@@ -14,10 +13,8 @@
             --dbz-orange: #ff8c00;
             --ssj-gold: #ffd700;
             --scouter-green: #39ff14;
-            --cosmic-dark: #070012;
-            --rpg-blue: #000080;
-            --glass: rgba(15, 5, 30, 0.75);
-            --retro-border: 4px solid #fff;
+            --cosmic-dark: #0a001a;
+            --glass: rgba(15, 5, 30, 0.85);
             --text-glow: 0 0 5px var(--moon-pink), 0 0 10px var(--neon-pink);
         }
 
@@ -33,137 +30,444 @@
         }
 
         /* SAILOR MOON MATRIX CANVAS */
-        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; opacity: 0.5; }
+        #matrix-canvas {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1; opacity: 0.5;
+        }
 
         /* HEADER */
         header {
-            background: linear-gradient(90deg, var(--moon-pink), var(--rpg-blue));
-            text-align: center; padding: 20px; border-bottom: 3px solid var(--dbz-orange);
-            box-shadow: 0 0 20px var(--dbz-orange); position: sticky; top: 0; z-index: 10;
+            background: linear-gradient(90deg, rgba(255,51,153,0.9), rgba(74,14,78,0.9));
+            text-align: center; padding: 15px;
+            border-bottom: 3px solid var(--dbz-orange);
+            box-shadow: 0 0 20px var(--dbz-orange);
+            position: sticky; top: 0; z-index: 10;
             backdrop-filter: blur(5px);
         }
-
-        header h1 { 
-            font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1.6rem; 
-            color: #fff; text-shadow: var(--text-glow); letter-spacing: 2px;
-        }
-        .subtitle { font-size: 0.75rem; color: var(--scouter-green); font-weight: bold; margin-top: 5px; }
-        .syncing { animation: pulse 1s infinite; color: var(--ssj-gold); }
-
-        /* FLOATING HUD TIMER */
-        #scouter-timer {
-            position: fixed; top: 90px; right: 15px; background: rgba(0, 0, 0, 0.95);
-            border: 2px solid var(--scouter-green); color: var(--scouter-green);
-            padding: 8px 15px; border-radius: 8px; z-index: 1000;
-            box-shadow: 0 0 15px var(--scouter-green); display: flex; align-items: center; gap: 15px;
-            font-family: 'Orbitron', sans-serif; transition: 0.3s;
-        }
-        #scouter-timer.hidden { transform: translateX(150%); opacity: 0; }
-        #timer-display { font-size: 1.4rem; font-weight: bold; text-shadow: 0 0 8px var(--scouter-green); }
-        .timer-close-btn { background: none; border: none; color: #fff; font-size: 1.2rem; cursor: pointer; opacity: 0.6; }
-        .timer-alert { animation: alarmFlash 0.5s infinite !important; }
-        @keyframes alarmFlash { 0% { background: #000; color: #ff003c; border-color: #ff003c; } 50% { background: #ff003c; color: #fff; border-color: #fff; } 100% { background: #000; color: #ff003c; border-color: #ff003c; } }
-        
-        .inline-timer-btn {
-            background: var(--scouter-green); color: #000; border: none; padding: 2px 8px;
-            border-radius: 4px; font-size: 0.75rem; font-family: 'Orbitron', sans-serif; font-weight: bold;
-            cursor: pointer; margin-left: 8px; vertical-align: middle; box-shadow: 0 0 5px var(--scouter-green);
-        }
-        .inline-timer-btn:active { background: #fff; transform: scale(0.95); }
+        header h1 { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1.4rem; color: #fff; text-shadow: var(--text-glow); letter-spacing: 2px; }
+        .subtitle { font-size: 0.7rem; color: var(--scouter-green); font-weight: bold; margin-top: 5px; }
 
         /* CONTAINERS & CARDS */
-        .app-container { padding: 15px; max-width: 600px; margin: 0 auto; position: relative; z-index: 5; }
+        .app-container { padding: 10px; max-width: 600px; margin: 0 auto; }
         
         .card {
-            background: var(--glass); border: 2px solid var(--moon-pink); border-radius: 12px;
-            padding: 18px; margin-bottom: 25px; box-shadow: 0 0 15px rgba(255, 51, 153, 0.4), inset 0 0 10px rgba(255, 51, 153, 0.2);
+            background: var(--glass); border: 2px solid var(--moon-pink);
+            border-radius: 12px; padding: 15px; margin-bottom: 20px;
+            box-shadow: 0 0 15px rgba(255, 51, 153, 0.4), inset 0 0 10px rgba(255, 51, 153, 0.2);
             backdrop-filter: blur(10px);
         }
-
         .card-title {
-            font-family: 'Orbitron', sans-serif; color: var(--ssj-gold); font-size: 1.2rem;
-            border-bottom: 1px solid var(--moon-pink); padding-bottom: 10px; margin-bottom: 15px;
-            text-shadow: 0 0 8px var(--ssj-gold); display: flex; justify-content: space-between; align-items: center;
+            font-family: 'Orbitron', sans-serif; color: var(--ssj-gold);
+            font-size: 1.1rem; border-bottom: 1px solid var(--moon-pink);
+            padding-bottom: 8px; margin-bottom: 12px; text-shadow: 0 0 8px var(--ssj-gold);
+            display: flex; justify-content: space-between; align-items: center;
         }
 
-        /* DROPDOWN MENU (TABLE OF CONTENTS) */
-        .recipe-selector {
-            width: 100%; padding: 12px; margin-bottom: 20px; background: rgba(0,0,0,0.8);
-            border: 2px solid var(--ssj-gold); color: var(--ssj-gold); font-family: 'Orbitron', sans-serif;
-            font-size: 1rem; font-weight: bold; border-radius: 8px; cursor: pointer; outline: none;
-            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); text-transform: uppercase;
+        /* TACTICAL RECIPE LAYOUT */
+        .recipe-stat-bar { display: flex; gap: 8px; margin-bottom: 15px; font-size: 0.75rem; flex-wrap: wrap; }
+        .stat-badge {
+            background: rgba(255, 140, 0, 0.2); border: 1px solid var(--dbz-orange);
+            color: var(--dbz-orange); padding: 4px 8px; border-radius: 4px; font-weight: bold;
         }
-        .recipe-selector option { background: var(--cosmic-dark); color: #fff; font-family: 'Space Mono', monospace; }
 
-        /* RECIPE SPECIFICS */
-        .recipe-stat-bar { display: flex; gap: 10px; margin-bottom: 15px; font-size: 0.8rem; }
-        .stat-badge { background: rgba(255, 140, 0, 0.2); border: 1px solid var(--dbz-orange); color: var(--dbz-orange); padding: 4px 8px; border-radius: 4px; }
-        .hardware-list { font-size: 0.8rem; color: #ccc; margin-bottom: 15px; border-left: 2px solid var(--dbz-orange); padding-left: 10px; line-height: 1.5; }
+        .section-header { color: var(--scouter-green); font-family: 'Orbitron'; font-size: 0.9rem; margin: 15px 0 8px 0; text-transform: uppercase; text-shadow: 0 0 5px var(--scouter-green); }
+        .section-header.orange { color: var(--dbz-orange); text-shadow: 0 0 5px var(--dbz-orange); }
+        .section-header.pink { color: var(--neon-pink); text-shadow: 0 0 5px var(--neon-pink); }
 
-        .phase-header { font-family: 'Orbitron', sans-serif; color: var(--scouter-green); font-size: 1rem; border-bottom: 1px solid var(--scouter-green); padding-bottom: 4px; margin: 20px 0 10px 0; text-transform: uppercase; }
-        .instruction-step { margin-bottom: 15px; line-height: 1.6; font-size: 0.9rem; border-left: 3px solid var(--rpg-blue); padding-left: 10px; background: rgba(0, 0, 128, 0.1); padding-top: 8px; padding-bottom: 8px; }
-        .instruction-step b { color: var(--ssj-gold); text-shadow: 0 0 2px var(--ssj-gold); }
-        .kid-alert { background: rgba(255, 51, 153, 0.15); border-left: 3px solid var(--moon-pink); padding: 10px; margin-top: 10px; font-size: 0.85rem; color: #fff; line-height: 1.5; }
+        ul.tactical-list { list-style: none; font-size: 0.85rem; margin-bottom: 10px; }
+        ul.tactical-list li { padding: 5px 0; border-bottom: 1px dashed rgba(255,255,255,0.1); }
+        ul.tactical-list li b { color: var(--ssj-gold); }
 
-        /* LISTS */
-        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; border-bottom: 1px dashed rgba(255,255,255,0.2); font-size: 0.85rem; }
+        .instruction-step {
+            margin-bottom: 10px; line-height: 1.4; font-size: 0.85rem;
+            border-left: 3px solid var(--moon-pink); padding-left: 10px;
+            background: rgba(255, 51, 153, 0.05); padding-top: 5px; padding-bottom: 5px;
+        }
+        .instruction-step b { color: var(--ssj-gold); }
+
+        .substitution-box {
+            background: rgba(255, 140, 0, 0.1); border: 1px solid var(--dbz-orange);
+            padding: 10px; border-radius: 6px; font-size: 0.8rem; margin-top: 15px;
+        }
+
+        /* VAULT & LISTS */
         .power-level { font-family: 'Orbitron', sans-serif; color: var(--scouter-green); text-shadow: 0 0 5px var(--scouter-green); font-weight: bold; }
-        .critical-warning { color: #ff003c; text-shadow: 0 0 8px #ff003c; font-size: 0.75rem; animation: pulse 1.5s infinite; display: block; margin-top: 4px; font-weight: bold; }
-        .soon-warning { color: var(--dbz-orange); text-shadow: 0 0 8px var(--dbz-orange); font-size: 0.75rem; display: block; margin-top: 4px; }
+        .critical-warning { color: #ff003c; text-shadow: 0 0 8px #ff003c; font-size: 0.75rem; animation: pulse 1.5s infinite; display: block; margin-top: 4px; }
 
         /* MARKET CHECKBOXES */
-        .shop-item { display: flex; align-items: center; padding: 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--moon-pink); border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: 0.3s; }
+        .shop-item {
+            display: flex; align-items: center; padding: 12px;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--moon-pink);
+            border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: 0.3s;
+        }
         .shop-item.bought { border-color: var(--scouter-green); background: rgba(57, 255, 20, 0.1); opacity: 0.6; }
         .shop-item.bought .item-name { text-decoration: line-through; color: var(--scouter-green); }
-        .checkbox { width: 20px; height: 20px; border: 2px solid var(--moon-pink); border-radius: 4px; margin-right: 15px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 5px var(--moon-pink); }
-        .bought .checkbox { background: var(--scouter-green); border-color: var(--scouter-green); box-shadow: 0 0 8px var(--scouter-green); }
+        .checkbox {
+            width: 20px; height: 20px; border: 2px solid var(--moon-pink);
+            border-radius: 4px; margin-right: 15px; display: flex; align-items: center; justify-content: center;
+        }
+        .bought .checkbox { background: var(--scouter-green); border-color: var(--scouter-green); }
         .bought .checkbox::after { content: '✓'; color: #000; font-weight: bold; }
 
         /* BUTTONS */
-        .magic-btn { background: rgba(0,0,0,0.5); border: 2px solid var(--dbz-orange); color: var(--dbz-orange); padding: 12px; width: 100%; font-family: 'Orbitron', sans-serif; font-weight: bold; font-size: 0.85rem; text-transform: uppercase; cursor: pointer; border-radius: 8px; box-shadow: inset 0 0 10px rgba(255, 140, 0, 0.2), 0 0 10px rgba(255, 140, 0, 0.4); transition: 0.2s; margin-top: 10px; }
-        .magic-btn:active { background: var(--dbz-orange); color: #000; box-shadow: 0 0 20px var(--dbz-orange); transform: translateY(2px); }
-        .magic-btn.pink { border-color: var(--neon-pink); color: var(--neon-pink); box-shadow: inset 0 0 10px rgba(255, 0, 127, 0.2), 0 0 10px rgba(255, 0, 127, 0.4); }
+        .magic-btn {
+            background: transparent; border: 2px solid var(--dbz-orange); color: var(--dbz-orange);
+            padding: 12px; width: 100%; font-family: 'Orbitron', sans-serif; font-weight: bold;
+            font-size: 0.9rem; text-transform: uppercase; cursor: pointer; border-radius: 8px;
+            box-shadow: inset 0 0 10px rgba(255, 140, 0, 0.2); transition: 0.2s; margin-top: 10px;
+        }
+        .magic-btn:active { background: var(--dbz-orange); color: #000; box-shadow: 0 0 20px var(--dbz-orange); }
+        .magic-btn.pink { border-color: var(--neon-pink); color: var(--neon-pink); }
         .magic-btn.pink:active { background: var(--neon-pink); color: #fff; }
-        .magic-btn.green { border-color: var(--scouter-green); color: var(--scouter-green); box-shadow: inset 0 0 10px rgba(57, 255, 20, 0.2), 0 0 10px rgba(57, 255, 20, 0.4); }
-        .magic-btn.green:active { background: var(--scouter-green); color: #000; }
+        .magic-btn.coupon { border-color: var(--scouter-green); color: var(--scouter-green); margin-bottom: 20px; }
+        .magic-btn.coupon:active { background: var(--scouter-green); color: #000; }
 
         /* NAV */
-        nav { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(10, 0, 26, 0.95); border-top: 2px solid var(--moon-pink); display: flex; justify-content: space-around; padding: 12px 0 25px 0; z-index: 100; backdrop-filter: blur(10px); box-shadow: 0 -5px 15px rgba(255, 51, 153, 0.3); }
-        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: #666; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
+        nav {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: rgba(10, 0, 26, 0.95); border-top: 2px solid var(--moon-pink);
+            display: flex; justify-content: space-around; padding: 12px 0 20px 0;
+            z-index: 100; backdrop-filter: blur(10px);
+        }
+        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: #666; cursor: pointer; text-transform: uppercase; }
         .nav-item.active { color: var(--neon-pink); text-shadow: 0 0 5px var(--neon-pink); }
         .nav-icon { font-size: 1.5rem; margin-bottom: 5px; opacity: 0.5; }
         .nav-item.active .nav-icon { opacity: 1; filter: drop-shadow(0 0 5px var(--neon-pink)); }
-
-        .scouter-alert { background: rgba(255, 140, 0, 0.15); border-left: 4px solid var(--dbz-orange); padding: 10px; font-size: 0.8rem; margin-bottom: 15px; line-height: 1.4; font-family: 'Orbitron', sans-serif;}
-        .kris-alert { background: rgba(57, 255, 20, 0.15); border-left: 4px solid var(--scouter-green); padding: 10px; font-size: 0.8rem; margin-bottom: 15px; line-height: 1.4; font-family: 'Orbitron', sans-serif;}
-
         .hidden { display: none !important; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
     </style>
 </head>
 <body>
 
-    <div id="matrix-canvas"></div>
+    <canvas id="matrix-canvas"></canvas>
 
     <header>
         <h1>🌙 PRISM SCOUTER 🐉</h1>
         <div class="subtitle" id="sync-status">SYSTEM ONLINE • KI STABLE</div>
     </header>
 
-    <div id="scouter-timer" class="hidden">
-        <span id="timer-display">00:00</span>
-        <button class="timer-close-btn" onclick="stopTimer()">🛑</button>
-    </div>
-
-    <iframe id="hidden-sync-frame" name="hidden-sync-frame" class="hidden"></iframe>
-
     <div class="app-container">
         
+        <!-- VIEW 1: RECIPES -->
         <div id="view-recipes" class="view-section">
-            
-            <select id="recipe-dropdown" class="recipe-selector" onchange="loadSelectedRecipe()">
-                </select>
+            <div class="card">
+                <div class="card-title">
+                    <span>✨ TACTICAL MENU</span>
+                    <span style="font-size: 1.5rem; cursor:pointer;" onclick="generateRecipe()">🔄</span>
+                </div>
+                <h2 id="r-name" style="color: var(--neon-pink); margin-bottom: 10px; font-family: 'Orbitron';">Loading...</h2>
+                
+                <div class="recipe-stat-bar">
+                    <span class="stat-badge" id="r-time">⏱️ Time</span>
+                    <span class="stat-badge" id="r-power">🔥 PL</span>
+                    <span class="stat-badge" id="r-yield">🍽️ Yield</span>
+                </div>
+                
+                <p id="r-desc" style="font-size: 0.85rem; color: #aaa; font-style: italic;"></p>
+                
+                <div class="section-header">🎒 VERIFIED IN VAULT</div>
+                <ul id="r-have" class="tactical-list"></ul>
 
-            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                <button class="magic-btn" onclick="generateRecipe()" style="flex: 1;">☄️ REROLL</button>
-                <button class="magic-btn green" onclick="recommendFromVault
+                <div class="section-header orange">🛒 MISSING COMPONENTS</div>
+                <ul id="r-buy" class="tactical-list" style="margin-bottom: 15px;"></ul>
+                <button class="magic-btn pink" onclick="sendToMarket()">➕ PUSH TO SCOUTER LIST</button>
+
+                <div id="r-subs" class="substitution-box"></div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">📜 EXECUTION PROTOCOL</div>
+                
+                <div class="section-header pink">🔪 PHASE 1: PREP</div>
+                <div id="r-prep"></div>
+
+                <div class="section-header orange">🔥 PHASE 2: COMBAT (COOKING)</div>
+                <div id="r-cook"></div>
+
+                <div class="section-header">✨ PHASE 3: VICTORY (SERVING)</div>
+                <div id="r-serve"></div>
+            </div>
+        </div>
+
+        <!-- VIEW 2: MARKET SCOUTER -->
+        <div id="view-market" class="view-section hidden">
+            <div class="card">
+                <div class="card-title">🛒 TARGET ACQUISITION</div>
+                
+                <button class="magic-btn coupon" onclick="window.open('https://www.kingsoopers.com/savings/cl/coupons/', '_blank')">
+                    ✂️ OPEN KING SOOPERS COUPONS
+                </button>
+
+                <p style="font-size: 0.75rem; color:#aaa; margin-bottom: 15px;">Tap acquired targets to instantly strike and sync to the main data frame.</p>
+                <div id="market-list"></div>
+            </div>
+        </div>
+
+        <!-- VIEW 3: INVENTORY VAULT -->
+        <div id="view-vault" class="view-section hidden">
+            <div class="card">
+                <div class="card-title">
+                    <span>🐉 DATA VAULT</span>
+                    <span class="power-level" onclick="fetchInventory()" style="cursor:pointer;">🔄 SYNC</span>
+                </div>
+                <ul id="vault-list" class="tactical-list"></ul>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <div class="nav-item active" onclick="switchTab('recipes', this)">
+            <span class="nav-icon">🔮</span><span>Tactics</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('market', this)">
+            <span class="nav-icon">🎯</span><span>Scouter</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('vault', this)">
+            <span class="nav-icon">📊</span><span>Vault</span>
+        </div>
+    </nav>
+
+    <script>
+        // MATRIX RAIN
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        const chars = '🌙✨🌸⚡️🐉💖⭐🪐☄️'.split('');
+        const fontSize = 16; const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(10, 0, 26, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.font = fontSize + 'px monospace';
+            for(let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                const colors = ['#ff007f', '#ff8c00', '#b57eff'];
+                ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 50);
+
+        // --- DIRECT GOOGLE SCRIPT CONNECTION ---
+        const SHEET_API_URL = "https://script.google.com/macros/s/AKfycby_EiCidBees9IA-zs7_OSxppAnD0sB2U78Qvd1-kQy7JB5sSs9l-P-FKODmQLv2c-j/exec"; 
+        
+        let inventory = [];
+        let marketList = [];
+        let currentRecipeNeeds = [];
+
+        // HIGH-PRECISION RECIPE DATABASE
+        const recipeDB = [
+            {
+                name: "Cosmic Garlic Butter Tomato Penne",
+                time: "30 MIN (10 Prep, 20 Cook)",
+                powerLevel: "ELEVATED COMFORT",
+                yield: "4-6 Servings",
+                desc: "A Pinch-of-Yum inspired rich, velvety pasta using your vault staples. The secret is blooming the garlic in butter before adding the tomato sauce.",
+                have: [
+                    { item: "Penne Rigate Pasta", qty: "16 oz (1 box)" },
+                    { item: "Organic Tomato Basil Sauce", qty: "1 Jar (24 oz)" },
+                    { item: "Ground Beef 80/20", qty: "1 lb (Optional Protein)" }
+                ],
+                buy: ["Heavy Cream (or Half & Half)", "Fresh Garlic (1 bulb)", "Unsalted Butter", "Parmesan Cheese (Wedge)"],
+                subs: "<b>Adaptation Protocol:</b> If you don't have Heavy Cream, substitute with 1/2 cup of whole milk mixed with 1 extra tbsp of butter. If skipping Ground Beef, double the Power Greens for bulk.",
+                prep: [
+                    "Mince <b>6 cloves</b> of fresh garlic.",
+                    "Grate <b>1 cup (approx 4 oz)</b> of fresh Parmesan cheese.",
+                    "Measure <b>1/2 cup</b> of heavy cream and let it sit at room temperature.",
+                    "Roughly chop <b>2 massive handfuls</b> of Power Greens."
+                ],
+                cook: [
+                    "Boil a large pot of aggressively salted water. Cook <b>16 oz Penne</b> according to package (usually 10-12 mins). Drain, reserving 1/2 cup of pasta water.",
+                    "<i>(Optional)</i> In a large skillet, brown <b>1 lb Ground Beef</b> with 1 tsp salt. Drain grease. Remove beef and set aside.",
+                    "In the same skillet over medium heat, melt <b>3 tbsp butter</b>. Add minced garlic and sauté for 60 seconds until highly fragrant (do not burn).",
+                    "Pour in <b>1 Jar Tomato Basil Sauce</b>. Reduce heat to low and simmer for 5 minutes.",
+                    "Stir in the <b>1/2 cup cream</b>, cooked ground beef, and the chopped Power Greens. Let it simmer for 2 mins until greens wilt."
+                ],
+                serve: [
+                    "Toss the cooked Penne directly into the skillet sauce. Add splashes of reserved pasta water if it needs loosening.",
+                    "Serve immediately in wide bowls, heavily dusted with the freshly grated Parmesan cheese."
+                ]
+            },
+            {
+                name: "Saiyan Smash Burger Bowls",
+                time: "20 MIN (10 Prep, 10 Cook)",
+                powerLevel: "HIGH PROTEIN / LOW CARB",
+                yield: "4 Servings",
+                desc: "All the aggressively delicious flavors of a smash burger, dumped into a fresh power greens bowl. Fast, highly customizable, no oven.",
+                have: [
+                    { item: "Ground Beef 80/20", qty: "1 lb" },
+                    { item: "Power Greens", qty: "1 Large Tub" },
+                    { item: "Sharp Cheddar Cheese", qty: "1 Cup (Shredded)" }
+                ],
+                buy: ["Cherry Tomatoes", "Red Onion", "Dill Pickles", "Thousand Island Dressing (or Mayo/Ketchup)"],
+                subs: "<b>Adaptation Protocol:</b> If you don't want to buy Thousand Island, make 'Special Sauce' by mixing 1/4 cup Mayo, 2 tbsp Ketchup, and 1 tbsp pickle juice from the fridge.",
+                prep: [
+                    "Divide <b>1 lb Ground Beef</b> into 4 equal balls (do not overwork the meat).",
+                    "Dice <b>1/2 Red Onion</b> and slice <b>1 cup Cherry Tomatoes</b> in half.",
+                    "Chop <b>1/2 cup Dill Pickles</b>.",
+                    "Lay a bed of <b>Power Greens</b> into 4 separate serving bowls."
+                ],
+                cook: [
+                    "Heat a large cast-iron skillet (or heavy pan) over high heat until smoking.",
+                    "Place the beef balls in the pan. Using a sturdy spatula, completely smash them flat. Season heavily with <b>Salt and Black Pepper</b>.",
+                    "Cook undisturbed for <b>2.5 minutes</b> to form a heavy crust. Flip, immediately top each patty with <b>1/4 cup Sharp Cheddar</b>.",
+                    "Cook 1 more minute until cheese is melted and bubbling. Remove from heat."
+                ],
+                serve: [
+                    "Place one hot, cheesy smash patty directly on top of the greens in each bowl.",
+                    "Scatter the diced onions, tomatoes, and pickles over the top.",
+                    "Drizzle aggressively with Thousand Island dressing (or your homemade special sauce)."
+                ]
+            }
+        ];
+
+        async function fetchInventory() {
+            setStatus("SCANNING DATABANKS...", true);
+            try {
+                const response = await fetch(SHEET_API_URL);
+                const data = await response.json();
+                if(data && data.length > 0) {
+                    inventory = data;
+                }
+                renderVault();
+                if(document.getElementById('r-name').innerText === "Loading...") {
+                    generateRecipe(); 
+                }
+                setStatus("SYSTEM ONLINE • KI STABLE", false);
+            } catch (e) {
+                console.error("Fetch Error:", e);
+                // Graceful fallback if sheet is empty/error
+                if(inventory.length === 0) {
+                    inventory = [{"Product Name": "Ground Beef 80/20", "Quantity": "Fallback Mode", "Days Remaining": 0}];
+                    renderVault();
+                    generateRecipe();
+                }
+                setStatus("UPLINK FAILED - LOCAL MODE", false);
+            }
+        }
+
+        async function updateSheetQuantity(productName, increaseBy) {
+            setStatus("BEAMING TO CLOUD...", true);
+            let item = inventory.find(i => i["Product Name"] === productName);
+            let newQty = item ? parseInt(item.Quantity || 0) + increaseBy : increaseBy;
+            if (item) item.Quantity = newQty;
+            renderVault();
+
+            try {
+                await fetch(SHEET_API_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ productName: productName, newQuantity: newQty })
+                });
+            } catch(e) { console.error(e); }
+            setStatus("SYSTEM ONLINE • KI STABLE", false);
+        }
+
+        function generateRecipe() {
+            const recipe = recipeDB[Math.floor(Math.random() * recipeDB.length)];
+            document.getElementById('r-name').innerText = recipe.name;
+            document.getElementById('r-time').innerText = "⏱️ " + recipe.time;
+            document.getElementById('r-power').innerText = "🔥 " + recipe.powerLevel;
+            document.getElementById('r-yield').innerText = "🍽️ " + recipe.yield;
+            document.getElementById('r-desc').innerText = recipe.desc;
+            
+            currentRecipeNeeds = recipe.buy;
+
+            document.getElementById('r-have').innerHTML = recipe.have.map(i => 
+                `<li>✅ <b>${i.item}</b> <span style="float:right; color:#ccc;">${i.qty}</span></li>`
+            ).join('');
+            
+            document.getElementById('r-buy').innerHTML = recipe.buy.map(i => 
+                `<li>⚠️ <span style="color:var(--neon-pink);">${i}</span></li>`
+            ).join('');
+
+            document.getElementById('r-subs').innerHTML = recipe.subs;
+
+            document.getElementById('r-prep').innerHTML = recipe.prep.map(step => `<div class="instruction-step">${step}</div>`).join('');
+            document.getElementById('r-cook').innerHTML = recipe.cook.map(step => `<div class="instruction-step">${step}</div>`).join('');
+            document.getElementById('r-serve').innerHTML = recipe.serve.map(step => `<div class="instruction-step">${step}</div>`).join('');
+        }
+
+        function sendToMarket() {
+            currentRecipeNeeds.forEach(item => {
+                if(!marketList.includes(item)) marketList.push(item);
+            });
+            renderMarket();
+            switchTab('market', document.querySelectorAll('.nav-item')[1]);
+        }
+
+        function renderMarket() {
+            const list = document.getElementById('market-list');
+            list.innerHTML = '';
+            if(marketList.length === 0) {
+                list.innerHTML = `<p style="color:#666; font-style:italic;">Target list is empty. Scan recipes to add targets.</p>`;
+            }
+            marketList.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'shop-item';
+                div.innerHTML = `<div class="checkbox"></div><span class="item-name" style="font-weight:bold;">${item}</span>`;
+                div.onclick = function() {
+                    if(!this.classList.contains('bought')) {
+                        this.classList.add('bought');
+                        updateSheetQuantity(item, 1);
+                        setTimeout(() => {
+                            marketList = marketList.filter(i => i !== item);
+                            renderMarket();
+                        }, 2000);
+                    }
+                };
+                list.appendChild(div);
+            });
+        }
+
+        function renderVault() {
+            const list = document.getElementById('vault-list');
+            list.innerHTML = '';
+            inventory.forEach(item => {
+                if(!item["Product Name"]) return;
+                
+                let warningHTML = "";
+                let days = parseInt(item["Days Remaining"]);
+                if(!isNaN(days)) {
+                    if(days < 0) warningHTML = `<span class="critical-warning">⚠️ EXPIRED (${Math.abs(days)} days ago)</span>`;
+                    else if (days <= 14) warningHTML = `<span class="critical-warning">⚠️ EXPIRING IN ${days} DAYS</span>`;
+                }
+
+                list.innerHTML += `
+                    <li style="display:flex; flex-direction:column; padding:10px 0;">
+                        <div style="display:flex; justify-content:space-between;">
+                            <span>${item["Product Name"]}</span>
+                            <span class="power-level">QTY: ${item.Quantity}</span>
+                        </div>
+                        ${warningHTML}
+                    </li>
+                `;
+            });
+        }
+
+        function switchTab(view, element) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('view-' + view).classList.remove('hidden');
+            element.classList.add('active');
+            if(view === 'market') renderMarket();
+        }
+
+        function setStatus(text, isSyncing) {
+            const el = document.getElementById('sync-status');
+            el.innerText = text;
+            if(isSyncing) el.classList.add('syncing');
+            else el.classList.remove('syncing');
+        }
+
+        fetchInventory();
+        renderMarket();
+    </script>
+</body>
+</html>
