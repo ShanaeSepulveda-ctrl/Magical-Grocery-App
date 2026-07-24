@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Prism Scouter v6.0 🌙🐉</title>
+    <title>Prism Scouter v7.0 🌙🐉</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Nunito:wght@400;700;900&display=swap');
 
@@ -23,16 +23,14 @@
         body {
             background-color: var(--cosmic-dark);
             color: #fff;
-            font-family: 'Nunito', sans-serif; /* Highly readable, rounded font for ADHD */
+            font-family: 'Nunito', sans-serif; 
             min-height: 100vh;
             overflow-x: hidden;
             padding-bottom: 90px;
         }
 
-        /* FIXED MATRIX CANVAS */
         #matrix-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; opacity: 0.25; }
 
-        /* HEADER */
         header {
             background: linear-gradient(90deg, rgba(255,51,153,0.95), rgba(74,14,78,0.95));
             text-align: center; padding: 15px; border-bottom: 4px solid var(--dbz-orange);
@@ -42,30 +40,39 @@
         header h1 { font-family: 'Orbitron'; font-weight: 900; font-size: 1.5rem; text-shadow: 0 0 8px var(--neon-pink); letter-spacing: 2px; text-transform: uppercase; }
         .subtitle { font-size: 0.8rem; color: var(--scouter-green); font-weight: 900; margin-top: 5px; }
 
-        /* CONTAINER */
         .app-container { padding: 15px; max-width: 800px; margin: 0 auto; }
         
+        /* DAILY REMINDER (GROUNDING ELEMENT) */
+        .daily-reminder {
+            background: rgba(57, 255, 20, 0.1); border: 2px solid var(--scouter-green);
+            padding: 12px; border-radius: 8px; font-size: 0.95rem; font-weight: 700;
+            color: var(--scouter-green); text-align: center; margin-bottom: 20px;
+            box-shadow: inset 0 0 10px rgba(57, 255, 20, 0.2);
+        }
+
         .card {
             background: var(--glass); border: 2px solid var(--moon-pink);
             border-radius: 12px; padding: 20px; margin-bottom: 25px;
             box-shadow: 0 0 15px rgba(255, 51, 153, 0.2); backdrop-filter: blur(15px);
         }
 
-        /* RECIPE SELECTOR (NEW) */
         .selector-wrapper { margin-bottom: 20px; }
         select {
             width: 100%; padding: 15px; font-size: 1.1rem; font-family: 'Orbitron'; font-weight: bold;
-            background: rgba(0,0,0,0.5); color: var(--ssj-gold); border: 2px solid var(--dbz-orange);
+            background: rgba(0,0,0,0.7); color: var(--ssj-gold); border: 2px solid var(--dbz-orange);
             border-radius: 8px; cursor: pointer; appearance: none; text-align: center;
         }
-        select:focus { outline: none; box-shadow: 0 0 15px var(--dbz-orange); }
 
-        /* GAMIFIED PROGRESS BAR */
+        /* CONVERTER TOOL */
+        .converter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+        .conv-input { background: rgba(255,255,255,0.1); border: 2px solid var(--neon-pink); color: white; padding: 10px; border-radius: 6px; font-family: 'Nunito'; font-size: 1rem; font-weight: bold; text-align: center; width: 100%; }
+        .conv-select { background: rgba(0,0,0,0.8); border: 2px solid var(--neon-pink); color: var(--moon-pink); padding: 10px; border-radius: 6px; font-family: 'Orbitron'; font-weight: bold; width: 100%; }
+        .conv-result { text-align: center; font-family: 'Orbitron'; color: var(--scouter-green); font-size: 1.2rem; font-weight: 900; background: rgba(57,255,20,0.1); padding: 10px; border-radius: 6px; border: 1px dashed var(--scouter-green); margin-top: 10px; }
+
         .progress-container { width: 100%; height: 25px; background: #222; border-radius: 12px; border: 2px solid #555; margin-bottom: 20px; overflow: hidden; position: relative; }
         .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--scouter-green), var(--ssj-gold)); transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         .progress-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'Orbitron'; font-size: 0.8rem; font-weight: 900; color: white; text-shadow: 1px 1px 2px black; }
 
-        /* TYPOGRAPHY & LAYOUT */
         h2 { color: var(--neon-pink); font-family: 'Orbitron'; font-size: 1.6rem; margin-bottom: 10px; text-transform: uppercase; }
         .recipe-stat-bar { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
         .stat-badge { background: rgba(255, 140, 0, 0.2); border: 2px solid var(--dbz-orange); color: var(--dbz-orange); padding: 6px 10px; border-radius: 6px; font-weight: 900; font-size: 0.9rem; }
@@ -74,12 +81,10 @@
         .section-header.orange { color: var(--dbz-orange); border-color: rgba(255, 140, 0, 0.5); }
         .section-header.pink { color: var(--neon-pink); border-color: rgba(255, 0, 127, 0.5); }
 
-        /* DOPAMINE TASK ITEMS (ADHD FRIENDLY) */
         .task-item {
             background: rgba(255, 255, 255, 0.05); border: 2px solid #444; border-radius: 10px;
             padding: 15px; margin-bottom: 12px; cursor: pointer; transition: all 0.2s ease;
-            font-size: 1.1rem; line-height: 1.5; font-weight: 700;
-            display: flex; gap: 15px; align-items: flex-start;
+            font-size: 1.1rem; line-height: 1.5; font-weight: 700; display: flex; gap: 15px; align-items: flex-start;
         }
         .task-item:hover { border-color: var(--moon-pink); transform: translateX(5px); }
         .task-item.completed { background: var(--completed-bg); border-color: var(--scouter-green); opacity: 0.6; }
@@ -87,14 +92,12 @@
         .task-checkbox { width: 28px; height: 28px; min-width: 28px; border: 2px solid #888; border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
         .completed .task-checkbox { background: var(--scouter-green); border-color: var(--scouter-green); }
         .completed .task-checkbox::after { content: '✔'; color: black; font-weight: 900; font-size: 18px; }
-        .task-text b { color: var(--ssj-gold); font-size: 1.15em; } /* Highlight measurements */
+        .task-text b { color: var(--ssj-gold); font-size: 1.15em; } 
 
-        /* INGREDIENT LISTS */
         ul.tactical-list { list-style: none; font-size: 1rem; }
         ul.tactical-list li { padding: 10px; border-bottom: 1px dashed rgba(255,255,255,0.2); font-weight: 700; }
         ul.tactical-list li b { color: var(--ssj-gold); }
 
-        /* BUTTONS */
         .magic-btn {
             background: transparent; border: 3px solid var(--dbz-orange); color: var(--dbz-orange);
             padding: 15px; width: 100%; font-family: 'Orbitron'; font-weight: 900; font-size: 1.1rem;
@@ -103,8 +106,8 @@
         .magic-btn:active { transform: scale(0.98); }
         .magic-btn.pink { border-color: var(--neon-pink); color: var(--neon-pink); background: rgba(255,0,127,0.1); }
         .magic-btn.coupon { border-color: var(--scouter-green); color: var(--scouter-green); margin-bottom: 20px; }
+        .magic-btn.sm { padding: 10px; font-size: 0.9rem; margin-top: 0; }
 
-        /* NAV */
         nav {
             position: fixed; bottom: 0; left: 0; width: 100%;
             background: rgba(10, 5, 20, 0.95); border-top: 3px solid var(--moon-pink);
@@ -114,7 +117,6 @@
         .nav-item.active { color: var(--neon-pink); text-shadow: 0 0 10px var(--neon-pink); transform: scale(1.1); transition: 0.2s; }
         .nav-icon { font-size: 1.8rem; margin-bottom: 4px; }
 
-        /* LEVEL UP CELEBRATION */
         #level-up-toast {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
             background: rgba(0,0,0,0.9); border: 5px solid var(--ssj-gold); padding: 40px;
@@ -142,14 +144,33 @@
 </header>
 
 <div class="app-container">
-    
+
+    <!-- DAILY GROUNDING REMINDER -->
+    <div class="daily-reminder">
+        🌱 Daily Protocol: Step away from the screens. Get outside, breathe the fresh air, and enjoy a moment in nature today.
+    </div>
+
     <!-- VIEW 1: RECIPES (ALCHEMY) -->
     <div id="view-recipes" class="view-section">
         
+        <!-- ALCHEMY CONVERTER -->
+        <div class="card">
+            <h2 style="font-size: 1.2rem; color: var(--moon-pink);">⚖️ ALCHEMY CONVERTER</h2>
+            <div class="converter-grid">
+                <input type="number" id="conv-val" class="conv-input" placeholder="Amount (e.g. 8)">
+                <select id="conv-type" class="conv-select">
+                    <option value="oz-cup">Fluid Oz ➔ Cups</option>
+                    <option value="cup-oz">Cups ➔ Fluid Oz</option>
+                    <option value="tbsp-cup">Tbsp ➔ Cups</option>
+                    <option value="cup-tbsp">Cups ➔ Tbsp</option>
+                </select>
+            </div>
+            <button class="magic-btn sm pink" onclick="runConversion()">CONVERT KI UNITS</button>
+            <div id="conv-output" class="conv-result">--</div>
+        </div>
+
         <div class="selector-wrapper">
-            <select id="recipe-selector" onchange="loadSelectedRecipe()">
-                <!-- Populated dynamically via JS -->
-            </select>
+            <select id="recipe-selector" onchange="loadSelectedRecipe()"></select>
         </div>
 
         <div class="card" id="recipe-card">
@@ -160,10 +181,10 @@
             </div>
             <p id="r-desc" style="font-size: 0.9rem; color: #ccc; margin-bottom: 20px; line-height: 1.5; font-weight: bold;"></p>
             
-            <div class="section-header green">🎒 VERIFIED IN VAULT (HAVE)</div>
+            <div class="section-header green">🎒 VERIFIED IN VAULT</div>
             <ul id="r-have" class="tactical-list"></ul>
 
-            <div class="section-header orange">🛒 TARGET ACQUISITION (NEED)</div>
+            <div class="section-header orange">🛒 TARGET ACQUISITION</div>
             <ul id="r-buy" class="tactical-list" style="margin-bottom: 15px;"></ul>
             <button class="magic-btn pink" onclick="sendToMarket()">➕ PUSH TO SCOUTER LIST</button>
         </div>
@@ -217,19 +238,13 @@
             <p style="font-size: 0.9rem; color:#aaa; margin-bottom: 20px; font-weight: bold;">Complete these side-quests to front-load your week.</p>
             
             <div class="section-header green">⚡️ HIGH-ENERGY SNACKS</div>
-            <div class="task-item" onclick="togglePrepTask(this)">
+            <div class="task-item" onclick="this.classList.toggle('completed')">
                 <div class="task-checkbox"></div>
                 <div class="task-text"><b>Oat & Hemp Power Bites:</b> Mix 2 cups rolled oats, 1/2 cup peanut butter, 1/3 cup honey, and 1/4 cup hemp hearts. Chill 30 mins, roll into spheres. (Keeps 7 days)</div>
             </div>
-            <div class="task-item" onclick="togglePrepTask(this)">
+            <div class="task-item" onclick="this.classList.toggle('completed')">
                 <div class="task-checkbox"></div>
                 <div class="task-text"><b>Pre-Sliced Scouter Packs:</b> Wash and slice 3 bell peppers and 2 cucumbers. Store in airtight glass containers with a damp paper towel.</div>
-            </div>
-
-            <div class="section-header orange">🧊 CRYOGENIC MEALS</div>
-            <div class="task-item" onclick="togglePrepTask(this)">
-                <div class="task-checkbox"></div>
-                <div class="task-text"><b>Saiyan Breakfast Burritos (x8):</b> Scramble 8 eggs, brown 1lb beef. Wrap in large tortillas with cheddar. Freeze in foil. (Microwave 2 mins wrapped in damp paper towel)</div>
             </div>
 
             <button class="magic-btn pink" onclick="sendPrepToMarket()" style="margin-top: 25px;">➕ PUSH PREP INGREDIENTS TO SCOUTER</button>
@@ -250,25 +265,20 @@
     const canvas = document.getElementById('matrix-canvas');
     const ctx = canvas.getContext('2d');
     
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
     const chars = '★☾♥♦●✦✧Z'.split('');
     const fontSize = 16; 
-    let columns = canvas.width / fontSize;
     let drops = [];
-    for(let i=0; i<columns; i++) drops[i] = 1;
+    for(let i=0; i<canvas.width/fontSize; i++) drops[i] = 1;
 
     function drawMatrix() {
         ctx.fillStyle = 'rgba(10, 5, 20, 0.1)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.font = fontSize + 'px monospace';
         
-        // Re-calculate columns if screen rotated/resized
         if(drops.length < canvas.width / fontSize) {
             for(let i=drops.length; i<canvas.width/fontSize; i++) drops[i] = 1;
         }
@@ -284,47 +294,111 @@
     }
     setInterval(drawMatrix, 50);
 
+    // --- CONVERTER ALCHEMY ---
+    function runConversion() {
+        let val = parseFloat(document.getElementById('conv-val').value);
+        let type = document.getElementById('conv-type').value;
+        if(isNaN(val)) return;
+        
+        let result = "";
+        if(type === 'oz-cup') result = `${val} fl oz = ${(val / 8).toFixed(2)} cups`;
+        if(type === 'cup-oz') result = `${val} cups = ${(val * 8).toFixed(2)} fl oz`;
+        if(type === 'tbsp-cup') result = `${val} tbsp = ${(val / 16).toFixed(2)} cups`;
+        if(type === 'cup-tbsp') result = `${val} cups = ${(val * 16).toFixed(2)} tbsp`;
+        
+        document.getElementById('conv-output').innerText = result;
+    }
+
     // --- GOOGLE SCRIPT CONNECTION ---
     const SHEET_API_URL = "https://script.google.com/macros/s/AKfycby_EiCidBees9IA-zs7_OSxppAnD0sB2U78Qvd1-kQy7JB5sSs9l-P-FKODmQLv2c-j/exec"; 
     let inventory = [];
     let marketList = [];
     let currentRecipeNeeds = [];
-    let prepIngredients = ["Rolled Oats", "Peanut Butter", "Honey", "Hemp Hearts", "Bell Peppers", "Cucumbers", "Eggs (1 Dozen)", "Large Tortillas"];
+    let prepIngredients = ["Rolled Oats", "Peanut Butter", "Honey", "Hemp Hearts", "Bell Peppers", "Cucumbers"];
 
-    // --- 30 RECIPE MASSIVE DATABASE ---
+    // --- UPGRADED FULL-MEAL DATABASE ---
     const recipeDB = [
-        { name: "Cosmic Garlic Penne", time: "30 MIN", powerLevel: "HIGH CARBS", desc: "Velvety, rich pasta blooming with exact butter-garlic ratios.", have: [{i: "Penne", q: "16oz"}, {i: "Tomato Sauce", q: "24oz"}], buy: ["Heavy Cream (1/2 Cup)", "Garlic Bulb", "Butter", "Parmesan"], prep: ["Mince <b>6 cloves</b> garlic.", "Grate <b>1 cup</b> Parmesan.", "Chop <b>2 cups</b> Power Greens."], cook: ["Boil 4 qts water with <b>2 tbsp salt</b>. Cook Penne 11 mins.", "Reserve <b>1/2 cup</b> pasta water before draining.", "Melt <b>3 tbsp butter</b> in skillet on medium-low. Add garlic for 1 min (DO NOT BROWN).", "Add Tomato Sauce and 1/2 cup heavy cream. Simmer 5 mins.", "Stir in greens until wilted."], serve: ["Fold drained pasta into sauce. Splash reserved water if too thick.", "Top heavily with Parmesan."] },
-        { name: "Saiyan Smash Bowls", time: "20 MIN", powerLevel: "HIGH PROTEIN", desc: "Crusty, heavy-sear smash burgers dumped onto fresh greens.", have: [{i: "Ground Beef 80/20", q: "1 lb"}, {i: "Power Greens", q: "4 Cups"}], buy: ["Cheddar Cheese", "Cherry Tomatoes", "Red Onion", "Thousand Island"], prep: ["Divide <b>1 lb beef</b> into 4 equal spheres. DO NOT PACK TIGHT.", "Dice <b>1/2 cup</b> Red Onion and halve <b>1 cup</b> tomatoes.", "Bed 4 bowls with <b>1 cup</b> Power Greens each."], cook: ["Heat dry cast-iron skillet on HIGH until smoking.", "Place beef spheres, smash completely flat to 1/4-inch. Season with <b>1/2 tsp salt</b>.", "Sear undisturbed for <b>2.5 mins</b>. Flip.", "Top with <b>1/4 cup cheddar</b> each. Cook 1 min to melt."], serve: ["Place hot patties on greens.", "Scatter onions and tomatoes.", "Drizzle <b>2 tbsp</b> dressing per bowl."] },
-        { name: "Lunar Chicken Stir-fry", time: "25 MIN", powerLevel: "BALANCED KI", desc: "Quick-sear chicken and veg in a heavy savory sauce.", have: [{i: "Rice", q: "1 Cup Dry"}], buy: ["Chicken Breast (1 lb)", "Broccoli Florets", "Soy Sauce", "Sesame Oil"], prep: ["Dice <b>1 lb</b> chicken into 1-inch cubes.", "Chop <b>2 cups</b> broccoli.", "Mix sauce: <b>1/4 cup</b> soy sauce, <b>1 tbsp</b> sesame oil, <b>1 tbsp</b> sugar."], cook: ["Start 1 cup rice in rice cooker.", "Heat skillet on HIGH with 1 tbsp oil.", "Sear chicken cubes for <b>5 mins</b> until golden. Remove from pan.", "Add broccoli and 2 tbsp water to pan, cover for <b>3 mins</b> to steam.", "Return chicken, pour in sauce, toss for <b>2 mins</b> until sticky."], serve: ["Serve chicken and veg directly over fresh rice."] },
-        { name: "Piccolo's Green Curry", time: "30 MIN", powerLevel: "PLANT POWER", desc: "Vibrant, spicy, nutrient-dense green curry.", have: [{i: "Power Greens", q: "2 Cups"}, {i: "Rice", q: "1 Cup Dry"}], buy: ["Green Curry Paste", "Coconut Milk (1 Can)", "Tofu (1 Block)"], prep: ["Press and cube <b>1 block</b> tofu.", "Roughly chop <b>2 cups</b> greens."], cook: ["Start rice cooker.", "In a pot, fry <b>2 tbsp</b> green curry paste in 1 tbsp oil for 2 mins.", "Pour in <b>1 can</b> coconut milk. Bring to simmer.", "Add tofu cubes and simmer for <b>10 mins</b>.", "Turn off heat, stir in greens until bright green and wilted."], serve: ["Ladle heavy curry over rice."] },
-        { name: "Capsule Corp Quesadillas", time: "15 MIN", powerLevel: "SPEED MEAL", desc: "Crispy, loaded, high-speed dinner.", have: [{i: "Ground Beef", q: "1/2 lb"}, {i: "Sharp Cheddar", q: "2 Cups"}], buy: ["Large Flour Tortillas", "Sour Cream", "Salsa"], prep: ["Shred <b>2 cups</b> cheese.", "Season <b>1/2 lb</b> beef with taco seasoning."], cook: ["Brown beef in skillet for <b>5 mins</b>. Drain grease.", "Wipe skillet. Place 1 tortilla down on medium heat.", "Layer: 1/2 cup cheese, half the beef, 1/2 cup cheese, top tortilla.", "Cook <b>3 mins</b> per side until golden and cheese is melted."], serve: ["Cut into 4 triangles. Serve with huge dollops of sour cream and salsa."] },
-        { name: "Super Saiyan Fried Rice", time: "20 MIN", powerLevel: "CARB LOAD", desc: "Leftover rice transformed into a golden, protein-heavy feast.", have: [{i: "Cooked Rice (Cold)", q: "3 Cups"}, {i: "Eggs", q: "3"}], buy: ["Frozen Peas & Carrots", "Soy Sauce", "Butter"], prep: ["Beat <b>3 eggs</b> in a bowl.", "Measure <b>1 cup</b> frozen veg (no need to thaw)."], cook: ["Melt <b>1 tbsp butter</b> in a massive skillet on HIGH.", "Scramble eggs quickly (1 min). Remove to a plate.", "Add 1 more tbsp butter. Add 3 cups cold rice. Press flat and let crisp for <b>3 mins</b> undisturbed.", "Add frozen veg, <b>3 tbsp soy sauce</b>, and scrambled eggs. Toss aggressively for <b>2 mins</b>."], serve: ["Serve hot in massive bowls."] },
-        { name: "Kame House Shrimp Tacos", time: "20 MIN", powerLevel: "LEAN KI", desc: "Bright, zesty, coastal shrimp tacos.", have: [], buy: ["Shrimp (1 lb peeled)", "Corn Tortillas", "Cabbage Slaw", "Limes", "Mayo"], prep: ["Thaw and pat dry <b>1 lb</b> shrimp.", "Mix <b>1/4 cup mayo</b> with juice of <b>1/2 lime</b> for sauce."], cook: ["Season shrimp with <b>1 tbsp chili powder</b> and <b>1 tsp salt</b>.", "Heat skillet on HIGH. Sear shrimp for exactly <b>2 mins per side</b>.", "Char corn tortillas directly on a gas burner or dry skillet for 10 seconds per side."], serve: ["Layer tortillas with slaw, 3-4 shrimp, and heavy drizzle of lime mayo."] },
-        { name: "Majin Buu Mac & Cheese", time: "25 MIN", powerLevel: "MAX COMFORT", desc: "Pink/orange extremely cheesy stovetop mac.", have: [{i: "Pasta (Any)", q: "16oz"}, {i: "Cheddar", q: "2 Cups"}], buy: ["Evaporated Milk (1 Can)", "Cream Cheese (4oz)"], prep: ["Shred <b>2 cups</b> sharp cheddar.", "Cube <b>4oz</b> cream cheese."], cook: ["Boil 16oz pasta until al dente. Drain.", "Return pasta to pot on LOW heat. Pour in <b>1 can</b> evaporated milk.", "Stir in cream cheese until melted.", "Stir in cheddar by the handful until sauce is incredibly thick and glossy."], serve: ["Serve immediately before it tightens up."] },
-        { name: "Moon Prism Power Salad", time: "15 MIN", powerLevel: "VITAMIN BOOST", desc: "Crunchy, sweet, and tangy massive power salad.", have: [{i: "Power Greens", q: "1 Tub"}], buy: ["Strawberries", "Feta Cheese", "Walnuts", "Balsamic Vinaigrette"], prep: ["Slice <b>1 cup</b> strawberries.", "Chop <b>1/2 cup</b> walnuts."], cook: ["(No combat phase. Pure alchemy mixing.)"], serve: ["Dump entire tub of Power Greens into a massive bowl.", "Top with strawberries, walnuts, and <b>1/2 cup</b> crumbled feta.", "Drizzle heavily with Balsamic and toss until coated."] },
-        { name: "Vegeta's Spicy Beef Noodles", time: "25 MIN", powerLevel: "FIERY PROTIEN", desc: "Aggressive, spicy, sweet beef over noodles.", have: [{i: "Ground Beef", q: "1 lb"}, {i: "Pasta (Spaghetti)", q: "8oz"}], buy: ["Sriracha", "Brown Sugar", "Garlic", "Soy Sauce"], prep: ["Mince <b>4 cloves</b> garlic.", "Mix sauce: <b>1/4 cup</b> soy sauce, <b>2 tbsp</b> brown sugar, <b>1 tbsp</b> Sriracha."], cook: ["Boil 8oz noodles. Drain.", "Brown 1 lb beef with minced garlic in skillet. Drain grease.", "Pour spicy sauce over beef. Simmer <b>2 mins</b> until sticky.", "Toss noodles into the beef skillet until coated."], serve: ["Serve hot. Top with extra Sriracha if PL allows."] },
-        { name: "Namekian Pesto Pasta", time: "20 MIN", powerLevel: "GREEN ENERGY", desc: "Vibrant green, herby, garlic pasta.", have: [{i: "Penne", q: "16oz"}], buy: ["Pesto Sauce (1 Jar)", "Cherry Tomatoes", "Parmesan"], prep: ["Halve <b>1 pint</b> cherry tomatoes."], cook: ["Boil pasta in salted water. Drain, reserve 1/4 cup water.", "In the warm empty pot, dump the jar of Pesto and reserved water.", "Fold in the hot pasta and tomatoes until tomatoes slightly soften from residual heat."], serve: ["Plate and dust heavily with Parmesan."] },
-        { name: "Shenron's Long Noodles", time: "20 MIN", powerLevel: "AGILITY", desc: "Classic garlic butter soy noodles.", have: [{i: "Spaghetti", q: "16oz"}], buy: ["Butter", "Garlic", "Soy Sauce", "Green Onions"], prep: ["Slice <b>1 bunch</b> green onions.", "Mince <b>4 cloves</b> garlic."], cook: ["Boil noodles. Drain.", "Melt <b>4 tbsp</b> butter. Sauté garlic for 1 min.", "Add <b>1/4 cup</b> soy sauce and noodles. Toss on high heat for 2 mins to fry slightly."], serve: ["Garnish heavily with sliced green onions."] },
-        { name: "Tuxedo Mask Steak Bites", time: "15 MIN", powerLevel: "GENTLEMAN'S PROTEIN", desc: "Garlic butter seared steak cubes.", have: [], buy: ["Sirloin Steak (1 lb)", "Butter", "Garlic"], prep: ["Cube steak into 1-inch pieces. Season heavily with salt/pepper.", "Mince <b>3 cloves</b> garlic."], cook: ["Heat skillet on screaming HIGH with 1 tbsp oil.", "Drop steak cubes. DO NOT TOUCH for <b>2 mins</b> to build crust.", "Flip cubes, add <b>3 tbsp butter</b> and garlic. Baste for 1 min."], serve: ["Serve steak bites immediately with the garlic butter poured over top."] },
-        { name: "Artemis White Bean Soup", time: "25 MIN", powerLevel: "HEALING KI", desc: "Creamy, cozy, vegetarian bean soup.", have: [{i: "Power Greens", q: "2 Cups"}], buy: ["Cannellini Beans (2 Cans)", "Vegetable Broth (32oz)", "Garlic", "Lemon"], prep: ["Drain/rinse beans.", "Mince <b>4 cloves</b> garlic."], cook: ["Sauté garlic in 1 tbsp olive oil for 1 min.", "Add broth and beans. Simmer for <b>15 mins</b>.", "Mash half the beans in the pot with a potato masher to thicken.", "Stir in greens and juice of 1/2 lemon until greens wilt."], serve: ["Serve in bowls with crusty bread for dipping."] },
-        { name: "Sailor Mars Fire Chili", time: "30 MIN", powerLevel: "BURNING ATTACK", desc: "Spicy, heavy, fast stovetop chili.", have: [{i: "Ground Beef", q: "1 lb"}], buy: ["Kidney Beans (1 Can)", "Crushed Tomatoes (28oz)", "Chili Powder", "Cheddar"], prep: ["Drain beans.", "Measure <b>3 tbsp</b> chili powder."], cook: ["Brown beef in a large pot. Drain grease.", "Add chili powder and stir for 30 seconds to toast spices.", "Dump in tomatoes and beans. Bring to boil, reduce to simmer for <b>20 mins</b>."], serve: ["Ladle into bowls. Top with massive fistfuls of cheddar."] },
-        // ... (Recipes 16-30 follow the exact same modular logic to hit the constraint while saving processing bulk)
-        { name: "Chibi Moon Mini Sliders", time: "20 MIN", powerLevel: "KIDS FAVORITE", desc: "Tiny, sweet Hawaiian roll cheeseburgers.", have: [{i: "Ground Beef", q: "1 lb"}], buy: ["Hawaiian Sweet Rolls (12-pack)", "Cheddar Slices"], prep: ["Slice entire 12-pack of rolls in half horizontally as one giant sheet."], cook: ["Press 1 lb raw beef into a flat 9x13 rectangle in a baking dish.", "Bake at 400F for <b>12 mins</b>. Drain liquid.", "Place beef slab on bottom rolls. Top with cheese slices and top rolls. Bake 3 more mins to melt."], serve: ["Slice into individual mini sliders and serve."] },
-        { name: "Gotenks Fusion Bake", time: "35 MIN", powerLevel: "FUSION POWER", desc: "Pasta and beef baked into a cheesy casserole.", have: [{i: "Ground Beef", q: "1 lb"}, {i: "Penne", q: "16oz"}, {i: "Tomato Sauce", q: "24oz"}], buy: ["Mozzarella Cheese (2 Cups)"], prep: ["Preheat oven to 375F."], cook: ["Boil pasta for 8 mins (slightly underdone). Drain.", "Brown beef. Mix with pasta and tomato sauce.", "Dump into a 9x13 baking dish. Cover entirely with mozzarella.", "Bake <b>20 mins</b> until cheese is bubbly and golden."], serve: ["Let stand 5 mins before scooping massive portions."] },
-        { name: "Cell's Perfect Protein Smoothie", time: "10 MIN", powerLevel: "CELLULAR REGEN", desc: "Thick, green, ice-cold recovery bowl.", have: [{i: "Power Greens", q: "1 Handful"}], buy: ["Frozen Bananas", "Peanut Butter", "Milk"], prep: ["Peel and freeze bananas the night before."], cook: ["Add 2 frozen bananas, 1 handful greens, 2 tbsp peanut butter, and 1/2 cup milk to blender.", "Blend on HIGH until perfectly smooth and thick."], serve: ["Pour into bowls. Eat with a spoon."] }
-        // (Note: To ensure flawless browser execution, array has been optimized to 18 highly distinct, exact-measurement gamified modules. You can add infinite more!)
+        { 
+            name: "Tuxedo Mask Steak Bites & Garlic Mash", 
+            time: "45 MIN", powerLevel: "GENTLEMAN'S BANQUET", 
+            desc: "Heavy garlic-butter seared steak cubes paired with exact-measured rich mashed potatoes and roasted asparagus. A complete, perfectly balanced dinner.", 
+            have: [], 
+            buy: ["Sirloin Steak (1.5 lbs)", "Yukon Gold Potatoes (2 lbs)", "Asparagus (1 bunch)", "Unsalted Butter (1 stick)", "Heavy Cream (1/4 Cup)", "Fresh Garlic (1 bulb)"], 
+            prep: [
+                "Peel and cube <b>2 lbs</b> Yukon Gold potatoes.", 
+                "Trim the woody ends off <b>1 bunch</b> asparagus.", 
+                "Cube <b>1.5 lbs</b> steak into 1-inch pieces. Season heavily with salt/pepper.", 
+                "Mince exactly <b>6 cloves</b> garlic."
+            ], 
+            cook: [
+                "Preheat oven to 400°F. Toss asparagus with 1 tbsp olive oil, salt, and pepper on a baking sheet. Roast for <b>12 mins</b>.",
+                "Boil a large pot of salted water. Add potatoes and boil for <b>15 mins</b> until fork-tender. Drain.",
+                "Mash the potatoes aggressively with <b>4 tbsp butter</b>, <b>1/4 cup heavy cream</b>, and 1 tsp salt until velvety.",
+                "Heat a large cast-iron skillet on screaming HIGH. Add 1 tbsp oil.",
+                "Drop steak cubes in a single layer. DO NOT TOUCH for <b>2 mins</b> to build maximum crust.",
+                "Flip cubes, instantly add <b>3 tbsp butter</b> and the minced garlic. Baste steak with the melting butter for 1 min."
+            ], 
+            serve: [
+                "Create a heavy base of garlic mashed potatoes on each plate.", 
+                "Ladle the garlic-butter steak bites directly over the mash.",
+                "Place the roasted asparagus on the side. Serve immediately."
+            ] 
+        },
+        { 
+            name: "Kame House Shrimp Tacos & Cilantro Rice", 
+            time: "35 MIN", powerLevel: "COASTAL FUSION", 
+            desc: "Bright, zesty shrimp tacos served alongside fluffy cilantro-lime rice and savory black beans.", 
+            have: [{i: "Rice", q: "1 Cup Dry"}], 
+            buy: ["Shrimp (1 lb peeled)", "Corn Tortillas", "Cabbage Slaw", "Limes (3)", "Mayo", "Fresh Cilantro", "Black Beans (1 Can)"], 
+            prep: [
+                "Thaw and pat dry <b>1 lb</b> shrimp. Toss with 1 tbsp chili powder and 1 tsp salt.", 
+                "Mix <b>1/4 cup mayo</b> with the juice of <b>1/2 lime</b> for the taco sauce.",
+                "Finely chop <b>1/2 cup</b> fresh cilantro."
+            ], 
+            cook: [
+                "Start <b>1 cup</b> dry rice in the rice cooker.",
+                "In a small pot, simmer <b>1 can</b> black beans (do not drain) with 1/2 tsp cumin for 10 mins.",
+                "When rice finishes, fold in the chopped cilantro and the juice of <b>1 whole lime</b>.",
+                "Heat skillet on HIGH. Sear shrimp for exactly <b>2 mins per side</b>. Remove from heat.",
+                "Char corn tortillas directly on a gas burner or dry skillet for 10 seconds per side."
+            ], 
+            serve: [
+                "Layer tortillas with fresh slaw, 3-4 shrimp, and a heavy drizzle of lime mayo.",
+                "Serve with a massive scoop of cilantro-lime rice and a side of black beans."
+            ] 
+        },
+        { 
+            name: "Cosmic Garlic Penne & Power Salad", 
+            time: "30 MIN", powerLevel: "BALANCED ALCHEMY", 
+            desc: "Velvety, rich pasta paired with a tangy, crunchy, strawberry-feta side salad to balance the heavy carbs.", 
+            have: [{i: "Penne", q: "16oz"}, {i: "Tomato Sauce", q: "24oz"}, {i: "Power Greens", q: "1 Tub"}], 
+            buy: ["Heavy Cream (1/2 Cup)", "Garlic Bulb", "Butter", "Parmesan", "Strawberries", "Feta Cheese", "Balsamic Vinaigrette"], 
+            prep: [
+                "Mince <b>6 cloves</b> garlic and grate <b>1 cup</b> Parmesan.", 
+                "Slice <b>1 cup</b> strawberries.",
+                "Place half the tub of Power Greens into a large salad bowl."
+            ], 
+            cook: [
+                "Boil 4 qts water with <b>2 tbsp salt</b>. Cook Penne 11 mins. Reserve <b>1/2 cup</b> pasta water before draining.", 
+                "Melt <b>3 tbsp butter</b> in skillet on medium-low. Add garlic for 1 min (DO NOT BROWN).", 
+                "Add Tomato Sauce and 1/2 cup heavy cream. Simmer 5 mins.", 
+                "Fold remaining Power Greens into the warm pasta sauce until wilted."
+            ], 
+            serve: [
+                "Toss the salad greens with strawberries, <b>1/2 cup feta</b>, and Balsamic Vinaigrette.",
+                "Fold drained pasta into the skillet sauce. Top heavily with Parmesan.",
+                "Serve the heavy pasta alongside the bright, acidic side salad."
+            ] 
+        }
     ];
 
-    // --- GAME LOGIC & UI ---
-    let activeTasks = 0;
-    let completedTasks = 0;
+    let activeTasks = 0; let completedTasks = 0;
 
     function populateDropdown() {
         const select = document.getElementById('recipe-selector');
         recipeDB.forEach((r, index) => {
             const option = document.createElement('option');
-            option.value = index;
-            option.innerText = r.name;
+            option.value = index; option.innerText = r.name;
             select.appendChild(option);
         });
     }
@@ -342,7 +416,6 @@
         document.getElementById('r-have').innerHTML = recipe.have.map(i => `<li>✅ <b>${i.i}</b> <span style="float:right; color:#ccc;">${i.q}</span></li>`).join('') || "<li>No vault items needed!</li>";
         document.getElementById('r-buy').innerHTML = recipe.buy.map(i => `<li>⚠️ <span style="color:var(--neon-pink);">${i}</span></li>`).join('');
         
-        // Reset Gamification
         activeTasks = recipe.prep.length + recipe.cook.length + recipe.serve.length;
         completedTasks = 0;
         updateProgressBar();
@@ -361,30 +434,20 @@
         `;
     }
 
-    // --- DOPAMINE HIT MECHANICS ---
     function toggleTask(element) {
         if(element.classList.contains('completed')) {
-            element.classList.remove('completed');
-            completedTasks--;
+            element.classList.remove('completed'); completedTasks--;
         } else {
-            element.classList.add('completed');
-            completedTasks++;
+            element.classList.add('completed'); completedTasks++;
         }
         updateProgressBar();
-    }
-
-    function togglePrepTask(element) {
-        element.classList.toggle('completed');
     }
 
     function updateProgressBar() {
         const percent = (completedTasks / activeTasks) * 100;
         document.getElementById('alchemy-progress').style.width = percent + '%';
         document.getElementById('alchemy-text').innerText = `KI GATHERING: ${Math.round(percent)}%`;
-
-        if(percent === 100) {
-            triggerLevelUp();
-        }
+        if(percent === 100) triggerLevelUp();
     }
 
     function triggerLevelUp() {
@@ -393,7 +456,6 @@
         setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
-    // --- MARKET / VAULT SYNC LOGIC ---
     async function fetchInventory() {
         document.getElementById('sync-status').innerText = "SCANNING DATABANKS...";
         try {
@@ -446,7 +508,7 @@
         if(marketList.length === 0) list.innerHTML = `<p style="color:#666; font-style:italic;">Target list is empty.</p>`;
         marketList.forEach(item => {
             const div = document.createElement('div');
-            div.className = 'task-item'; // Re-using gamified task style!
+            div.className = 'task-item'; 
             div.innerHTML = `<div class="task-checkbox"></div><div class="task-text" style="font-weight:900;">${item}</div>`;
             div.onclick = function() {
                 if(!this.classList.contains('completed')) {
@@ -481,9 +543,8 @@
         if(view === 'market') renderMarket();
     }
 
-    // INITIALIZE
     populateDropdown();
-    loadSelectedRecipe(); // Load first recipe on boot
+    loadSelectedRecipe(); 
     fetchInventory();
     renderMarket();
 </script>
