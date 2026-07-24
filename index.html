@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Prism Scouter v10.0 (AI Edition) 🌙🐉</title>
+    <title>Prism Scouter v11.0 (Custom Alchemy) 🌙🐉</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Nunito:wght@400;700;900&display=swap');
 
@@ -35,36 +35,19 @@
 
         .app-container { padding: 15px; max-width: 800px; margin: 0 auto; }
         
-        .daily-reminder {
-            background: rgba(57, 255, 20, 0.1); border: 2px solid var(--scouter-green);
-            padding: 12px; border-radius: 8px; font-size: 0.95rem; font-weight: 700;
-            color: var(--scouter-green); text-align: center; margin-bottom: 20px;
-        }
+        .daily-reminder { background: rgba(57, 255, 20, 0.1); border: 2px solid var(--scouter-green); padding: 12px; border-radius: 8px; font-size: 0.95rem; font-weight: 700; color: var(--scouter-green); text-align: center; margin-bottom: 20px; }
 
-        .card {
-            background: var(--glass); border: 2px solid var(--moon-pink);
-            border-radius: 12px; padding: 20px; margin-bottom: 25px;
-            box-shadow: 0 0 15px rgba(255, 51, 153, 0.2); backdrop-filter: blur(15px);
-        }
+        .card { background: var(--glass); border: 2px solid var(--moon-pink); border-radius: 12px; padding: 20px; margin-bottom: 25px; box-shadow: 0 0 15px rgba(255, 51, 153, 0.2); backdrop-filter: blur(15px); }
 
-        /* AI BUTTONS */
-        .ai-gen-btn {
-            background: linear-gradient(45deg, #4a0e4e, var(--moon-pink));
-            border: 3px solid var(--ai-glow); color: #fff;
-            padding: 15px; width: 100%; font-family: 'Orbitron'; font-weight: 900; font-size: 1.1rem;
-            cursor: pointer; border-radius: 10px; transition: 0.2s; margin-bottom: 20px; text-transform: uppercase;
-            box-shadow: 0 0 15px rgba(181, 126, 255, 0.5); display: flex; align-items: center; justify-content: center; gap: 10px;
-        }
+        .ai-gen-btn { background: linear-gradient(45deg, #4a0e4e, var(--moon-pink)); border: 3px solid var(--ai-glow); color: #fff; padding: 15px; width: 100%; font-family: 'Orbitron'; font-weight: 900; font-size: 1.1rem; cursor: pointer; border-radius: 10px; transition: 0.2s; margin-bottom: 20px; text-transform: uppercase; box-shadow: 0 0 15px rgba(181, 126, 255, 0.5); display: flex; align-items: center; justify-content: center; gap: 10px; }
         .ai-gen-btn:active { transform: scale(0.98); }
         .ai-loading { animation: pulseAI 1s infinite; pointer-events: none; }
         @keyframes pulseAI { 0% { box-shadow: 0 0 15px rgba(181, 126, 255, 0.5); } 50% { box-shadow: 0 0 30px var(--ai-glow); } 100% { box-shadow: 0 0 15px rgba(181, 126, 255, 0.5); } }
 
-        .selector-wrapper { margin-bottom: 20px; }
-        select {
-            width: 100%; padding: 15px; font-size: 1.1rem; font-family: 'Orbitron'; font-weight: bold;
-            background: rgba(0,0,0,0.7); color: var(--ssj-gold); border: 2px solid var(--dbz-orange);
-            border-radius: 8px; cursor: pointer; text-align: center;
-        }
+        select { width: 100%; padding: 15px; font-size: 1.1rem; font-family: 'Orbitron'; font-weight: bold; background: rgba(0,0,0,0.7); color: var(--ssj-gold); border: 2px solid var(--dbz-orange); border-radius: 8px; cursor: pointer; text-align: center; }
+
+        .conv-input { background: rgba(255,255,255,0.1); border: 2px solid var(--neon-pink); color: white; padding: 12px; border-radius: 8px; font-family: 'Nunito'; font-size: 1rem; font-weight: bold; width: 100%; margin-bottom: 10px; box-sizing: border-box; }
+        .conv-select { background: rgba(0,0,0,0.8); border: 2px solid var(--neon-pink); color: var(--moon-pink); padding: 12px; border-radius: 8px; font-family: 'Orbitron'; font-weight: bold; width: 100%; margin-bottom: 10px; box-sizing: border-box; }
 
         .progress-container { width: 100%; height: 25px; background: #222; border-radius: 12px; border: 2px solid #555; margin-bottom: 20px; overflow: hidden; position: relative; }
         .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--scouter-green), var(--ssj-gold)); transition: width 0.4s; }
@@ -82,11 +65,7 @@
         .section-header.orange { color: var(--dbz-orange); border-color: rgba(255, 140, 0, 0.5); }
         .section-header.pink { color: var(--neon-pink); border-color: rgba(255, 0, 127, 0.5); }
 
-        .task-item {
-            background: rgba(255, 255, 255, 0.05); border: 2px solid #444; border-radius: 10px;
-            padding: 15px; margin-bottom: 12px; cursor: pointer; transition: all 0.2s ease;
-            font-size: 1.1rem; line-height: 1.5; font-weight: 700; display: flex; gap: 15px; align-items: flex-start;
-        }
+        .task-item { background: rgba(255, 255, 255, 0.05); border: 2px solid #444; border-radius: 10px; padding: 15px; margin-bottom: 12px; cursor: pointer; transition: all 0.2s ease; font-size: 1.1rem; line-height: 1.5; font-weight: 700; display: flex; gap: 15px; align-items: flex-start; }
         .task-item.completed { background: var(--completed-bg); border-color: var(--scouter-green); opacity: 0.6; }
         .task-item.completed .task-text { text-decoration: line-through; color: var(--scouter-green); }
         .task-checkbox { width: 28px; height: 28px; min-width: 28px; border: 2px solid #888; border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
@@ -100,21 +79,27 @@
 
         .magic-btn { background: transparent; border: 3px solid var(--dbz-orange); color: var(--dbz-orange); padding: 15px; width: 100%; font-family: 'Orbitron'; font-weight: 900; font-size: 1.1rem; cursor: pointer; border-radius: 10px; margin-top: 15px; text-transform: uppercase; }
         .magic-btn.pink { border-color: var(--neon-pink); color: var(--neon-pink); background: rgba(255,0,127,0.1); }
+        .magic-btn.sm { padding: 10px; font-size: 0.9rem; margin-top: 0; }
 
-        nav {
-            position: fixed; bottom: 0; left: 0; width: 100%;
-            background: rgba(10, 5, 20, 0.95); border-top: 3px solid var(--moon-pink);
-            display: flex; justify-content: space-around; padding: 15px 0; z-index: 100; backdrop-filter: blur(10px);
-        }
+        nav { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(10, 5, 20, 0.95); border-top: 3px solid var(--moon-pink); display: flex; justify-content: space-around; padding: 15px 0; z-index: 100; backdrop-filter: blur(10px); }
         .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 0.8rem; font-family: 'Orbitron'; color: #666; cursor: pointer; font-weight: 900; }
         .nav-item.active { color: var(--neon-pink); text-shadow: 0 0 10px var(--neon-pink); transform: scale(1.1); }
         .nav-icon { font-size: 1.8rem; margin-bottom: 4px; }
         .hidden { display: none !important; }
+
+        #level-up-toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); background: rgba(0,0,0,0.9); border: 5px solid var(--ssj-gold); padding: 40px; border-radius: 20px; z-index: 1000; text-align: center; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 0 50px var(--ssj-gold); pointer-events: none; }
+        #level-up-toast.show { transform: translate(-50%, -50%) scale(1); }
+        #level-up-toast h1 { font-family: 'Orbitron'; font-size: 3rem; color: var(--ssj-gold); text-shadow: 0 0 20px var(--dbz-orange); margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
 <canvas id="matrix-canvas"></canvas>
+
+<div id="level-up-toast">
+    <h1 id="toast-title">LEVEL UP! ⚡️</h1>
+    <p id="toast-msg" style="font-size: 1.2rem; font-weight: bold; color: white;">ALCHEMY COMPLETE!</p>
+</div>
 
 <header>
     <h1>🌙 PRISM SCOUTER 🐉</h1>
@@ -124,14 +109,14 @@
 <div class="app-container">
     <div class="daily-reminder">🌱 Daily Protocol: Step away from the screens. Get outside, breathe the fresh air, and enjoy a moment in nature today.</div>
 
-    <!-- VIEW 1: RECIPES (ALCHEMY) -->
+    <!-- VIEW 1: RECIPES -->
     <div id="view-recipes" class="view-section">
         
         <button id="ai-btn" class="ai-gen-btn" onclick="generateAIRecipe()">
             <span>✨ GENERATE AI ALCHEMY ✨</span>
         </button>
 
-        <div class="selector-wrapper">
+        <div style="margin-bottom: 20px;">
             <select id="recipe-selector" onchange="loadSelectedRecipe()">
                 <option>Loading Database...</option>
             </select>
@@ -164,15 +149,16 @@
         </div>
     </div>
 
-    <!-- VIEW 2: MARKET SCOUTER -->
+    <!-- VIEW 2: MARKET -->
     <div id="view-market" class="view-section hidden">
         <div class="card">
             <h2>🛒 TARGET ACQUISITION</h2>
+            <button class="magic-btn" style="border-color:var(--scouter-green); color:var(--scouter-green); margin-bottom:20px;" onclick="window.open('https://www.kingsoopers.com/savings/cl/coupons/', '_blank')">✂️ OPEN KING SOOPERS COUPONS</button>
             <div id="market-list"></div>
         </div>
     </div>
 
-    <!-- VIEW 3: INVENTORY VAULT -->
+    <!-- VIEW 3: VAULT -->
     <div id="view-vault" class="view-section hidden">
         <div class="card">
             <h2>🐉 DATA VAULT</h2>
@@ -180,10 +166,28 @@
         </div>
     </div>
 
-    <!-- VIEW 4: WEEKLY PREP -->
+    <!-- VIEW 4: WEEKLY PREP & INPUT TERMINAL -->
     <div id="view-prep" class="view-section hidden">
+        
+        <!-- NEW INPUT TERMINAL -->
+        <div class="card" style="border-color: var(--neon-pink);">
+            <h2 style="font-size: 1.2rem; color: var(--neon-pink);">✍️ INPUT NEW PREP MODULE</h2>
+            <p style="font-size: 0.8rem; color:#aaa; margin-bottom: 15px; font-weight: bold;">Log back-to-school recipes directly to the databank. Try <i>Pinch of Yum</i> favorites like Detox Rainbow Roll-Ups with Peanut Sauce or Lemon Herb Pasta Salad with Marinated Chickpeas!</p>
+            
+            <input type="text" id="new-prep-name" class="conv-input" placeholder="Task Name (e.g., Rainbow Roll-Ups)">
+            <select id="new-prep-cat" class="conv-select">
+                <option value="🎒 KLAUS'S PRE-SCHOOL RATIONS">Pre-School Rations</option>
+                <option value="⚡️ HIGH-ENERGY SNACKS">High-Energy Snacks</option>
+                <option value="🧊 CRYOGENIC MEALS">Cryogenic Meals</option>
+                <option value="🔮 ALCHEMY BASICS">Alchemy Basics</option>
+            </select>
+            <textarea id="new-prep-inst" class="conv-input" placeholder="Enter exact steps, measurements, and lunchbox modifications..." style="height: 100px; resize: none;"></textarea>
+            
+            <button class="magic-btn sm pink" onclick="saveNewPrepTask()">💾 BEAM TO DATABANKS</button>
+        </div>
+
         <div class="card">
-            <h2>🍱 WEEKLY PREP MODULE</h2>
+            <h2>🍱 WEEKLY PREP DATABASE</h2>
             <div id="prep-list-render"></div>
         </div>
     </div>
@@ -197,16 +201,11 @@
 </nav>
 
 <script>
-    //https://script.google.com/macros/s/AKfycbyGNUg610oIOzXamcSptpmsr_M6sO5CGMmdZ3udxC62WM1sERIFG-FBXOByL5HIlSFq/exec:
-    const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyGNUg610oIOzXamcSptpmsr_M6sO5CGMmdZ3udxC62WM1sERIFG-FBXOByL5HIlSFq/exec"; 
+    // PASTE YOUR NEW APPS SCRIPT WEB APP URL HERE:
+    const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzFfkf7OO6GHYrC59GO4H37Fy_JculjE-Hfxl0ChSpf2W__n8Polb3ZgF13RopMM1Hi/exec"; 
     
-    let dbInventory = [];
-    let dbRecipes = [];
-    let dbPrep = [];
-    let marketList = [];
-    let currentRecipeNeeds = [];
+    let dbInventory = []; let dbRecipes = []; let dbPrep = []; let marketList = []; let currentRecipeNeeds = [];
 
-    // --- FETCH ALL DATA FROM GOOGLE SHEETS ON LOAD ---
     async function fetchMainframe() {
         document.getElementById('sync-status').innerText = "CONNECTING TO MAINFRAME...";
         try {
@@ -217,22 +216,17 @@
             dbRecipes = data.recipes || [];
             dbPrep = data.prep || [];
             
-            renderVault();
-            renderPrep();
-            populateDropdown();
+            renderVault(); renderPrep(); populateDropdown();
             
-            if(dbRecipes.length > 0) {
-                loadSelectedRecipe();
-            } else {
-                document.getElementById('r-name').innerText = "Vault is empty! Generate a recipe!";
-            }
+            if(dbRecipes.length > 0) loadSelectedRecipe();
+            else document.getElementById('r-name').innerText = "Vault is empty! Generate a recipe!";
+            
             document.getElementById('sync-status').innerText = "SYSTEM ONLINE • KI STABLE";
         } catch (e) {
             document.getElementById('sync-status').innerText = "ERROR CONNECTING TO SHEET";
         }
     }
 
-    // --- AI GENERATION LOGIC ---
     async function generateAIRecipe() {
         const btn = document.getElementById('ai-btn');
         btn.classList.add('ai-loading');
@@ -240,34 +234,93 @@
         document.getElementById('sync-status').innerText = "AI GENERATING RECIPE...";
 
         try {
-            const response = await fetch(SHEET_API_URL, {
+            await fetch(SHEET_API_URL, {
                 method: 'POST', mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ action: "generate_recipe" })
             });
-            // no-cors means we won't get a readable response back immediately in browser, 
-            // so we wait 4 seconds for the script to finish writing to the sheet, then refresh!
             setTimeout(() => {
                 btn.classList.remove('ai-loading');
                 btn.innerHTML = "<span>✨ GENERATE AI ALCHEMY ✨</span>";
-                fetchMainframe(); // Refresh to pull the new recipe from the sheet!
-                alert("New Alchemy Invented and Saved to Database!");
-            }, 5000);
-            
+                fetchMainframe(); 
+                
+                document.getElementById('toast-title').innerText = "NEW RECIPE SECURED! 🔮";
+                document.getElementById('toast-msg').innerText = "Added to the databank.";
+                triggerLevelUp();
+            }, 6000);
         } catch(e) {
             btn.classList.remove('ai-loading');
             btn.innerHTML = "<span>✨ GENERATE AI ALCHEMY ✨</span>";
         }
     }
 
+    // --- NEW: SAVE CUSTOM PREP TASK LOGIC ---
+    async function saveNewPrepTask() {
+        const name = document.getElementById('new-prep-name').value;
+        const cat = document.getElementById('new-prep-cat').value;
+        const inst = document.getElementById('new-prep-inst').value;
+        
+        if(!name || !inst) {
+            alert("⚠️ Please enter a Task Name and Instructions!");
+            return;
+        }
+        
+        document.getElementById('sync-status').innerText = "BEAMING TASK TO CLOUD...";
+        
+        // Optimistic UI push
+        dbPrep.push({ "Task Name": name, "Category": cat, "Instructions": inst });
+        renderPrep();
+        
+        document.getElementById('new-prep-name').value = '';
+        document.getElementById('new-prep-inst').value = '';
+
+        try {
+            await fetch(SHEET_API_URL, {
+                method: 'POST', mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: "add_prep_task", taskName: name, category: cat, instructions: inst })
+            });
+        } catch(e) {}
+        
+        document.getElementById('sync-status').innerText = "SYSTEM ONLINE • KI STABLE";
+        
+        document.getElementById('toast-title').innerText = "MODULE SECURED! 💾";
+        document.getElementById('toast-msg').innerText = "Successfully logged to databank.";
+        triggerLevelUp();
+    }
+
+    // --- UPDATED RENDER PREP LOGIC (Auto-Groups Categories!) ---
+    function renderPrep() {
+        const container = document.getElementById('prep-list-render');
+        container.innerHTML = '';
+        
+        let grouped = {};
+        dbPrep.forEach(task => {
+            if(!task["Task Name"]) return;
+            let cat = task["Category"] || "🔮 UNASSIGNED ALCHEMY";
+            if(!grouped[cat]) grouped[cat] = [];
+            grouped[cat].push(task);
+        });
+        
+        for (const [category, tasks] of Object.entries(grouped)) {
+            container.innerHTML += `<div class="section-header pink">${category}</div>`;
+            tasks.forEach(task => {
+                container.innerHTML += `
+                    <div class="task-item" onclick="this.classList.toggle('completed')">
+                        <div class="task-checkbox"></div>
+                        <div class="task-text"><b>${task["Task Name"]}:</b> ${task["Instructions"]}</div>
+                    </div>
+                `;
+            });
+        }
+    }
+
     function populateDropdown() {
         const select = document.getElementById('recipe-selector');
         select.innerHTML = '';
-        
-        // Reverse array so newest AI recipes show up at the top of the list!
         dbRecipes.slice().reverse().forEach((r, index) => {
             const option = document.createElement('option');
-            option.value = dbRecipes.length - 1 - index; // Keep original index reference
+            option.value = dbRecipes.length - 1 - index; 
             option.innerText = r["Recipe Name"];
             select.appendChild(option);
         });
@@ -286,17 +339,15 @@
         document.getElementById('r-desc').innerText = recipe["Description"];
         document.getElementById('r-kid').innerHTML = "👶 <b>YOUNGLING MOD:</b> " + recipe["Kid Mod"];
         
-        // Parse the pipe-separated strings back into arrays
-        let haveArr = recipe["Vault Items"].split('|');
-        let buyArr = recipe["Target Items"].split('|');
-        let prepArr = recipe["Prep Steps"].split('|');
-        let cookArr = recipe["Cook Steps"].split('|');
-        let serveArr = recipe["Serve Steps"].split('|');
+        let haveArr = (recipe["Vault Items"]||"").split('|');
+        let buyArr = (recipe["Target Items"]||"").split('|');
+        let prepArr = (recipe["Prep Steps"]||"").split('|');
+        let cookArr = (recipe["Cook Steps"]||"").split('|');
+        let serveArr = (recipe["Serve Steps"]||"").split('|');
         
         currentRecipeNeeds = buyArr.map(s => s.trim());
-
-        document.getElementById('r-have').innerHTML = haveArr.map(i => `<li>✅ <b>${i.trim()}</b></li>`).join('');
-        document.getElementById('r-buy').innerHTML = buyArr.map(i => `<li>⚠️ <span style="color:var(--neon-pink);">${i.trim()}</span></li>`).join('');
+        document.getElementById('r-have').innerHTML = haveArr.map(i => i.trim() ? `<li>✅ <b>${i.trim()}</b></li>` : '').join('');
+        document.getElementById('r-buy').innerHTML = buyArr.map(i => i.trim() ? `<li>⚠️ <span style="color:var(--neon-pink);">${i.trim()}</span></li>` : '').join('');
         
         activeTasks = prepArr.length + cookArr.length + serveArr.length;
         completedTasks = 0;
@@ -319,22 +370,18 @@
         let percent = (completedTasks / activeTasks) * 100;
         document.getElementById('alchemy-progress').style.width = percent + '%';
         document.getElementById('alchemy-text').innerText = `KI GATHERING: ${Math.round(percent)}%`;
+        
+        if(percent === 100) {
+            document.getElementById('toast-title').innerText = "LEVEL UP! ⚡️";
+            document.getElementById('toast-msg').innerText = "ALCHEMY COMPLETE!";
+            triggerLevelUp();
+        }
     }
 
-    // --- OTHER UI FUNCTIONS ---
-    function renderPrep() {
-        const container = document.getElementById('prep-list-render');
-        container.innerHTML = '';
-        dbPrep.forEach(task => {
-            if(!task["Task Name"]) return;
-            container.innerHTML += `
-                <div class="section-header pink">${task["Category"]}</div>
-                <div class="task-item" onclick="this.classList.toggle('completed')">
-                    <div class="task-checkbox"></div>
-                    <div class="task-text"><b>${task["Task Name"]}:</b> ${task["Instructions"]}</div>
-                </div>
-            `;
-        });
+    function triggerLevelUp() {
+        const toast = document.getElementById('level-up-toast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
     function renderVault() {
@@ -364,7 +411,7 @@
     }
 
     function sendToMarket() {
-        currentRecipeNeeds.forEach(item => { if(!marketList.includes(item)) marketList.push(item); });
+        currentRecipeNeeds.forEach(item => { if(item && !marketList.includes(item)) marketList.push(item); });
         renderMarket();
         switchTab('market', document.querySelectorAll('.nav-item')[1]);
     }
@@ -376,7 +423,7 @@
         element.classList.add('active');
     }
 
-    // MATRIX RAIN (Minified for space)
+    // MATRIX RAIN MINIFIED
     const cvs = document.getElementById('matrix-canvas'); const ctx = cvs.getContext('2d');
     function res() { cvs.width = window.innerWidth; cvs.height = window.innerHeight; }
     window.addEventListener('resize', res); res();
@@ -392,7 +439,6 @@
         }
     }, 50);
 
-    // Boot
     fetchMainframe();
 </script>
 </body>
